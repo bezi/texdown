@@ -1,4 +1,4 @@
-TeXDown
+![TeXDown](texdown-logo.png)
 =======
 Latex/Markdown note app.  Lots of things planned for it.
 
