@@ -1,4 +1,4 @@
-![TeXDown](texdown-logo.png)
+![TeXDown](texdown-logo-hybrid.png)
 =======
 Latex/Markdown note app.  Lots of things planned for it.
 
