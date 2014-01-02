@@ -1,0 +1,22 @@
+{
+  "name": "texdown",
+  "version": "0.0.0",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bezi/texdown.git"
+  },
+  "author": "Oscar Bezi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bezi/texdown/issues"
+  },
+  "dependencies": {
+    "express": "3.4.7",
+    "jade": "0.35.0",
+    "mongodb": "1.1.0",
+    "monk": "*",
+    "moment": "*",
+    "source-map": "*"
+  }
+}
