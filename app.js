@@ -5,6 +5,10 @@ var express = require('express');
 var path = require('path');
 var app = express();
 
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('mongodb://texdown:asdf@ds059888.mongolab.com:59888/texdown');
+
 //===============================================
 // config
 //===============================================
@@ -41,13 +45,13 @@ app.get('/about', require('./routes/infoPage').about);
 // contact
 app.get('/contact', require('./routes/infoPage').contact);
 // files
-app.get('/files', require('./routes/files'));
+app.get('/files', require('./routes/files')(db));
 // edit
-app.get('/edit', require('./routes/edit'));
+app.get('/edit', require('./routes/edit')(db));
 // save
-app.post('/save', require('./routes/save'));
+app.post('/save', require('./routes/save')(db));
 // view
-app.get('/view', require('./routes/view'));
+app.get('/view', require('./routes/view')(db));
 // compile
 app.post('/compile', require('./routes/compile'));
 

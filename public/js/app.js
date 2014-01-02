@@ -4,12 +4,12 @@ app.save = function () {
 };
 
 app.compile = function() {
-    var data = $('#source').html();
+    var data = $('#source').val();
     $.post(
         "/compile",
-        data,
+        { text: data},
         function (response) {
-            console.log(response);
+            console.log(response.text);
         },
         "json"
     ); 

@@ -8,7 +8,6 @@ Human readable name, e.g. "Oscar"
 ### Email
 Email address for logging in
 ### Google OAuth token
-
 ### Files
 array of file ids this person owns
 
