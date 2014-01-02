@@ -36,6 +36,20 @@ if ('development' == app.get('env')) {
 
 // home
 app.get('/', require('./routes/index'));
+// about
+app.get('/about', require('./routes/infoPage').about);
+// contact
+app.get('/contact', require('./routes/infoPage').contact);
+// files
+app.get('/files', require('./routes/files'));
+// edit
+app.get('/edit', require('./routes/edit'));
+// save
+app.post('/save', require('./routes/save'));
+// view
+app.get('/view', require('./routes/view'));
+// compile
+app.post('/compile', require('./routes/compile'));
 
 app.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
