@@ -1,9 +1,9 @@
-!!! html
-html
-    head
-        script(type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-    body
-        h1 TEXDOWN
-        p Hi Jake
-        pre Hey Oscar
-        $$ \LaTeX $$
+extends base
+block nav
+  +navbar("Home")
+block content
+  .container
+    img(src="/images/texdown-logo-hybrid.png")
+    p Hi Jake
+    pre Hey Oscar
+    \( \LaTeX \)
