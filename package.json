@@ -17,6 +17,7 @@
     "mongodb": "1.1.0",
     "monk": "*",
     "moment": "*",
-    "source-map": "*"
+    "source-map": "*",
+    "promise": "2.*"
   }
 }
