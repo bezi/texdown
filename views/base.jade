@@ -1,28 +1,26 @@
 !!! html
 html
-  head
-    title TeXDown
+    head
+        title TeXDown
 
-    meta(charset="utf-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
 
-    link(rel="shortcut icon" href="/images/favicon.ico")
-    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css")
-    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css")
+        link(rel="shortcut icon" href="/images/favicon.ico")
+        link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css")
+        link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css")
+        link(rel="stylesheet" type="text/css" href="/css/main.css")
 
-    link(rel="stylesheet" type="text/css" href="/css/main.css")
+        block header
 
-    script(src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js")
-    script(type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+    body
+        include mixins/nav
+        //- Use to set active header
+        block nav
 
-    block header
+        //- Use for main content of page
+        block content
 
-  body
-    include mixins/nav
-    //- Use to set active header
-    block nav
-
-    //- Use for main content of page
-    block content
-
-    script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+        script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+        script(src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js")
+        script(type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
