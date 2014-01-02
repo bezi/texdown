@@ -1,0 +1,19 @@
+extends base
+block header
+    link(rel="stylesheet" type="text/css" href="/lib/codemirror.css")
+    script(src="/lib/codemirror.js")
+    script(src="/addon/mode/overlay.js")
+    script(src="/mode/xml/xml.js")
+    script(src="/mode/markdown/markdown.js")
+    script(src="/mode/gfm/gfm.js")
+    script(src="/mode/javascript/javascript.js")
+    script(src="/mode/css/css.js")
+    script(src="/mode/htmlmixed/htmlmixed.js")
+    script(src="/mode/clike/clike.js")
+
+block content
+    script(type="text/javascript").
+        var myCodeMirror = CodeMirror(document.body, {
+          value: "#Test",
+          mode:  "gfm"
+        });
