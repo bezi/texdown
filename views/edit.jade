@@ -1,6 +1,7 @@
 extends base
 block header
     link(rel="stylesheet" type="text/css" href="/lib/codemirror.css")
+    link(rel="stylesheet" type="text/css" href="/theme/monokai.css")
     script(src="/lib/codemirror.js")
     script(src="/addon/mode/overlay.js")
     script(src="/mode/xml/xml.js")
@@ -12,8 +13,20 @@ block header
     script(src="/mode/clike/clike.js")
 
 block content
-    script(type="text/javascript").
-        var myCodeMirror = CodeMirror(document.body, {
-          value: "#Test",
-          mode:  "gfm"
-        });
+    .container.editor-pane
+        .row.editor-pane
+            .col-md-6.editor-pane
+                form.editor-pane
+                    button#compile-button.btn.btn-primary(type="button")= 'Compile '
+                        span.glyphicon.glyphicon-refresh
+                    textarea#texdown-code.editor-pane
+                    script(type="text/javascript").
+                        var editor = CodeMirror.fromTextArea(document.getElementById("texdown-code"), {
+                            mode:        "gfm",
+                            lineNumbers: "true",
+                            theme:       "monokai"
+                        });
+            .col-md-6.editor-pane
+                #texdown-preview.editor-pane
+                    button#expand-button.btn.btn-primary(type="button")= 'Expand '
+                        span.glyphicon.glyphicon-resize-full
