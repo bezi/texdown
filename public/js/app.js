@@ -4,9 +4,10 @@ app.save = function () {
 };
 
 app.editor = CodeMirror.fromTextArea(document.getElementById("texdown-code"), {
-    mode:        "gfm",
-    lineNumbers: "true",
-    theme:       "monokai"
+    mode:         "gfm",
+    lineNumbers:  "true",
+    lineWrapping: "true",
+    theme:        "monokai"
 });
 
 app.compile = function() {
