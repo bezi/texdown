@@ -48,7 +48,8 @@ ul.nav.navbar-nav > li > a {
 /* line 30, ../sass/main.scss */
 #preview-pane {
   position: relative;
-  padding: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
   width: 100%;
   border: 1px solid #CACACA;
   background: white;
