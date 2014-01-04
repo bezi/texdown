@@ -10,6 +10,7 @@ app.editor = CodeMirror.fromTextArea(document.getElementById("texdown-code"), {
 });
 
 app.compile = function() {
+    console.log("Compiling. . .");
     var data = {};
     data.text = app.editor.getValue();
     var request = new XMLHttpRequest();
@@ -17,9 +18,13 @@ app.compile = function() {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 var response = JSON.parse(request.responseText); 
+                response.text += '<button id="expand-button" type="button" class="btn btn-primary">Expand <span class="glyphicon glyphicon-resize-full"></span></button>';
                 document.getElementById('texdown-preview').innerHTML = response.text; 
+                // re-render math
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                console.log("|-- compiling successful.");
             } else {
-                console.log("Shit's fucked up, mate.");
+                console.log("|-- error in compiling.");
             }
         }
     }
@@ -29,7 +34,9 @@ app.compile = function() {
 };
 
 app.init = function () {
+    console.log("Initializing app. . .");
     document.getElementById('compile-button').onclick = app.compile;
+    console.log("|-- app intialized.");
 }
 
 app.init();
