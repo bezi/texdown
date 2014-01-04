@@ -20,13 +20,8 @@ block content
                     button#compile-button.btn.btn-primary(type="button")= 'Compile '
                         span.glyphicon.glyphicon-refresh
                     textarea#texdown-code.editor-pane
-                    script(type="text/javascript").
-                        var editor = CodeMirror.fromTextArea(document.getElementById("texdown-code"), {
-                            mode:        "gfm",
-                            lineNumbers: "true",
-                            theme:       "monokai"
-                        });
             .col-md-6.editor-pane
                 #texdown-preview.editor-pane
                     button#expand-button.btn.btn-primary(type="button")= 'Expand '
                         span.glyphicon.glyphicon-resize-full
+    script(src="/js/app.js")
