@@ -18,7 +18,6 @@ app.compile = function() {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 var response = JSON.parse(request.responseText); 
-                response.text += '<button id="expand-button" type="button" class="btn btn-primary">Expand <span class="glyphicon glyphicon-resize-full"></span></button>';
                 document.getElementById('texdown-preview').innerHTML = response.text; 
                 // re-render math
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
