@@ -1,16 +1,7 @@
 extends base
 block header
-    link(rel="stylesheet" type="text/css" href="/lib/codemirror.css")
-    link(rel="stylesheet" type="text/css" href="/theme/monokai.css")
-    script(src="/lib/codemirror.js")
-    script(src="/addon/mode/overlay.js")
-    script(src="/mode/xml/xml.js")
-    script(src="/mode/markdown/markdown.js")
-    script(src="/mode/gfm/gfm.js")
-    script(src="/mode/javascript/javascript.js")
-    script(src="/mode/css/css.js")
-    script(src="/mode/htmlmixed/htmlmixed.js")
-    script(src="/mode/clike/clike.js")
+    link(rel="stylesheet" type="text/css" href="/lib/codemirror/codemirror.css")
+    link(rel="stylesheet" type="text/css" href="/lib/codemirror/theme/monokai.css")
 
 block content
     .container.editor-pane
@@ -24,4 +15,14 @@ block content
                 #texdown-preview.editor-pane
                     button#expand-button.btn.btn-primary(type="button")= 'Expand '
                         span.glyphicon.glyphicon-resize-full
+
+    script(src="/lib/codemirror/codemirror.js")
+    script(src="/lib/codemirror/addon/mode/overlay.js")
+    script(src="/lib/codemirror/mode/xml/xml.js")
+    script(src="/lib/codemirror/mode/markdown/markdown.js")
+    script(src="/lib/codemirror/mode/gfm/gfm.js")
+    script(src="/lib/codemirror/mode/javascript/javascript.js")
+    script(src="/lib/codemirror/mode/css/css.js")
+    script(src="/lib/codemirror/mode/htmlmixed/htmlmixed.js")
+    script(src="/lib/codemirror/mode/clike/clike.js")
     script(src="/js/app.js")
