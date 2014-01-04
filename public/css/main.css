@@ -47,7 +47,7 @@ form {
 }
 #expand-button, #compile-button {
     position: absolute;
-    z-index: 1px;
+    z-index: 1;
     bottom: 3px;
     right: 3px;
 }
