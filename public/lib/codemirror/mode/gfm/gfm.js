@@ -32,7 +32,7 @@ CodeMirror.defineMode("gfm", function(config) {
       if (stream.sol()) {
         state.code = false;
       }
-      if (stream.sol() && stream.match(/^```/)) {
+      if (stream.sol() && (stream.match(/^```/) || stream.match(/^~~~/))) {
         stream.skipToEnd();
         state.codeBlock = true;
         return null;

@@ -4,17 +4,39 @@ block header
     link(rel="stylesheet" type="text/css" href="/lib/codemirror/theme/monokai.css")
 
 block content
-    .container.editor-pane
-        .row.editor-pane
-            .col-md-6.editor-pane
-                form.editor-pane
-                    button#compile-button.btn.btn-primary(type="button")= 'Compile '
-                        span.glyphicon.glyphicon-refresh
-                    textarea#texdown-code.editor-pane
-            .col-md-6.editor-pane
-                #texdown-preview.editor-pane
-                button#expand-button.btn.btn-primary(type="button")= 'Expand '
+    .navbar.navbar-inverse.navbar-fixed-top(role="navigation")
+        .navbar-header
+            button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-collapse")
+                .sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.navbar-brand(href="#") TeXDown
+        .navbar-collapse.collapse
+            ul.nav.navbar-nav
+                li: a#compile-button(href="#")
+                    span.glyphicon.glyphicon-refresh
+                    |  Refresh
+                li: a(href="#")
+                    span.glyphicon.glyphicon-floppy-disk
+                    |  Save
+                li: a(href="#")
+                    span.glyphicon.glyphicon-trash
+                    |  Discard
+            ul.nav.navbar-nav.navbar-right
+                li: a#expand-button(href="#")
                     span.glyphicon.glyphicon-resize-full
+                    |  Expand
+                li: a= ' '
+
+    .container.full#editor-window
+        .row.full
+            .col-md-6.full
+                form.full
+                    textarea#editor-pane.full
+            .col-md-6.full
+                #preview-wrapper.full
+                    #preview-pane.full
 
     script(src="/lib/codemirror/codemirror.js")
     script(src="/lib/codemirror/addon/mode/overlay.js")

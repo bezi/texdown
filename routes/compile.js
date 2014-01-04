@@ -19,10 +19,10 @@ marked.setOptions({
 
 // POST to /compile
 module.exports = function(req, res) {
-    var string = req.body.text.replace(new RegExp('\\\(', "g"), '\\(')
-    string = string.replace(new RegExp('\\\)', "g"), '\\)');
-    string = string.replace(new RegExp('\\\[', "g"), '\\[');
-    string = string.replace(new RegExp('\\\]', "g"), '\\]');
+    var string = req.body.text.replace(/\\\(/g, '\\\\(')
+    string = string.replace(/\\\)/g, '\\\\)');
+    string = string.replace(/\\\[/g, '\\\\[');
+    string = string.replace(/\\\]/g, '\\\\]');
     marked(string, function(err, compiled) {
         if (err) return;
         res.send({

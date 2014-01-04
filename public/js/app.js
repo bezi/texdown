@@ -3,7 +3,7 @@ app.save = function () {
 
 };
 
-app.editor = CodeMirror.fromTextArea(document.getElementById("texdown-code"), {
+app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     mode:         "gfm",
     lineNumbers:  "true",
     lineWrapping: "true",
@@ -19,7 +19,7 @@ app.compile = function() {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 var response = JSON.parse(request.responseText); 
-                document.getElementById('texdown-preview').innerHTML = response.text; 
+                document.getElementById('preview-pane').innerHTML = response.text; 
                 // re-render math
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                 console.log("|-- compiling successful.");
