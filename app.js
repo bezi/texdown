@@ -52,6 +52,9 @@ app.get('/edit', require('./routes/edit')(db));
 app.post('/save', require('./routes/save')(db));
 // view
 app.get('/view', require('./routes/view')(db));
+// preview
+// app.post('/preview', require('./routes/preview'));
+app.get('/preview', require('./routes/preview')(db));
 // compile
 app.post('/compile', require('./routes/compile'));
 

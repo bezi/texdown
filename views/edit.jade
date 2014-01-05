@@ -6,7 +6,7 @@ block header
 block content
     .navbar.navbar-inverse.navbar-fixed-top(role="navigation")
         .navbar-header
-            button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-collapse")
+            button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
                 .sr-only Toggle navigation
                 span.icon-bar
                 span.icon-bar
@@ -14,30 +14,36 @@ block content
             a.navbar-brand.texdown-logo(href="#")
         .navbar-collapse.collapse
             ul.nav.navbar-nav
-                li: a#compile-button(href="#")
+                li: a#compile-button(href="#", title="Refresh")
                     span.glyphicon.glyphicon-refresh
                     |  Refresh
-                li: a(href="#")
+                li: a(href="#", title="Save")
                     span.glyphicon.glyphicon-floppy-disk
                     |  Save
-                li: a(href="#")
+                li: a(href="#", title="Discard")
                     span.glyphicon.glyphicon-trash
                     |  Discard
             ul.nav.navbar-nav.navbar-right
-                li: a#expand-button(href="#")
-                    span.glyphicon.glyphicon-resize-full
+                li: a#expand-button(href="#", title="Expand")
+                    span.glyphicon.glyphicon-fullscreen
                     |  Expand
+                li: a#markdown-button(href="#", title="Markdown Hints")
+                    span.glyphicon.glyphicon-dashboard
+                    |  Markdown
                 li: a= ' '
 
     .container.full#editor-window
         .row.full
-            .col-md-6.full
-                form.full
+            .col-md-6.full#editor-col
+                form.full#editor-form
                     textarea#editor-pane.full
-            .col-md-6.full
+            .col-md-6.full#preview-col
                 #preview-wrapper.full
                     #preview-pane.full
+    .hidden#markdown-pane
+        a(href="/images/markdown-cheatsheet.png", target="_blank"): img.img-thumbnail(src="/images/markdown-cheatsheet.png")
 
+block script
     script(src="/lib/codemirror/codemirror.js")
     script(src="/lib/codemirror/addon/mode/overlay.js")
     script(src="/lib/codemirror/mode/xml/xml.js")
