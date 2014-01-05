@@ -16,7 +16,7 @@ block content
             ul.nav.navbar-nav
                 li: a#compile-button(href="#", title="Refresh")
                     span.glyphicon.glyphicon-refresh
-                    |  Refresh
+                    |  Compile
                 li: a(href="#", title="Save")
                     span.glyphicon.glyphicon-floppy-disk
                     |  Save
@@ -24,22 +24,26 @@ block content
                     span.glyphicon.glyphicon-trash
                     |  Discard
             ul.nav.navbar-nav.navbar-right
-                li: a#expand-button(href="#", title="Expand")
-                    span.glyphicon.glyphicon-fullscreen
-                    |  Expand
                 li: a#markdown-button(href="#", title="Markdown Hints")
                     span.glyphicon.glyphicon-dashboard
                     |  Markdown
+                li: a#expand-button(href="#", title="Expand")
+                    span.glyphicon.glyphicon-fullscreen
+                    |  Expand
                 li: a= ' '
 
-    .container.full#editor-window
-        .row.full
+    .full#editor-window
+        .full
             .col-md-6.full#editor-col
                 form.full#editor-form
                     textarea#editor-pane.full
             .col-md-6.full#preview-col
                 #preview-wrapper.full
                     #preview-pane.full
+                        br
+                        h1(style="text-align: center") Click &ldquo;
+                            span.glyphicon.glyphicon-refresh
+                            |  Compile&rdquo; to see your notes!
     .hidden#markdown-pane
         a(href="/images/markdown-cheatsheet.png", target="_blank"): img.img-thumbnail(src="/images/markdown-cheatsheet.png")
 

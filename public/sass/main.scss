@@ -1,14 +1,8 @@
 @import "compass";
 
-/** BOOTSTRAP
- * Override some Bootstrap features for the editor
- */
-.container.full#editor-window {
+// -------------------------- Bootstrap Styles ----------------------------- //
+.full#editor-window {
     padding: 58px 7px 7px 7px;
-    width: 100%;
-    // needs latest Compass, add '@import "compass"' to your scss
-    @include filter-gradient(rgba(125,185,232,0), #1e5799, horizontal); // IE6-9 fallback on horizontal gradient
-    @include background-image(linear-gradient(left top, rgba(125,185,232,0) 0%,rgba(108,167,218,0.7) 18%,rgba(77,135,192,1) 51%,rgba(30,87,153,1) 100%));
 }
 a.navbar-brand.texdown-logo {
     background: url("/images/texdown-logo-lightgray-150.png") no-repeat center center;
@@ -21,11 +15,25 @@ a.navbar-brand.texdown-logo:hover {
 ul.nav.navbar-nav > li > a {
     font-size: 16px;
 }
-/*** END BOOTSTRAP OVERRIDES ***/
+.col-md-6 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
 
-html, body { height: 100%; background: white; }
+// ---------------------------- General Styles ----------------------------- //
+html, body { height: 100%; }
 .full { height: 100%; }
 
+body {
+    background: white;
+    // needs latest Compass, add '@import "compass"' to your scss
+    @include filter-gradient(rgba(125,185,232,0), #1e5799, horizontal); // IE6-9 fallback on horizontal gradient
+    @include background-image(linear-gradient(left top, rgba(125,185,232,0) 0%,rgba(108,167,218,0.7) 18%,rgba(77,135,192,1) 51%,rgba(30,87,153,1) 100%));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+// ---------------------------- Editor Styles ------------------------------ //
 #editor-col {
     padding-right: 5px;
 }
@@ -33,19 +41,11 @@ html, body { height: 100%; background: white; }
     border-radius: 3px;
     border: 3px solid #CACACA;
 }
+
+// ---------------------------- Preview Styles ----------------------------- //
 #preview-col {
     padding-left: 5px;
 }
-.preview-expand {
-    position: absolute;
-    left: 50%;
-    top: 3%;
-    height: 94%;
-    z-index: 1031;
-}
-@media(min-width: 768px) { .preview-expand { margin-left: -385px; } }
-@media(min-width: 992px) { .preview-expand { margin-left: -485px; } }
-@media(min-width: 1200px) { .preview-expand { margin-left: -585px; } }
 #preview-wrapper {
     padding: 3px;
     background: #EEE;
@@ -59,18 +59,23 @@ html, body { height: 100%; background: white; }
     background: white;
     overflow-y: scroll;
 }
+.preview-expand {
+    position: absolute;
+    left: 50%;
+    top: 3%;
+    height: 94%;
+    z-index: 1031;
+}
+@media(min-width: 768px) { .preview-expand { margin-left: -385px; } }
+@media(min-width: 992px) { .preview-expand { margin-left: -485px; } }
+@media(min-width: 1200px) { .preview-expand { margin-left: -585px; } }
+
+// ---------------------------- Markdown Styles ---------------------------- //
 #markdown-pane {
     position: absolute;
     top: 20px;
     left: 50%;
     z-index: 1031; // To get above navbar
     margin-left: -517px;
-    height: 100%;
 }
-@media(max-width: 1034px){
-    #markdown-pane {
-       z-index: -1; 
-    }
-}
-
-// @import 'github';
+@media(max-width: 1034px){ #markdown-pane { display: none!important; } }
