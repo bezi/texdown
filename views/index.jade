@@ -1,10 +1,21 @@
 extends base
 block content
+    .navbar.navbar-inverse.navbar-fixed-top
+        .container
+            .navbar-header
+                button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-collapse")
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                //- a(href="/"): img(src="/images/texdown-logo-150.png")
+                a.navbar-brand.texdown-logo(href="/")
+            .navbar-collapse.collapse
+                ul.nav.navbar-nav
+                    //- li: a(href="#"): img(srt="/images/texdown-logo-150.png")
+                    li: a(href="#") Test
+                    li: a(href="#") Test
     .container
-        img(src="/images/texdown-logo-hybrid.png")
-        p Hi Jake
-        pre Hey Oscar
-        \( \LaTeX \)
-        textarea#source
-        
-    script(src="/js/app.js")
+        <br />
+        <br />
+        <br />
+        img(src="/images/texdown-logo-darkgray-600.png")

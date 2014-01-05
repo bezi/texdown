@@ -34,18 +34,30 @@ form {
 }
 
 /* line 22, ../sass/main.scss */
+a.navbar-brand.texdown-logo {
+  background: url("/images/texdown-logo-lightgray-150.png") no-repeat center center;
+  height: 50px;
+  width: 120px;
+}
+
+/* line 27, ../sass/main.scss */
+a.navbar-brand.texdown-logo:hover {
+  background: url("/images/texdown-logo-white-150.png") no-repeat center center;
+}
+
+/* line 30, ../sass/main.scss */
 ul.nav.navbar-nav > li > a {
   font-size: 16px;
 }
 
-/* line 25, ../sass/main.scss */
+/* line 33, ../sass/main.scss */
 #preview-wrapper {
   padding: 3px;
   background: #EEE;
   border-radius: 3px;
 }
 
-/* line 30, ../sass/main.scss */
+/* line 38, ../sass/main.scss */
 #preview-pane {
   position: relative;
   padding-right: 10px;

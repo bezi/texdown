@@ -52,7 +52,7 @@ then
     for size in `echo $sizes | tr ' ' '\n'`
     do
         echo -n "${c_yellow} :: Creating ${c_reset}${c_white}apple-touch-icon-${size}x${size}-precomposed.png... ${c_reset}"
-        convert -density $size ${file}.pdf -quality 90 -resize ${size}x${size} temp-files/apple-touch-icon-${size}x${size}-precomposed.png
+        convert -density 900 ${file}.pdf -quality 90 -resize ${size}x${size} temp-files/apple-touch-icon-${size}x${size}-precomposed.png
         echo "${c_green}Done.${c_reset}"
     done
     echo -n "${c_yellow} :: Converting${c_reset}${c_white} apple-touch-icon-32x32-precomposed.png to favicon.ico... ${c_reset}"
