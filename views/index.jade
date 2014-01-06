@@ -1,4 +1,6 @@
 extends base
+block header
+    link(rel="stylesheet", type="text/css", href="/css/index.css")
 block content
     .navbar.navbar-inverse.navbar-fixed-top
         .container
@@ -7,15 +9,21 @@ block content
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
-                //- a(href="/"): img(src="/images/texdown-logo-150.png")
                 a.navbar-brand.texdown-logo(href="/")
             .navbar-collapse.collapse
                 ul.nav.navbar-nav
-                    //- li: a(href="#"): img(srt="/images/texdown-logo-150.png")
+                    li: a(href="#") About
                     li: a(href="#") Test
-                    li: a(href="#") Test
-    .container
-        <br />
-        <br />
-        <br />
-        img(src="/images/texdown-logo-darkgray-600.png")
+                form.navbar-form.navbar-right
+                    .form-group
+                        input.form-control(type="text", placeholder="Username")
+                    .form-group
+                        input.form-control(type="password", placeholder="Password")
+                    button.btn.btn-primary(type="submit") Submit
+
+    .jumbotron
+        .container
+            img(src="/images/texdown-logo-white-900.png")
+            .row
+                .col-md-8
+                    h1 For efficient Markdown note-taking infused with the power of \( \mathrm\LaTeX \)

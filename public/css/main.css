@@ -1,113 +1,21 @@
 /* line 4, ../sass/main.scss */
-.full#editor-window {
-  padding: 58px 7px 7px 7px;
-}
-
-/* line 7, ../sass/main.scss */
 a.navbar-brand.texdown-logo {
   background: url("/images/texdown-logo-lightgray-150.png") no-repeat center center;
   height: 50px;
   width: 120px;
 }
 
-/* line 12, ../sass/main.scss */
+/* line 9, ../sass/main.scss */
 a.navbar-brand.texdown-logo:hover {
   background: url("/images/texdown-logo-white-150.png") no-repeat center center;
 }
 
-/* line 15, ../sass/main.scss */
-ul.nav.navbar-nav > li > a {
+/* line 12, ../sass/main.scss */
+.navbar a {
   font-size: 16px;
 }
 
-/* line 18, ../sass/main.scss */
-.col-md-6 {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-/* line 24, ../sass/main.scss */
-html, body {
-  height: 100%;
-}
-
-/* line 25, ../sass/main.scss */
+/* line 17, ../sass/main.scss */
 .full {
   height: 100%;
-}
-
-/* line 28, ../sass/main.scss */
-#editor-col {
-  padding-right: 5px;
-}
-
-/* line 31, ../sass/main.scss */
-.CodeMirror {
-  border-radius: 3px;
-  border: 3px solid #CACACA;
-}
-
-/* line 37, ../sass/main.scss */
-#preview-col {
-  padding-left: 5px;
-}
-
-/* line 40, ../sass/main.scss */
-#preview-wrapper {
-  padding: 3px;
-  background: #EEE;
-  border-radius: 3px;
-}
-
-/* line 45, ../sass/main.scss */
-#preview-pane {
-  padding-right: 10px;
-  padding-left: 10px;
-  width: 100%;
-  border: 1px solid #CACACA;
-  background: white;
-  overflow-y: scroll;
-}
-
-/* line 53, ../sass/main.scss */
-.preview-expand {
-  position: absolute;
-  left: 50%;
-  top: 3%;
-  height: 94%;
-  z-index: 1031;
-}
-
-@media (min-width: 768px) {
-  /* line 60, ../sass/main.scss */
-  .preview-expand {
-    margin-left: -385px;
-  }
-}
-@media (min-width: 992px) {
-  /* line 61, ../sass/main.scss */
-  .preview-expand {
-    margin-left: -485px;
-  }
-}
-@media (min-width: 1200px) {
-  /* line 62, ../sass/main.scss */
-  .preview-expand {
-    margin-left: -585px;
-  }
-}
-/* line 65, ../sass/main.scss */
-#markdown-pane {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  z-index: 1031;
-  margin-left: -517px;
-}
-
-@media (max-width: 1034px) {
-  /* line 72, ../sass/main.scss */
-  #markdown-pane {
-    display: none !important;
-  }
 }

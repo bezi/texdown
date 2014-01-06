@@ -19,9 +19,13 @@ app.compile = function() {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 var response = JSON.parse(request.responseText); 
-                document.getElementById('preview-pane').innerHTML = response.text; 
+                $('#preview-pane').html(response.text);
                 // re-render math
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                // re-render Google prettyprint
+                $('#preview-pane pre').addClass("prettyprint");
+                $('#preview-pane code').addClass("prettyprint");
+                prettyPrint();
                 console.log("|-- compiling successful.");
             } else {
                 console.log("|-- error in compiling.");
@@ -75,6 +79,9 @@ app.init = function () {
     $('#compile-button').click(app.compile);
     $('#expand-button').click(app.expand);
     $('#markdown-button').click(app.toggleHelp);
+    $(document).ready(function() {
+        prettyPrint();
+    })
     console.log("|-- app intialized.");
 }
 

@@ -1,0 +1,17 @@
+/* line 7, ../sass/index.scss */
+.jumbotron {
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FF1E5799', endColorstr='#007DB9E8');
+  background-image: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, #1e5799), color-stop(67%, #4d87c0), color-stop(97%, rgba(108, 167, 218, 0.7)), color-stop(100%, rgba(125, 185, 232, 0)));
+  background-image: -webkit-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+  background-image: -moz-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+  background-image: -o-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+  background-image: linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+  height: 50%;
+}
+
+/* line 14, ../sass/index.scss */
+.jumbotron h1 {
+  font-size: 45px;
+  color: white;
+}

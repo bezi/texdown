@@ -1,9 +1,6 @@
 @import "compass";
 
 // -------------------------- Bootstrap Styles ----------------------------- //
-.full#editor-window {
-    padding: 58px 7px 7px 7px;
-}
 a.navbar-brand.texdown-logo {
     background: url("/images/texdown-logo-lightgray-150.png") no-repeat center center;
     height: 50px;
@@ -12,61 +9,10 @@ a.navbar-brand.texdown-logo {
 a.navbar-brand.texdown-logo:hover {
     background: url("/images/texdown-logo-white-150.png") no-repeat center center;
 }
-ul.nav.navbar-nav > li > a {
+.navbar a {
     font-size: 16px;
-}
-.col-md-6 {
-    padding-left: 0px;
-    padding-right: 0px;
 }
 
 // ---------------------------- General Styles ----------------------------- //
-html, body { height: 100%; }
 .full { height: 100%; }
 
-// ---------------------------- Editor Styles ------------------------------ //
-#editor-col {
-    padding-right: 5px;
-}
-.CodeMirror {
-    border-radius: 3px;
-    border: 3px solid #CACACA;
-}
-
-// ---------------------------- Preview Styles ----------------------------- //
-#preview-col {
-    padding-left: 5px;
-}
-#preview-wrapper {
-    padding: 3px;
-    background: #EEE;
-    border-radius: 3px;
-}
-#preview-pane {
-    padding-right: 10px;
-    padding-left: 10px;
-    width: 100%;
-    border: 1px solid #CACACA;
-    background: white;
-    overflow-y: scroll;
-}
-.preview-expand {
-    position: absolute;
-    left: 50%;
-    top: 3%;
-    height: 94%;
-    z-index: 1031;
-}
-@media(min-width: 768px) { .preview-expand { margin-left: -385px; } }
-@media(min-width: 992px) { .preview-expand { margin-left: -485px; } }
-@media(min-width: 1200px) { .preview-expand { margin-left: -585px; } }
-
-// ---------------------------- Markdown Styles ---------------------------- //
-#markdown-pane {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    z-index: 1031; // To get above navbar
-    margin-left: -517px;
-}
-@media(max-width: 1034px){ #markdown-pane { display: none!important; } }
