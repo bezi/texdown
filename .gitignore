@@ -3,3 +3,4 @@
 .sass-cache/
 node_modules/*
 public/config.rb
+texdown-logo/out/*
