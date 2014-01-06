@@ -37,35 +37,32 @@ app.compile = function() {
     request.send(JSON.stringify(data));
 };
 
+app.expanded = false;
+app.shrink = function(e) {
+    var container = $("#preview-pane");
+    // Make sure that neither preview-pane nor any descendent 
+    // of preview-pane was clicked
+    if(!container.is(e.target) && container.has(e.target).length === 0) {
+        $("#preview-col").toggleClass("preview-expand");
+        $("#preview-col").toggleClass("col-md-6");
+        $("#preview-col").toggleClass("container");
+        app.expanded = !app.expanded;
+        $("#editor-window").off('click');
+    }
+}
 app.expand = function() {
-//     console.log("Previewing... ");
-//     var data = {};
-//     data.content = $("#preview-pane").html();
-//     var request = new XMLHttpRequest();
-//     request.onreadystatechange = function() {
-//         if (request.readyState === 4) {
-//             if (request.status === 200) {
-//                 var head = "<title>Test</title>";
-//                 var body = JSON.parse(request.responseText).content;
-//                 console.log(head);
-//                 console.log(body);
-//                 var w = window.open();
-//                 $(w.document.body).html(body);
-//                 w.document.getElementsByTagName("head")[0].innerHTML = head;
-//                 console.log("|-- preview successful.");
-//             } else {
-//                 console.log("|-- error in previewing.");
-//             }
-//         }
-//     }
-//     request.open('POST', '/preview', true);
-//     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-//     request.send(JSON.stringify(data));
-//     console.log("|-- preview request sent.");
     console.log("Toggling preview expansion...");
     $("#preview-col").toggleClass("preview-expand");
     $("#preview-col").toggleClass("col-md-6");
     $("#preview-col").toggleClass("container");
+    app.expanded = !app.expanded;
+    // Let the user click the background to shrink
+    if(app.expanded) {
+        $("#editor-window").on('click', app.shrink);
+    }
+    else {
+        $("#editor-window").off('click');
+    }
 }
 
 app.toggleHelp = function() {

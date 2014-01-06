@@ -35,17 +35,16 @@ block content
                 li: a= ' '
 
     .full#editor-window
-        .full
-            .col-md-6.full#editor-col
-                form.full#editor-form
-                    textarea#editor-pane.full
-            .col-md-6.full#preview-col
-                #preview-wrapper.full
-                    #preview-pane.full
-                        br
-                        h1(style="text-align: center") Click &ldquo;
-                            span.glyphicon.glyphicon-refresh
-                            |  Compile&rdquo; to see your notes!
+        .col-md-6.full#editor-col
+            form.full#editor-form
+                textarea#editor-pane.full
+        .col-md-6.full#preview-col
+            #preview-wrapper.full
+                #preview-pane.full
+                    br
+                    h1(style="text-align: center") Click &ldquo;
+                        span.glyphicon.glyphicon-refresh
+                        |  Compile&rdquo; to see your notes!
 
     .hidden#markdown-pane
         a(href="/images/markdown-cheatsheet.png", target="_blank"): img.img-thumbnail(src="/images/markdown-cheatsheet.png")
