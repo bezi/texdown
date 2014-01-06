@@ -37,25 +37,32 @@ app.compile = function() {
     request.send(JSON.stringify(data));
 };
 
-app.expanded = false;
-app.shrink = function(e) {
-    var container = $("#preview-pane");
-    // Make sure that neither preview-pane nor any descendent 
-    // of preview-pane was clicked
-    if(!container.is(e.target) && container.has(e.target).length === 0) {
-        $("#preview-col").toggleClass("preview-expand");
-        $("#preview-col").toggleClass("col-md-6");
-        $("#preview-col").toggleClass("container");
-        app.expanded = !app.expanded;
-        $("#editor-window").off('click');
-    }
-}
-app.expand = function() {
-    console.log("Toggling preview expansion...");
+app.previewExpanded = false;
+app.togglePreview = function() {
     $("#preview-col").toggleClass("preview-expand");
     $("#preview-col").toggleClass("col-md-6");
     $("#preview-col").toggleClass("container");
-    app.expanded = !app.expanded;
+    app.previewExpanded = !app.previewExpanded;
+}
+app.expandButton = function() {
+    app.togglePreview();
+    if(app.previewExpanded) {
+        // Let a background click reset the preview pane
+        $('#editor-window').on('click', function(e) {
+            var prevcol = $("#preview-col");
+            if(!prevcol.is(e.target) && prevcol.has(e.target).length === 0) {
+                app.togglePreview();
+                $('#editor-window').off('click');
+            }
+        });
+    }
+    else {
+        $('#editor-window').off('click');
+    }
+}
+
+app.expand = function() {
+    console.log("Toggling preview expansion...");
     // Let the user click the background to shrink
     if(app.expanded) {
         $("#editor-window").on('click', app.shrink);
@@ -74,7 +81,7 @@ app.toggleHelp = function() {
 app.init = function () {
     console.log("Initializing app. . .");
     $('#compile-button').click(app.compile);
-    $('#expand-button').click(app.expand);
+    $('#expand-button').click(app.expandButton);
     $('#markdown-button').click(app.toggleHelp);
     $(document).ready(function() {
         prettyPrint();
