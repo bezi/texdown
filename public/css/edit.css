@@ -1,0 +1,13 @@
+/* line 3, ../sass/edit.scss */
+body {
+  background: white;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#007DB9E8', endColorstr='#FF1E5799');
+  background-image: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, rgba(125, 185, 232, 0)), color-stop(18%, rgba(108, 167, 218, 0.7)), color-stop(51%, #4d87c0), color-stop(100%, #1e5799));
+  background-image: -webkit-linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
+  background-image: -moz-linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
+  background-image: -o-linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
+  background-image: linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
