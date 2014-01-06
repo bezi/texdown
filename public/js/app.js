@@ -61,17 +61,6 @@ app.expandButton = function() {
     }
 }
 
-app.expand = function() {
-    console.log("Toggling preview expansion...");
-    // Let the user click the background to shrink
-    if(app.expanded) {
-        $("#editor-window").on('click', app.shrink);
-    }
-    else {
-        $("#editor-window").off('click');
-    }
-}
-
 app.toggleHelp = function() {
     console.log("Toggling help...");
     $("#markdown-pane").toggleClass("hidden");
