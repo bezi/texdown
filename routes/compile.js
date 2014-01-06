@@ -7,23 +7,20 @@ marked.setOptions({
   pedantic: false,
   sanitize: false,
   smartLists: true,
-  smartypants: false,
+  smartypants: true,
   langPrefix: 'language-',
-  highlight: function(code, lang) {
-    if (lang === 'js') {
-      return highlighter.javascript(code);
-    }
-    return code;
-  }
 });
 
 // POST to /compile
 module.exports = function(req, res) {
-    var string = req.body.text.replace(/\\\(/g, '\\\\(')
-    string = string.replace(/\\\)/g, '\\\\)');
-    string = string.replace(/\\\[/g, '\\\\[');
-    string = string.replace(/\\\]/g, '\\\\]');
-    marked(string, function(err, compiled) {
+    var markdown = req.body.text;
+    // This is how the math is processed by MathJax internally.
+    // By doing it early, we can save it from being altered by marked.
+    var texdown = markdown.replace(/\\\(/g, '<script type="math/tex">')
+        .replace(/\\\)/g, '</script>')
+        .replace(/\\\[/g, '<script type="math/tex; mode=display">')
+        .replace(/\\\]/g, '</script>')
+    marked(texdown, function(err, compiled) {
         if (err) return;
         res.send({
             text: compiled
