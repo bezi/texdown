@@ -11,7 +11,7 @@ c_green=$(tput setaf 2)
 c_yellow=$(tput setaf 3)
 
 # space-delimited density parameters to `convert`
-sizes="150 200 300 450 600"
+sizes="150 200 300 450 600 900"
 
 echo "${c_blue}TeXDown Logo and Icon Converter Utility${c_reset}"
 
