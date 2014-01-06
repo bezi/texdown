@@ -24,7 +24,6 @@ app.compile = function() {
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                 // re-render Google prettyprint
                 $('#preview-pane pre').addClass("prettyprint");
-                $('#preview-pane code').addClass("prettyprint");
                 prettyPrint();
                 console.log("|-- compiling successful.");
             } else {
