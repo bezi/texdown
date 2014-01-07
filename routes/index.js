@@ -17,6 +17,7 @@ module.exports = function (db) {
                 console.log("User is not in database.");
                 // add user
                 tdusers.insert({
+                    "name": user.displayName,
                     "id": user.id,
                     "files": [],
                     "editor": ""
@@ -32,6 +33,7 @@ module.exports = function (db) {
                         res.render("index", { "user": user });
                         return;
                 });
+                return;
             }
 
             if (docs.length == 1) {
@@ -42,8 +44,6 @@ module.exports = function (db) {
                 res.render("index", { "user": user });
                 return;
             }
-            res.send("There was an error with the database.");
-            console.log("Database.");
         }); 
     }
 };
