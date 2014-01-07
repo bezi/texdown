@@ -19,6 +19,8 @@
     "moment": "*",
     "source-map": "*",
     "promise": "2.*",
-    "marked": "~0.3.0"
+    "marked": "~0.3.0",
+    "passport-google-oauth": "~0.1.5",
+    "passport": "~0.1.18"
   }
 }
