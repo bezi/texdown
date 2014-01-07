@@ -11,7 +11,7 @@ a.navbar-brand.texdown-logo:hover {
 }
 
 /* line 12, ../sass/main.scss */
-.navbar a {
+.nav > li > a {
   font-size: 16px;
 }
 

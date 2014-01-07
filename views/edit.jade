@@ -1,9 +1,10 @@
 extends base
 block header
-    link(rel="stylesheet" type="text/css" href="/css/edit.css")
-    link(rel="stylesheet" type="text/css" href="/css/monokai.css")
-    link(rel="stylesheet" type="text/css" href="/lib/codemirror/codemirror.css")
-    link(rel="stylesheet" type="text/css" href="/lib/codemirror/theme/monokai.css")
+    link(rel="stylesheet", type="text/css", href="/css/edit.css")
+    link(rel="stylesheet", type="text/css", href="/css/monokai.css")
+    link(rel="stylesheet", type="text/css", href="/lib/codemirror/codemirror.css")
+    link(rel="stylesheet", type="text/css", href="/lib/codemirror/theme/monokai.css")
+    link(rel="stylesheet", type="text/css", href="/lib/codemirror/addon/dialog/dialog.css")
 
 block content
     .navbar.navbar-inverse.navbar-fixed-top(role="navigation")
@@ -26,6 +27,16 @@ block content
                     span.glyphicon.glyphicon-trash
                     |  Discard
             ul.nav.navbar-nav.navbar-right
+                li.dropdown
+                    a.dropdown-toggle(href="#", data-toggle="dropdown") 
+                        span.glyphicon.glyphicon-cog
+                        |  Settings 
+                        b.caret
+                    ul.dropdown-menu
+                        li: a(href="#") Test
+                        li: a(href="#") Test
+                        li.divider
+                        li: a(href="#") Test
                 li: a#markdown-button(href="#", title="Markdown Hints")
                     span.glyphicon.glyphicon-dashboard
                     |  Markdown
@@ -52,7 +63,18 @@ block content
 block script
     script(src="/lib/codemirror/codemirror.js")
     script(src="/lib/codemirror/addon/mode/overlay.js")
+    script(src="/lib/codemirror/addon/search/search.js")
+    script(src="/lib/codemirror/addon/search/searchcursor.js")
+    script(src="/lib/codemirror/addon/dialog/dialog.js")
+    script(src="/lib/codemirror/keymap/vim.js")
+    script(src="/lib/codemirror/mode/xml/xml.js")
     script(src="/lib/codemirror/mode/markdown/markdown.js")
     script(src="/lib/codemirror/mode/gfm/gfm.js")
+    script(src="/lib/codemirror/mode/javascript/javascript.js")
+    script(src="/lib/codemirror/mode/css/css.js")
+    script(src="/lib/codemirror/mode/htmlmixed/htmlmixed.js")
+    //- For some reason, syntax highlighting in the editor only works for 
+    //- certain languages (Java, Javascript, html, but not Python, etc. Weird.)
+    script(src="/lib/codemirror/mode/clike/clike.js")
     script(src="/js/prettify.js")
     script(src="/js/app.js")

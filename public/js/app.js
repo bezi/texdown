@@ -7,7 +7,11 @@ app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     mode:         "gfm",
     lineNumbers:  "true",
     lineWrapping: "true",
-    theme:        "monokai"
+    theme:        "monokai",
+    // Uncomment the following line if you want to use vim keybindings when testing
+    // (the real thing will be in a settings menu later. For ease of use, this means 
+    // that the vim.js file is statically included right now.)
+    // keyMap:       "vim"
 });
 
 app.compile = function() {
@@ -37,6 +41,8 @@ app.compile = function() {
     request.send(JSON.stringify(data));
 };
 
+CodeMirror.commands.save = app.compile;
+
 app.previewExpanded = false;
 app.togglePreview = function() {
     $("#preview-col").toggleClass("preview-expand");
@@ -61,6 +67,9 @@ app.expandButton = function() {
     }
 }
 
+// TODO I'm going to add functionality similar to the above for this pane as well,
+// but it will involve a little bit of a CSS rewrite (nothing major), so I'm putting
+// it off for now
 app.toggleHelp = function() {
     console.log("Toggling help...");
     $("#markdown-pane").toggleClass("hidden");

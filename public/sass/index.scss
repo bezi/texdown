@@ -1,9 +1,6 @@
 @import "compass";
 
-// body {
-//     padding-top: 50px;
-// }
-
+// --------------------------- Bootstrap Styles ---------------------------- //
 .jumbotron {
     // needs latest Compass, add '@import "compass"' to your scss
     @include filter-gradient(#1e5799, rgba(125,185,232,0), horizontal); // IE6-9 fallback on horizontal gradient
@@ -14,4 +11,9 @@
 .jumbotron h1 {
     font-size: 45px;
     color: white;
+}
+
+// ---------------------------- General Styles ----------------------------- //
+body {
+    padding-top: 50px;
 }

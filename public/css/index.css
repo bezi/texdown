@@ -1,4 +1,4 @@
-/* line 7, ../sass/index.scss */
+/* line 4, ../sass/index.scss */
 .jumbotron {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FF1E5799', endColorstr='#007DB9E8');
@@ -10,8 +10,13 @@
   height: 50%;
 }
 
-/* line 14, ../sass/index.scss */
+/* line 11, ../sass/index.scss */
 .jumbotron h1 {
   font-size: 45px;
   color: white;
+}
+
+/* line 17, ../sass/index.scss */
+body {
+  padding-top: 50px;
 }
