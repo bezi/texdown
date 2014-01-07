@@ -14,12 +14,6 @@ block content
                 ul.nav.navbar-nav
                     li: a(href="#") About
                     li: a(href="#") Usage
-                form.navbar-form.navbar-right
-                    .form-group
-                        input.form-control(type="text", placeholder="Username")
-                    .form-group
-                        input.form-control(type="password", placeholder="Password")
-                    button.btn.btn-primary(type="submit") Submit
 
     .jumbotron
         .container
@@ -27,3 +21,11 @@ block content
             .row
                 .col-md-8
                     h1 For efficient Markdown note-taking infused with the power of \( \mathrm\LaTeX \)
+
+    if (user)
+        p= "You're logged in, " + user.displayName 
+        p= "Your unique Google ID is: " +  user.id
+        a(href="/logout") Log Out
+    else 
+        a(href="/auth/google") Login with Google
+        
