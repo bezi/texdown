@@ -33,6 +33,13 @@ block content
                         |  Settings 
                         b.caret
                     ul.dropdown-menu
+                        li
+                            h5 Keybindings
+                            .btn-group
+                                button.btn.btn-primary#nokeys(type="button") None
+                                button.btn.btn-default#vimkeys(type="button") vim
+                                button.btn.btn-default#emacskeys(type="button") emacs
+                        li.divider
                         li: a(href="#") Test
                         li: a(href="#") Test
                         li.divider
@@ -59,6 +66,7 @@ block content
 
     .hidden#markdown-pane
         a(href="/images/markdown-cheatsheet.png", target="_blank"): img.img-thumbnail(src="/images/markdown-cheatsheet.png")
+    .alert.alert-success#message-box
 
 block script
     script(src="/lib/codemirror/codemirror.js")
@@ -66,7 +74,6 @@ block script
     script(src="/lib/codemirror/addon/search/search.js")
     script(src="/lib/codemirror/addon/search/searchcursor.js")
     script(src="/lib/codemirror/addon/dialog/dialog.js")
-    script(src="/lib/codemirror/keymap/vim.js")
     script(src="/lib/codemirror/mode/xml/xml.js")
     script(src="/lib/codemirror/mode/markdown/markdown.js")
     script(src="/lib/codemirror/mode/gfm/gfm.js")

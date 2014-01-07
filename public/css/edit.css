@@ -4,12 +4,29 @@
   padding-right: 0px;
 }
 
-/* line 10, ../sass/edit.scss */
+/* line 9, ../sass/edit.scss */
+.dropdown-menu li h5 {
+  padding: 3px 20px;
+}
+
+/* line 12, ../sass/edit.scss */
+.navbar li .btn-group {
+  padding: 0px 14px 5px 10px;
+  white-space: nowrap;
+}
+
+/* line 16, ../sass/edit.scss */
+.navbar .btn-group .btn {
+  float: none !important;
+  margin-right: -4px;
+}
+
+/* line 22, ../sass/edit.scss */
 html, body {
   height: 100%;
 }
 
-/* line 11, ../sass/edit.scss */
+/* line 23, ../sass/edit.scss */
 body {
   background: white;
   *zoom: 1;
@@ -23,35 +40,35 @@ body {
   background-attachment: fixed;
 }
 
-/* line 21, ../sass/edit.scss */
+/* line 33, ../sass/edit.scss */
 .full#editor-window {
   padding: 58px 7px 7px 7px;
 }
 
-/* line 25, ../sass/edit.scss */
+/* line 37, ../sass/edit.scss */
 #editor-col {
   padding-right: 5px;
 }
 
-/* line 28, ../sass/edit.scss */
+/* line 40, ../sass/edit.scss */
 .CodeMirror {
   border-radius: 3px;
   border: 3px solid #CACACA;
 }
 
-/* line 34, ../sass/edit.scss */
+/* line 46, ../sass/edit.scss */
 #preview-col {
   padding-left: 5px;
 }
 
-/* line 37, ../sass/edit.scss */
+/* line 49, ../sass/edit.scss */
 #preview-wrapper {
   padding: 3px;
   background: #EEE;
   border-radius: 3px;
 }
 
-/* line 42, ../sass/edit.scss */
+/* line 54, ../sass/edit.scss */
 #preview-pane {
   padding-right: 10px;
   padding-left: 10px;
@@ -61,7 +78,7 @@ body {
   overflow-y: scroll;
 }
 
-/* line 50, ../sass/edit.scss */
+/* line 62, ../sass/edit.scss */
 .preview-expand {
   position: absolute;
   left: 50%;
@@ -71,24 +88,24 @@ body {
 }
 
 @media (min-width: 768px) {
-  /* line 57, ../sass/edit.scss */
+  /* line 69, ../sass/edit.scss */
   .preview-expand {
     margin-left: -385px;
   }
 }
 @media (min-width: 992px) {
-  /* line 58, ../sass/edit.scss */
+  /* line 70, ../sass/edit.scss */
   .preview-expand {
     margin-left: -485px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 59, ../sass/edit.scss */
+  /* line 71, ../sass/edit.scss */
   .preview-expand {
     margin-left: -585px;
   }
 }
-/* line 62, ../sass/edit.scss */
+/* line 74, ../sass/edit.scss */
 #markdown-pane {
   position: absolute;
   top: 20px;
@@ -98,8 +115,47 @@ body {
 }
 
 @media (max-width: 1034px) {
-  /* line 69, ../sass/edit.scss */
+  /* line 81, ../sass/edit.scss */
   #markdown-pane {
     display: none !important;
+  }
+}
+/* line 84, ../sass/edit.scss */
+#message-box {
+  display: none;
+  position: fixed;
+  top: 70px;
+  left: 25%;
+  width: 50%;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  /* line 92, ../sass/edit.scss */
+  #message-box {
+    left: 10px;
+    right: 10px;
+    width: auto;
+  }
+}
+@media (min-width: 768px) {
+  /* line 93, ../sass/edit.scss */
+  #message-box {
+    left: 5%;
+    width: 90%;
+  }
+}
+@media (min-width: 992px) {
+  /* line 94, ../sass/edit.scss */
+  #message-box {
+    left: 15%;
+    width: 70%;
+  }
+}
+@media (min-width: 1200px) {
+  /* line 95, ../sass/edit.scss */
+  #message-box {
+    left: 25%;
+    width: 50%;
   }
 }

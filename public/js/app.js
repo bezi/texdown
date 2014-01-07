@@ -71,20 +71,95 @@ app.expandButton = function() {
 // but it will involve a little bit of a CSS rewrite (nothing major), so I'm putting
 // it off for now
 app.toggleHelp = function() {
-    console.log("Toggling help...");
-    $("#markdown-pane").toggleClass("hidden");
-    $("#markdown-pane").toggleClass("show");
+    console.log('Toggling help...');
+    $('#markdown-pane').toggleClass('hidden');
+    $('#markdown-pane').toggleClass('show');
+}
+
+/**
+ * Utility function to show an alert.
+ *
+ * @param options an object with the following options: (optional in parens)
+ *
+ * @param header A (short) message that will be bolded.
+ * @param content The rest of the message
+ * @param (type) One of success, info, warning, or danger, (changes the color)
+ * @param (delay) Time (in ms) to display the message before fading
+ * @param (fade) How long to animate the fade
+ */
+app.animateAlert = function(ops) {
+    ops.type = (typeof ops.type === 'undefined') ? 'success' : ops.type;
+    ops.delay = (typeof ops.delay === 'undefined') ? 1500 : ops.delay;
+    ops.fade = (typeof ops.fade === 'undefined') ? 400 : ops.fade;
+
+    var container = $('#message-box');
+    
+    container.removeClass('alert-success').removeClass('alert-info')
+        .removeClass('alert-warning').removeClass('alert-danger');
+    container.addClass('alert-' + ops.type);
+
+    container.html('<strong>' + ops.header + '</strong> ' + ops.content);
+    container.show().delay(ops.delay).fadeOut(ops.fade);
+}
+app.vimSourced = false;
+app.emacsSourced = false;
+app.setKeybindings = function(e) {
+    if ($('#nokeys').is(e.target)) {
+        $('#nokeys').addClass('btn-primary');
+        $('#nokeys').removeClass('btn-default');
+        
+        $('#vimkeys').addClass('btn-default');
+        $('#vimkeys').removeClass('btn-primary');
+        $('#emacskeys').addClass('btn-default');
+        $('#emacskeys').removeClass('btn-primary');
+
+        app.editor.setOption("keyMap", "default");
+        app.animateAlert({header: 'Success!', content: 'Keybindings turned off.'});
+    }
+    else if ($('#vimkeys').is(e.target)) {
+        $('#vimkeys').addClass('btn-primary');
+        $('#vimkeys').removeClass('btn-default');
+        
+        $('#nokeys').addClass('btn-default');
+        $('#nokeys').removeClass('btn-primary');
+        $('#emacskeys').addClass('btn-default');
+        $('#emacskeys').removeClass('btn-primary');
+
+        if(!app.vimSourced) {
+            $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
+        }
+        app.editor.setOption("keyMap", "vim");
+        app.animateAlert({header: 'Success!', content: 'Keybindings set to vim mode.'});
+    }
+    else if ($('#emacskeys').is(e.target)) {
+        $('#emacskeys').addClass('btn-primary');
+        $('#emacskeys').removeClass('btn-default');
+        
+        $('#nokeys').addClass('btn-default');
+        $('#nokeys').removeClass('btn-primary');
+        $('#vimkeys').addClass('btn-default');
+        $('#vimkeys').removeClass('btn-primary');
+
+        if(!app.emacsSourced) {
+            $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>')
+        }
+        app.editor.setOption("keyMap", "emacs");
+        app.animateAlert({header: 'Success!', content: 'Keybindings set to emacs mode.'});
+    }
 }
 
 app.init = function () {
-    console.log("Initializing app. . .");
+    console.log('Initializing app. . .');
     $('#compile-button').click(app.compile);
     $('#expand-button').click(app.expandButton);
     $('#markdown-button').click(app.toggleHelp);
     $(document).ready(function() {
         prettyPrint();
     })
-    console.log("|-- app intialized.");
+    $('#nokeys').click(app.setKeybindings);
+    $('#vimkeys').click(app.setKeybindings);
+    $('#emacskeys').click(app.setKeybindings);
+    console.log('|-- app intialized.');
 }
 
 app.init();
