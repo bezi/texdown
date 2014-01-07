@@ -3,13 +3,11 @@ Database logic
 
 User
 ----
-### Name
-Human readable name, e.g. "Oscar"
-### Email
-Email address for logging in
-### Google OAuth token
-### Files
+All of the values at [their profile](http://passportjs.org/guide/profile/)
+### files
 array of file ids this person owns
+### editor
+Either '', 'vim', or 'emacs'
 
 File
 ----
