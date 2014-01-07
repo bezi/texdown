@@ -76,7 +76,7 @@ if ('development' == app.get('env')) {
 //===============================================
 
 // home
-app.get('/', require('./routes/index'));
+app.get('/', require('./routes/index')(db));
 // about
 app.get('/about', require('./routes/infoPage').about);
 // contact

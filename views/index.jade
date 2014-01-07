@@ -25,6 +25,7 @@ block content
     if (user)
         p= "You're logged in, " + user.displayName 
         p= "Your unique Google ID is: " +  user.id
+        p= "User is: " + JSON.stringify(user)
         a(href="/logout") Log Out
     else 
         a(href="/auth/google") Login with Google
