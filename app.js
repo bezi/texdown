@@ -9,6 +9,9 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('mongodb://texdown:asdf@ds059888.mongolab.com:59888/texdown');
 
+//===============================================
+// authentication
+//===============================================
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -40,6 +43,11 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/');
+}
 
 //===============================================
 // config
@@ -77,20 +85,21 @@ if ('development' == app.get('env')) {
 
 // home
 app.get('/', require('./routes/index')(db));
-// about
-app.get('/about', require('./routes/infoPage').about);
-// contact
-app.get('/contact', require('./routes/infoPage').contact);
-// files
-app.get('/files', require('./routes/files')(db));
 // edit
-app.get('/edit', require('./routes/edit')(db));
+// without a fileid they get redirected home
+app.get('/edit', ensureAuthenticated, require('./routes/index'));
+app.get('/edit/:id', ensureAuthenticated, require('./routes/edit')(db));
 // save
-app.post('/save', require('./routes/save')(db));
-// view
-app.get('/view', require('./routes/view')(db));
+app.post('/save', ensureAuthenticated, require('./routes/save')(db));
 // compile
 app.post('/compile', require('./routes/compile'));
+// rename
+app.post('/rename', require('./routes/rename')(db));
+// delete
+app.post('/delete', require('./routes/delete')(db));
+// newfile
+app.post('/newfile', require('./routes/newfile')(db));
+
 // authentication
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
@@ -109,10 +118,6 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/');
-}
 
 app.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
