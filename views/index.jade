@@ -73,13 +73,13 @@ block content
                         a.list-group-item(href='/edit/' + file.id)= file.filename
             .col-md-6
                 h1 Notes
-                hr
-                a.center-block.btn.btn-primary.btn-lg(href="/edit")
-                    span.glyphicon.glyphicon-plus
-                    |  New Note
+                    a.pull-right.btn.btn-primary.btn-lg(href="/edit")
+                        span.glyphicon.glyphicon-plus
+                        |  New Note
+                hr.clear-both
                 if (user.files.length === 0)
-                    br
-                    h1.text-center You don't seem to have any notes.
+                    .well.well-lg
+                        h2.text-center You don't seem to have any notes.
                 each file in user.files
                     - var now = new Date(1389150019*1000)
                     .panel.panel-info#previews
