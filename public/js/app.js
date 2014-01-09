@@ -1,5 +1,36 @@
 var app = {};
 
+/**
+ * Utility function to show an alert.
+ *
+ * @param options an object with the following options: (optional in parens)
+ *
+ * @param header A (short) message that will be bolded.
+ * @param content The rest of the message
+ * @param (type) One of success, info, warning, or danger, (changes the color)
+ * @param (delay) Time (in ms) to display the message before fading
+ * @param (fade) How long to animate the fade
+ */
+app.animateAlert = function(ops) {
+    ops.type = (typeof ops.type === 'undefined') ? 'success' : ops.type;
+    if (ops.type === 'warning' || ops.type === 'danger') {
+        ops.delay = (typeof ops.delay === 'undefined') ? 3000 : ops.delay;
+    }
+    else {
+        ops.delay = (typeof ops.delay === 'undefined') ? 1500 : ops.delay;
+    }
+    ops.fade = (typeof ops.fade === 'undefined') ? 400 : ops.fade;
+
+    var container = $('#message-box');
+    
+    container.removeClass('alert-success').removeClass('alert-info')
+        .removeClass('alert-warning').removeClass('alert-danger');
+    container.addClass('alert-' + ops.type);
+
+    container.html('<strong>' + ops.header + '</strong> ' + ops.content);
+    container.show().delay(ops.delay).fadeOut(ops.fade);
+}
+
 app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     mode:         "gfm",
     lineNumbers:  "true",
@@ -44,16 +75,31 @@ app.save = function () {
     console.log('Saving...');
     var data = {};
     data.filename = $('#filename').val();
+    if (data.filename == '') {
+        app.animateAlert({
+            header: 'Whoops!', 
+            content: 'Please enter a filename.', 
+            type: 'danger', 
+        });
+        return;
+    }
     data.text = app.editor.getValue();
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
         if (request.readyState === 4) {
             if (request.status === 200) {
-                app.animateAlert({header:'Success!', content:'Save successful.'})
+                app.animateAlert({
+                    header:'Success!', 
+                    content:'Save successful.'
+                });
                 console.log("|-- saving successfu");
             } else {
                 var statMesg = JSON.parse(request.responseText).statMesg;
-                app.animateAlert({header:'Oh no!', content:statMesg, type:'warning'});
+                app.animateAlert({
+                    header:'Oh no!', 
+                    content:statMesg, 
+                    type:'warning'
+                });
                 console.log("|-- error in compiling.");
             }
         }
@@ -96,36 +142,6 @@ app.toggleHelp = function() {
     $('#markdown-pane').toggleClass('show');
 }
 
-/**
- * Utility function to show an alert.
- *
- * @param options an object with the following options: (optional in parens)
- *
- * @param header A (short) message that will be bolded.
- * @param content The rest of the message
- * @param (type) One of success, info, warning, or danger, (changes the color)
- * @param (delay) Time (in ms) to display the message before fading
- * @param (fade) How long to animate the fade
- */
-app.animateAlert = function(ops) {
-    ops.type = (typeof ops.type === 'undefined') ? 'success' : ops.type;
-    if (ops.type === 'warning' || ops.type === 'danger') {
-        ops.delay = (typeof ops.delay === 'undefined') ? 2500 : ops.delay;
-    }
-    else {
-        ops.delay = (typeof ops.delay === 'undefined') ? 1500 : ops.delay;
-    }
-    ops.fade = (typeof ops.fade === 'undefined') ? 400 : ops.fade;
-
-    var container = $('#message-box');
-    
-    container.removeClass('alert-success').removeClass('alert-info')
-        .removeClass('alert-warning').removeClass('alert-danger');
-    container.addClass('alert-' + ops.type);
-
-    container.html('<strong>' + ops.header + '</strong> ' + ops.content);
-    container.show().delay(ops.delay).fadeOut(ops.fade);
-}
 app.vimSourced = false;
 app.emacsSourced = false;
 app.setKeybindings = function(e) {
