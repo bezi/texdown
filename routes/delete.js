@@ -12,7 +12,7 @@ function deleteGen (db) {
             }
             var doc = docs[0];
             if (!(user.id === doc.owner)) {
-                res.send(JSON.stringify({"statMesg": "You don't have permission to delete this file."}, 400));
+                res.send(JSON.stringify({"statMesg": "You don't have permission to delete this file."}, 401));
                 return;
             }
             

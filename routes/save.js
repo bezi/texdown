@@ -48,7 +48,7 @@ module.exports = function (db) {
                 if (!(req.userid === doc.owner)) {
                     res.send(JSON.stringify({ 
                         "statMesg": "You don't own this file."
-                    }), 400);
+                    }), 401);
                     return;
                 }
 
