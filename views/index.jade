@@ -74,14 +74,12 @@ block content
             .col-md-6
                 h1 Notes
                 hr
+                a(href="/edit")
+                    span.glyphicon.glyphicon-plus
+                    |  New Note
                 if (user.files.length === 0)
                     br
-                    h1.text-center Click &ldquo;
-                        a(href="/edit")
-                            span.glyphicon.glyphicon-plus
-                            |  New
-                        | &rdquo; to see your notes!
-                    h3.text-center (It's also in the menubar!)
+                    h1.text-center You don't seem to have any notes.
                 each file in user.files
                     - var now = new Date(1389150019*1000)
                     .panel.panel-info#previews
