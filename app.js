@@ -86,19 +86,14 @@ if ('development' == app.get('env')) {
 // home
 app.get('/', require('./routes/index')(db));
 // edit
-// without a fileid they get redirected home
-app.get('/edit', ensureAuthenticated, require('./routes/index'));
+app.get('/edit', require('./routes/edit')(db));
 app.get('/edit/:id', ensureAuthenticated, require('./routes/edit')(db));
 // save
-app.post('/save', ensureAuthenticated, require('./routes/save')(db));
+app.post('/save', require('./routes/save')(db));
 // compile
 app.post('/compile', require('./routes/compile'));
-// rename
-app.post('/rename', require('./routes/rename')(db));
 // delete
 app.post('/delete', require('./routes/delete')(db));
-// newfile
-app.post('/newfile', require('./routes/newfile')(db));
 
 // authentication
 app.get('/auth/google',

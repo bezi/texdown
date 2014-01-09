@@ -24,6 +24,7 @@ module.exports = function (db) {
                 tdusers.find({id: user.id}, {}, function (err, docs) { 
                     if (err) {
                         res.send("There was an error with the database.");
+                        return;
                     }
                     var doc = docs[0];
                     user.editor = doc.editor;
