@@ -1,5 +1,7 @@
 extends base
 block header
+    title TeXDown
+    link(rel="stylesheet", type="text/css", href="/css/bootstrap-social.css")
     link(rel="stylesheet", type="text/css", href="/css/index.css")
 block content
     .navbar.navbar-inverse.navbar-fixed-top
@@ -12,21 +14,85 @@ block content
                 a.navbar-brand.texdown-logo(href="/")
             .navbar-collapse.collapse
                 ul.nav.navbar-nav
-                    li: a(href="#") About
-                    li: a(href="#") Usage
+                    if (user)
+                        li: a(href="#")
+                            span.glyphicon.glyphicon-star
+                            |  About
+                    li: a(href="#")
+                        span.glyphicon.glyphicon-question-sign
+                        |  Usage
+                    if (user)
+                        li: a(href="/edit")
+                            span.glyphicon.glyphicon-plus
+                            |  New
+                    else
+                        li: a(href="/edit")
+                            span.glyphicon.glyphicon-plus
+                            |  Try it!
 
-    .jumbotron
-        .container
-            img(src="/images/texdown-logo-white-900.png")
-            .row
-                .col-md-8
-                    h1 For efficient Markdown note-taking infused with the power of \( \mathrm\LaTeX \)
+                if (user)
+                    ul.nav.navbar-nav.navbar-right
+                        li.dropdown: a.dropdown-toggle(href="#", data-toggle="dropdown")
+                            img.avatar(src=user._json.picture)
+                            | &nbsp;&nbsp;Me
+                            b.caret
+                            ul.dropdown-menu
+                                li: a(href="/logout") 
+                                    span.glyphicon.glyphicon-off
+                                    |  Logout
+                else
+                    form.navbar-form.navbar-right
+                        a.btn.btn-social.btn-primary(href="/auth/google")
+                            i.fa.fa-google-plus
+                            | &nbsp;&nbsp;Sign in&nbsp;&nbsp;
 
-    if (user)
-        p= "You're logged in, " + user.displayName 
-        p= "Your unique Google ID is: " +  user.id
-        p= "User is: " + JSON.stringify(user)
-        a(href="/logout") Log Out
-    else 
-        a(href="/auth/google") Login with Google
-        
+    if (!user)
+        .jumbotron
+            .container
+                img(src="/images/texdown-logo-white-900.png")
+                .row
+                    .col-md-8
+                        h1 For efficient Markdown note-taking infused with the power of \( \mathrm\LaTeX \)
+
+    else
+        - user.files = [{"id": "1","filename": "nare sit amet ipsum ac luctus. Quisque","text": "san. Sed euismod eu tortor at commodo. In iaculis augue est, sed malesuada ligula congue sed. Sed mollis dui est,"},{"id": "2","filename": "get malesuada orci. V","text": "Nam pulvinar eros augue, id vestibulum urna vehicula nec. Quisque libero tellus, facilisis ut vestibulum consequat, faucibus vitae sem. Donec quis rutrum lacus, in dictum velit. Praesent suscipit dignissim faucibus. Integer bibendum turpis dui, id luctus urna suscipit sed. Quisque et blandit nisl"},{"id": "3","filename": "entum sollicitudin orci sit amet pelle","text": "it fringilla ac sit amet augue. Morbi lacinia pretium aliquet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent eget malesuada orci."},{"id": "4","filename": " massa. Aliquam at quam tempu","text": "ss aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam pulvinar eros augue, id vestibulum urna vehicula nec. Quisque libero tellus, facilisis ut vestibulum consequat, faucibus vitae sem. Donec quis rutrum lacus, in dictum velit. Praesent suscipit dignissim faucibus. Integer bibendum turpis dui, id luctus urna suscipit sed. Quisque et blandit nisl, "},{"id": "5","filename": "rutrum lacus, in dictum velit.","text": "bus. Integer bibendum turpis dui, id luctus urna suscipit sed. Quisque et blandit nisl, consequat scelerisque mauris. Integer ultrices lacinia tellus ac accumsan. Donec vel urna massa. Aliquam at quam tempus nibh semper tincidunt. Duis ut luctus mauris. Ut sagittis velit massa, et"},{"id": "6","filename": "cipit fringilla ac sit amet augue. Morb","text": "Praesent suscipit dignissim faucibus. Integer bibendum turpis dui, id luctus urna suscipit sed. Quisque et blandit nisl, consequat scelerisque mauris. Integer ultrices lacinia tellus ac accumsan. Donec vel urna massa. Aliquam at quam tempus nibh semper "},{"id": "7","filename": "mattis. Class aptent taciti sociosqu ad","text": " sem. Donec quis rutrum lacus, in dictum velit. Praesent suscipit dignissim faucibus. Integer bibendum turpis dui, id luctus urna suscipit sed. Quisque et blandit nisl, consequat scelerisque mauris. Integer ultrices lacinia tellus ac accumsan. Donec vel urna massa. Aliquam at quam tempus nibh semper tincidunt. Duis ut luctus mauris. Ut sagittis velit massa, et vestibulum nibh venenatis eget. Nam volutpat arcu ut ultrices consectetur. Proin dui velit, venenatis ut vehicula vel, feugiat a ante. Vivamus pulvinar tempus quam,"},{"id": "8","filename": "it fringilla ac sit amet augue. Morb","text": "it massa, et vestibulum nibh venenatis eget. Nam volutpat arcu ut ultrices consectetur. Proin dui velit, venenatis ut vehicula vel, feugiat a ante. Vivamus pulvinar tempus quam, vel ultrices dui porta ut. Maecenas mollis massa sapien, sit amet pulvinar tortor dignissim in. Duis luctus lorem at risus aliquam, laoreet consectetur urna fringilla. Mauris varius lacus ac malesuada varius. Donec vehicula ultrices malesuada. Donec eu porttitor ligula. Mauris consequat dolo"},{"id": "9","filename": "at quam tempus nibh semper tincidu","text": ". Duis ut luctus mauris. Ut sagittis velit massa, et vestibulum nibh venenatis eget. Nam volutpat arcu ut ultrices consectetur. Proin dui velit, venenatis ut vehicula vel, feugiat a ante. Vivamus pul"},{"id": "10","filename": "rius ipsum. Sed tempus velit id","text": "m, nisi urna gravida ligula, vitae lacinia dolor nibh non urna. Vivamus suscipit quis libero a mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam pulvinar eros augue, "},{"id": "11","filename": " nisi ornare at. Vestibulum sapien er","text": "sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam pulvinar eros augue, id vestibulum urna vehicula nec. Quisque libero tellus, facilisis ut vestibulum consequat, faucibus vitae sem. Donec quis rutrum lacus, in dictum velit. Praesent suscipit dignis"},{"id": "12","filename": " sit amet ipsum ac luctus. Quisque eu d","text": "em. Donec quis rutrum lacus, in dictum velit. Praesent suscipit dignissim faucibus. Integer bibendum turpis dui, id luctus urna suscipit sed. Quis"},{"id": "13","filename": "Phasellus pulvinar arcu odio, vitae","text": " ac luctus. Quisque eu dolor pulvinar, mollis purus id, mollis erat. In hac habitasse platea dictumst. Phasellus fermentum elit dui, et sodales enim eleifend eu. Sed luctus quam sit am"},{"id": "14","filename": " quis rutrum lacus, in dictu","text": "avida a nulla a, consequat egestas nibh. Sed non nisi molestie, ultricies velit in, lacinia nulla. Integer vehicula, odio a sagittis dignissim, nisi urna gravida ligula, vitae lacinia dolor nibh non urna. Vivamus suscipit quis libero a mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam pulvinar eros au"},{"id": "15","filename": "n. Sed quis quam nisl. Ae","text": "sem. Donec quis rutrum lacus, in dictum velit. Praesent suscipit dignissim faucibus. Integer bibendum turpis dui, id luctus urna suscipit sed. Quisque et blandit nisl, consequat scelerisque mauris. Integer ultrices lacinia tellus ac accumsan. Donec vel urna massa. Aliquam at quam tempus nibh semper tincidunt. Duis ut luctus mauris. Ut sagittis velit massa, et vestibulum nibh venenatis eget. Nam volutpat arcu ut ultrices consectetur. Proin dui velit, venenatis ut vehicula vel, feugiat a ante. Vivamus pulvinar tempus quam, vel ultrices dui porta ut. Mae"},{"id": "16","filename": "us id, mollis erat. In hac ha","text": "m turpis dui, id luctus urna suscipit sed. Quisque et blandit nisl, consequat scelerisque mauris. Integer ultrices lacinia tellus ac accumsan. Donec vel urna massa. Aliquam at quam tempus nibh semper tincidunt. Duis ut luctus mauris. Ut sagittis velit massa, et vestibulum nibh venenatis eget. Nam volutpat arcu ut ult"},{"id": "17","filename": " ipsum dolor sit amet, consectetur ad","text": "t in, lacinia nulla. Integer vehicula, odio a sagittis dignissim, nisi urna gravida ligula, vitae lacinia dolor nibh non urna. Vivamus suscipit quis libero a mattis."},{"id": "18","filename": "ucibus vitae sem. Donec q","text": "scipit fringilla ac sit amet augue. Morbi lacinia pretium aliquet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent eget malesuada orci. Vestibulum a varius ipsum. Sed tempus velit id consectetur laoreet. Intege"},{"id": "19","filename": "itae lacinia dolor nibh non urna","text": "suada. Donec eu porttitor ligula. Mauris consequat dolor nec orci varius accumsan. Sed euismod eu tortor at commodo. In iaculis augue est, sed malesuada ligula congue sed. Sed mollis dui est, nec vulputate neque porttitor ut. Q"},{"id": "20","filename": "s mauris. Ut sagittis velit massa","text": "olor nibh non urna. Vivamus suscipit quis libero a mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam pulvinar eros augue, id vestibulum urna vehicula nec. Quisque libero tellus, facilisis ut vestibulum conseq"}]
+
+        .jumbotron.jumbotron-column
+            img.pull-right(width="90%", src="/images/texdown-logo-white-900.png")
+            h1.lead.text-right your files
+        .row
+            .col-md-3.col-md-offset-3 
+                h1.text-center Labels
+                hr
+                .list-group#folders
+                    each file in user.files 
+                        a.list-group-item(href='/edit/' + file.id)= file.filename
+            .col-md-6
+                h1 Notes
+                hr
+                each file in user.files
+                    - var now = new Date(1389150019*1000)
+                    .panel.panel-info#previews
+                        .panel-heading
+                            a.text-info.panel-title(href='/edit/' + file.id)= file.filename
+                            small= ' - ' + now
+                        .panel-body
+                            - var body = file.text.replace(/(\r\n|\n|\r)/gm, " ")
+                            - var body = body.match(/^.{0,300}/)[0]
+                            if body.length === 300
+                                = body + '...'
+                            else
+                                = body
+                h1 User Data
+                p= "user.provider: " + user.provider
+                p= "user.id: " + user.id
+                p= "user.displayName: " + user.displayName
+                p= "user.name: " + user.name
+                p= "user.name.familyName: " + user.name.familyName
+                p= "user.name.givenName: " + user.name.givenName
+                p= "user.name.middleName: " + user.name.middleName
+                for email in user.emails
+                    p= "email.value: " + email.value
+                    p= "email.type: " + email.value
+                p= "user._json.picture: " + user._json.picture
+                br

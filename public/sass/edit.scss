@@ -18,6 +18,13 @@
     margin-right: -4px;
 }
 
+.dropdown-menu .input-group {
+    padding: 6px 10px;
+}
+.dropdown-menu .input-group input {
+    width: 270px;
+}
+
 // ---------------------------- General Styles ----------------------------- //
 html, body { height: 100%; }
 body {

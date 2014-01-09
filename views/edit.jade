@@ -1,5 +1,6 @@
 extends base
 block header
+    title TeXDown
     link(rel="stylesheet", type="text/css", href="/css/edit.css")
     link(rel="stylesheet", type="text/css", href="/css/monokai.css")
     link(rel="stylesheet", type="text/css", href="/lib/codemirror/codemirror.css")
@@ -20,9 +21,17 @@ block content
                 li: a#compile-button(href="#", title="Refresh")
                     span.glyphicon.glyphicon-refresh
                     |  Compile
-                li: a(href="#", title="Save")
-                    span.glyphicon.glyphicon-floppy-disk
-                    |  Save
+                li.dropdown
+                    a.dropdown-toggle(href="#", title="Save", data-toggle="dropdown")
+                        span.glyphicon.glyphicon-floppy-disk
+                        |  Save...
+                    ul.dropdown-menu
+                        li
+                            form(role="form")
+                                .input-group
+                                    input.form-control#filename(type="text", placeholder="Filename", value=(file && file.filename ? file.filename : ''))
+                                    span.input-group-btn
+                                        button.btn.btn-primary.pull-right#save-button(type="submit") Save
                 li: a(href="#", title="Discard")
                     span.glyphicon.glyphicon-trash
                     |  Discard
@@ -30,8 +39,7 @@ block content
                 li.dropdown
                     a.dropdown-toggle(href="#", data-toggle="dropdown") 
                         span.glyphicon.glyphicon-cog
-                        |  Settings 
-                        b.caret
+                        |  Settings... 
                     ul.dropdown-menu
                         li
                             h5 Keybindings
@@ -39,9 +47,6 @@ block content
                                 button.btn.btn-primary#nokeys(type="button") None
                                 button.btn.btn-default#vimkeys(type="button") vim
                                 button.btn.btn-default#emacskeys(type="button") emacs
-                        li.divider
-                        li: a(href="#") Test
-                        li: a(href="#") Test
                         li.divider
                         li: a(href="#") Test
                 li: a#markdown-button(href="#", title="Markdown Hints")

@@ -1,4 +1,10 @@
 /* line 4, ../sass/index.scss */
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 8, ../sass/index.scss */
 .jumbotron {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FF1E5799', endColorstr='#007DB9E8');
@@ -10,13 +16,53 @@
   height: 50%;
 }
 
-/* line 11, ../sass/index.scss */
-.jumbotron h1 {
-  font-size: 45px;
+/* line 20, ../sass/index.scss */
+.jumbotron h1,
+.jumbotron h2,
+.jumbotron h3,
+.jumbotron h4,
+.jumbotron h5,
+.jumbotron h6,
+.jumbotron p {
   color: white;
 }
 
-/* line 17, ../sass/index.scss */
+/* line 23, ../sass/index.scss */
+.jumbotron h1 {
+  font-size: 45px;
+}
+
+@media (min-width: 992px) {
+  /* line 27, ../sass/index.scss */
+  .jumbotron-column {
+    position: fixed;
+    top: 50px;
+    left: 0px;
+    bottom: 0px;
+    right: 76%;
+    width: auto;
+    height: auto;
+    overflow-y: scroll;
+    margin: 0;
+    *zoom: 1;
+    filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FF1E5799', endColorstr='#007DB9E8');
+    background-image: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, #1e5799), color-stop(67%, #4d87c0), color-stop(97%, rgba(108, 167, 218, 0.7)), color-stop(100%, rgba(125, 185, 232, 0)));
+    background-image: -webkit-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+    background-image: -moz-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+    background-image: -o-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+    background-image: linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
+  }
+}
+/* line 42, ../sass/index.scss */
+.jumbotron > .list-group {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857142857;
+  margin-top: 35px;
+  margin-bottom: 0px;
+}
+
+/* line 51, ../sass/index.scss */
 body {
   padding-top: 50px;
 }

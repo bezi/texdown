@@ -1,16 +1,50 @@
 @import "compass";
 
 // --------------------------- Bootstrap Styles ---------------------------- //
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
 .jumbotron {
     // needs latest Compass, add '@import "compass"' to your scss
     @include filter-gradient(#1e5799, rgba(125,185,232,0), horizontal); // IE6-9 fallback on horizontal gradient
     @include background-image(linear-gradient(left top, rgba(30,87,153,1) 0%, rgba(77,135,192,1) 67%, rgba(108,167,218,0.7) 97%, rgba(125,185,232,0) 100%));
     height: 50%;
 }
-
+.jumbotron h1,
+.jumbotron h2,
+.jumbotron h3,
+.jumbotron h4,
+.jumbotron h5,
+.jumbotron h6,
+.jumbotron p {
+    color: white;
+}
 .jumbotron h1 {
     font-size: 45px;
-    color: white;
+}
+@media(min-width: 992px) {
+    .jumbotron-column {
+        position: fixed;
+        top: 50px;
+        left: 0px;
+        bottom: 0px;
+        right: 76%;
+        width: auto;
+        height: auto;
+        overflow-y: scroll;
+        margin: 0;
+        @include filter-gradient(#1e5799, rgba(125,185,232,0), horizontal); // IE6-9 fallback on horizontal gradient
+        @include background-image(linear-gradient(left top, rgba(30,87,153,1) 0%, rgba(77,135,192,1) 67%, rgba(108,167,218,0.7) 97%, rgba(125,185,232,0) 100%));
+    }
+}
+
+.jumbotron > .list-group {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857142857;
+    margin-top: 35px;
+    margin-bottom: 0px;
 }
 
 // ---------------------------- General Styles ----------------------------- //

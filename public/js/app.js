@@ -1,7 +1,4 @@
 var app = {};
-app.save = function () {
-
-};
 
 app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     mode:         "gfm",
@@ -42,6 +39,29 @@ app.compile = function() {
 };
 
 CodeMirror.commands.save = app.compile;
+
+app.save = function () {
+    console.log('Saving...');
+    var data = {};
+    data.filename = $('#filename').val();
+    data.text = app.editor.getValue();
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                app.animateAlert({header:'Success!', content:'Save successful.'})
+                console.log("|-- saving successfu");
+            } else {
+                var statMesg = JSON.parse(request.responseText).statMesg;
+                app.animateAlert({header:'Oh no!', content:statMesg, type:'warning'});
+                console.log("|-- error in compiling.");
+            }
+        }
+    }
+    request.open('POST', '/save', true);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify(data));
+};
 
 app.previewExpanded = false;
 app.togglePreview = function() {
@@ -89,7 +109,12 @@ app.toggleHelp = function() {
  */
 app.animateAlert = function(ops) {
     ops.type = (typeof ops.type === 'undefined') ? 'success' : ops.type;
-    ops.delay = (typeof ops.delay === 'undefined') ? 1500 : ops.delay;
+    if (ops.type === 'warning' || ops.type === 'danger') {
+        ops.delay = (typeof ops.delay === 'undefined') ? 2500 : ops.delay;
+    }
+    else {
+        ops.delay = (typeof ops.delay === 'undefined') ? 1500 : ops.delay;
+    }
     ops.fade = (typeof ops.fade === 'undefined') ? 400 : ops.fade;
 
     var container = $('#message-box');
@@ -156,6 +181,7 @@ app.init = function () {
     $(document).ready(function() {
         prettyPrint();
     })
+    $('#save-button').click(app.save);
     $('#nokeys').click(app.setKeybindings);
     $('#vimkeys').click(app.setKeybindings);
     $('#emacskeys').click(app.setKeybindings);

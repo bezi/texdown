@@ -19,3 +19,10 @@ a.navbar-brand.texdown-logo:hover {
 .full {
   height: 100%;
 }
+
+/* line 19, ../sass/main.scss */
+img.avatar {
+  height: 32px;
+  width: 32px;
+  margin: -7px 0px;
+}
