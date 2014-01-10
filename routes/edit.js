@@ -32,6 +32,6 @@ module.exports = function (db) {
                 return;
             });
         }
-        res.render('edit', data});
+        res.render('edit', data);
     };
 };
