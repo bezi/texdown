@@ -1,7 +1,10 @@
+var moment = require('moment');
+
 // POST: /save
 module.exports = function (db) {
     var files = db.get('files'); 
     var users = db.get('tdusers');
+
     return function (req, res) {
         if (!req.body.user) {
             res.send(400, {"statMesg": "Error retrieving user id."});
@@ -10,10 +13,12 @@ module.exports = function (db) {
         if (!req.body.user.id) {
             res.send(401, {"statMesg": "You must be logged in to save files."});
         }
+
         if (!req.body.file || !req.body.file.filename) {
             res.send(400, {"statMesg": "Could not retrieve file object."});
             return;
         }
+
         var fileid = req.body.file.id;
         // if the file doesn't have an id, make it
         if (!fileid) {
@@ -33,9 +38,10 @@ module.exports = function (db) {
 
             var file = {};
             file.name = req.body.file.filename;
-            file.tags = [];
+            file.tags = ["All Notes"];
             file.owner = req.body.user.id;
             file.content = req.body.file.text;
+            file.timestamp = Number(moment().format("X"));
 
             files.insert(file);
             // insert file into user's files
@@ -51,7 +57,7 @@ module.exports = function (db) {
                     res.send(404, {"statMesg": "User not found in database."});
                     return;
                 }
-                users.update({"id": req.body.user.id}, {"$push": {"files": docs[0]._id}});
+                users.update({"id": req.body.user.id}, {"$push": {"files": {"id": docs[0]._id, "name": docs[0].name, "timestamp": file.timestamp}}});
                 res.send({ "fileid": docs[0]._id }); 
             });    
         } else {
@@ -73,11 +79,14 @@ module.exports = function (db) {
                 if (req.body.file.text) {
                     file.update({"_id": fileid}, {$set: {
                         "content": req.body.file.text, 
-                        "name": req.body.file.filename
+                        "name": req.body.file.filename,
+                        "timestamp": Number(moment().format("X"))
                     }}, function (err) {
                         if (err) {
                             res.send(500, {"statMesg": "Something went wrong with the database."});
                         }
+                        // update owner
+                        // except not really.  Also, I need to validate all of this input.  AAAAAAAAAAAAAAAH
                         res.send({"statMesg": "File saved successfully."});
                         return;
                     });
