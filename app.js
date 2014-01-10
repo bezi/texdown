@@ -32,7 +32,6 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://127.0.0.1:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
     process.nextTick(function () {
       
       // To keep the example simple, the user's Google profile is returned to
@@ -93,7 +92,7 @@ app.post('/save', require('./routes/save')(db));
 // compile
 app.post('/compile', require('./routes/compile'));
 // delete
-app.post('/delete', require('./routes/delete')(db));
+app.delete('/delete', require('./routes/delete')(db));
 
 // authentication
 app.get('/auth/google',

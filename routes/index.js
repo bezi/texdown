@@ -10,7 +10,7 @@ module.exports = function (db) {
 
         tdusers.find({id: user.id}, {}, function (err, docs) { 
             if (err) {
-                res.send("There was an error with the database.");
+                res.send(401, "There was an error with the database.");
                 return;
             }
             if (docs.length == 0) {
@@ -23,7 +23,7 @@ module.exports = function (db) {
                 });
                 tdusers.find({id: user.id}, {}, function (err, docs) { 
                     if (err) {
-                        res.send("There was an error with the database.");
+                        res.send(401, "There was an error with the database.");
                         return;
                     }
                     var doc = docs[0];
@@ -42,7 +42,7 @@ module.exports = function (db) {
                 res.render("index", { "user": user });
                 return;
             }
-            res.send("There was an error with the database.");
+            res.send(401, "There was an error with the database.");
             return;
         }); 
     }

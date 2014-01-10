@@ -1,25 +1,25 @@
-// POST to /delete
+// DELETE to /delete
 function deleteGen (db) {
     var files = db.get('files');
     return function (req, res) {
         // must be authenticated for this to work
-        var user = req.user;
-        var fileid = req.body.fileid; 
+        var user = req.body.user;
+        var fileid = req.body.file.id; 
         files.find({"_id": fileid}, {}, function (err, docs) {
             if (err || !(docs.length === 1)) {
-                res.send(JSON.stringify({"statMesg": "Database error."}, 400));
+                res.send(500, {"statMesg": "A database error got in the way of deleting the file."});
                 return;
             }
             var doc = docs[0];
             if (!(user.id === doc.owner)) {
-                res.send(JSON.stringify({"statMesg": "You don't have permission to delete this file."}, 401));
+                res.send(401, {"statMesg": "You don't have permission to delete this file."});
                 return;
             }
             
             // delete the file
             files.drop({"_id": fileid}, {}, function (err) {
                 if (err) {
-                    res.send(JSON.stringify({"statMesg": "Database error."}, 400));
+                    res.send(500, {"statMesg": "A database error got in the way of deleting the file."});
                     return;
                 }
                 res.send(JSON.stringify({"statMesg": "Successfully deleted file."}));

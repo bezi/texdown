@@ -3,46 +3,64 @@ module.exports = function (db) {
     var files = db.get('files'); 
     var users = db.get('tdusers');
     return function (req, res) {
-        var fileid = req.body.fileid;
+        if (!req.body.user) {
+            res.send(400, {"statMesg": "Error retrieving user id."});
+            return;
+        }
+        if (!req.body.user.id) {
+            res.send(401, {"statMesg": "You must be logged in to save files."});
+        }
+        if (!req.body.file || !req.body.file.filename) {
+            res.send(400, {"statMesg": "Could not retrieve file object."});
+            return;
+        }
+        var fileid = req.body.file.id;
         // if the file doesn't have an id, make it
         if (!fileid) {
             // check that file name isn't taken
             files.find({
-                "name": req.body.filename,
-                "owner": req.userid
+                "name": req.body.file.filename,
+                "owner": req.body.user.id
             }, {}, function (err, docs) {
-                if (err || !(docs.length === 0)) {
-                    res.send(JSON.stringify({"statMesg": "That file name is already taken."}, 400));
+                if (err) {
+                    res.send(500, {"statMesg": "Something went wrong with the database."});
+                    return;
+                } else if (docs.length !== 0) {
+                    res.send(409, {"statMesg": "The file \"" + req.body.file.filename + "\" is already taken."});
                     return;
                 }
             });
+
             var file = {};
-            file.name = req.body.filename;
+            file.name = req.body.file.filename;
             file.tags = [];
-            file.owner = req.userid;
-            file.content = req.body.filecontent;
+            file.owner = req.body.user.id;
+            file.content = req.body.file.text;
 
             files.insert(file);
             // insert file into user's files
             // and return fileid
             files.find({
-                "name": req.body.filename,
-                "owner": req.userid
+                "name": req.body.file.filename,
+                "owner": req.body.user.id
             }, {}, function (err, docs) {
-                if (err || !(docs.length === 1)) {
-                    res.send(JSON.stringify({"statMesg": "User not found in database."}, 400));
+                if (err) {
+                    res.send(500, {"statMesg": "Something went wrong with the database."});
+                    return;
+                } else if(docs.length !== 1){
+                    res.send(404, {"statMesg": "User not found in database."});
                     return;
                 }
-                users.update({"id": req.userid}, {"$push": {"files": docs[0]._id}});
-                res.send(JSON.strigify({
-                    "fileid": docs[0]._id
-                })); 
+                users.update({"id": req.body.user.id}, {"$push": {"files": docs[0]._id}});
+                res.send({ "fileid": docs[0]._id }); 
             });    
         } else {
             files.find({"_id": fileid}, {}, function (err, docs){
-                if (err || !(docs.length === 1)) {
-                    res.send("There was an error with the database.");
+                if (err) {
+                    res.send(500, {"statMesg": "Something went wrong with the database."});
                     return;
+                } else if (docs.length !== 1) {
+                    res.send(404, {"statMesg": "The file could not be saved because it was not found in the databae."});
                 }
                 var doc = docs[0];
                 if (!(req.userid === doc.owner)) {
@@ -52,20 +70,16 @@ module.exports = function (db) {
                     return;
                 }
 
-                if (req.body.filecontent) {
+                if (req.body.file.text) {
                     file.update({"_id": fileid}, {$set: {
-                        "content": req.body.filecontent, 
-                        "name": req.body.filename
+                        "content": req.body.file.text, 
+                        "name": req.body.file.filename
                     }}, function (err) {
                         if (err) {
-                            res.send(JSON.stringify({ 
-                                "statMesg": "Database error."
-                            }), 400);
-                            return;
+                            res.send(500, {"statMesg": "Something went wrong with the database."});
                         }
-                        res.send(JSON.strigify({
-                            "fileid": fileid
-                        })); 
+                        res.send({"statMesg": "File saved successfully."});
+                        return;
                     });
                 }
             });

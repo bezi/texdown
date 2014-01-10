@@ -5,18 +5,18 @@ module.exports = function (db) {
         if (req.params.id) {
             files.find({"_id": req.params.id}, {}, function (err, docs){
                 if (err || !(docs.length === 1 || docs.length === 0)) {
-                    res.render(edit, {"statMesg": "There was an error with the database."});
+                    res.render('edit', {"statMesg": "There was an error with the database."});
                     return;
                 }
 
                 if (docs.length === 0) {
-                    res.render(edit, {"statMesg": "File does not exist."});
+                    res.render('edit', {"statMesg": "File does not exist."});
                     return;
                 }
 
                 var doc = docs[0];
                 if (!(req.user.id === doc.owner)) {
-                    res.send(edit, {"statMesg": "Sorry, you don't own this file."});
+                    res.send('edit', {"statMesg": "Sorry, you don't own this file."});
                     return;
                 }
 

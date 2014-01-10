@@ -51,3 +51,26 @@
 body {
     padding-top: 50px;
 }
+
+#previews .panel-heading button.close,
+#labels .list-group-item button.close {
+    display: none;
+}
+
+#previews .panel-heading:hover button.close,
+#labels .list-group-item:hover button.close {
+    display: inline-block;
+}
+
+#message-box {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 25%;
+    width: 50%;
+    z-index: 1001;
+}
+@media(max-width: 768px) { #message-box { left: 10px; right: 10px; width: auto; } }
+@media(min-width: 768px) { #message-box { left: 5%; width: 90%; } }
+@media(min-width: 992px) { #message-box { left: 15%; width: 70%;  } }
+@media(min-width: 1200px) { #message-box { left: 25%; width: 50%; } }
