@@ -19,7 +19,7 @@ block content
             a.navbar-brand.texdown-logo(href="/")
         .navbar-collapse.collapse
             ul.nav.navbar-nav
-                li: a(href="")= '|'
+                li: a= ' '
                 li: a#compile-button(href="#", title="Refresh")
                     span.glyphicon.glyphicon-refresh
                     |  Compile
@@ -37,11 +37,11 @@ block content
                 li: a(href="#", title="Discard")
                     span.glyphicon.glyphicon-trash
                     |  Discard
-                li: a(href="")= '|'
+                li: a= ' '
                 li: a#expand-button(href="#", title="Expand")
                     span.glyphicon.glyphicon-fullscreen
                     |  Expand
-                li: a(href="")= '|'
+                li: a= ' '
                 li: a#markdown-button(href="#", title="Markdown Hints")
                     span.glyphicon.glyphicon-dashboard
                     |  Markdown
@@ -66,7 +66,7 @@ block content
                             li: a(href="/logout") 
                                 span.glyphicon.glyphicon-off
                                 |  Logout
-                    li: a(href="")= ' '
+                    li: a= ' '
             else
                 form.navbar-form.navbar-right
                     a.btn.btn-social.btn-primary(href="/auth/google")
