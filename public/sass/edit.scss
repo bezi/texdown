@@ -35,6 +35,10 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+a[href=""]:hover {
+    color: #999;
+    background-color: #eee;
+}
 
 // ---------------------------- Editor Styles ------------------------------ //
 .full#editor-window {
