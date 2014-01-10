@@ -2,6 +2,12 @@
 module.exports = function (db) {
     var files = db.get('files');
     return function (req, res) {
+        var data = {};
+        if (req.user) {
+            data.user = req.user; 
+            console.log(data.user.displayName + " is logged in.");
+        }
+        
         if (req.params.id) {
             files.find({"_id": req.params.id}, {}, function (err, docs){
                 if (err || !(docs.length === 1 || docs.length === 0)) {
@@ -20,7 +26,6 @@ module.exports = function (db) {
                     return;
                 }
 
-                var data = {};
                 data.filename = doc.name;
                 data.fileid = doc._id;
                 data.filecontent = doc.content;
@@ -28,6 +33,6 @@ module.exports = function (db) {
                 return;
             });
         }
-        res.render('edit', {});
+        res.render('edit', data);
     };
 };
