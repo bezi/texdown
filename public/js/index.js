@@ -73,8 +73,8 @@ app.del = function (e) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
         if (request.readyState === 4) {
+            var statMesg = JSON.parse(request.responseText).statMesg;
             if (request.status === 200) {
-                var statMesg = JSON.parse(request.responseText).statMesg;
                 // Get nodes to remove
                 var panels = $('.file-display-' + data.file.id);
 
@@ -92,10 +92,9 @@ app.del = function (e) {
 
                 console.log("|-- delete successful.");
             } else {
-                var statMesg = JSON.parse(request.responseText).statMesg;
                 app.animateAlert({
                     header:'Oh no!', 
-                    body: statMesg, 
+                    body: statMesg + " (error: " + request.status + ")", 
                     type:'danger'
                 });
                 console.log("|-- error in deleting.");

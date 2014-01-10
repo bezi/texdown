@@ -86,9 +86,20 @@ CodeMirror.commands.save = app.compile;
 
 app.save = function () {
     console.log('Saving...');
-    var data = {};
-    data.filename = $('#filename').val();
-    if (data.filename == '') {
+    var data = {}; data.file = {}; data.user = {};
+
+    data.user.id = $('body').data().userid;
+    if (!data.user.id) {
+        app.animateAlert({
+            header: 'Whoops!', 
+            body: 'You have to be signed in to save files.', 
+            type: 'danger', 
+        });
+        return;
+    }
+
+    data.file.filename = $('#filename').val();
+    if (data.file.filename == '') {
         app.animateAlert({
             header: 'Whoops!', 
             body: 'Please enter a filename.', 
@@ -96,22 +107,25 @@ app.save = function () {
         });
         return;
     }
-    data.text = app.editor.getValue();
+
+    data.file.id = $('#filename').data().fileid;
+    data.file.text = app.editor.getValue();
+
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
         if (request.readyState === 4) {
+            var statMesg = JSON.parse(request.responseText).statMesg;
             if (request.status === 200) {
                 app.animateAlert({
                     header:'Success!', 
-                    body:'Save successful.'
+                    body: statMesg
                 });
                 console.log("|-- saving successfu");
             } else {
-                var statMesg = JSON.parse(request.responseText).statMesg;
                 app.animateAlert({
                     header:'Oh no!', 
-                    body: statMesg, 
-                    type: 'warning'
+                    body: statMesg + " (error: " + request.status + ")", 
+                    type: 'danger'
                 });
                 console.log("|-- error in compiling.");
             }

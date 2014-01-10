@@ -126,7 +126,7 @@ Certain key return data is embeded in the HTML content of the webpage. For the m
         "id": <int>                    // authenticated id of current user (1, 2)
     }
     "file": {                          // object describing file (*)
-        "id": <int>,                   // id of file (1, 3)
+        "id": <int>,                   // id of file (1, 3) (*)
         "filename": <string>,          // name of file (4) (*)
         "text": <string>               // raw (TeXDown) content of the note
     }
@@ -139,7 +139,7 @@ Certain key return data is embeded in the HTML content of the webpage. For the m
  * 
  * 1. Must be unique.
  * 2. If not present, responds with 401 Unauthorized.
- * 3. If not present, creates the file.
+ * 3. If empty string, creates the file.
  * 4. If id exists for user and this string does not match the current name,
  *    the database is updated to match this name.
  */
