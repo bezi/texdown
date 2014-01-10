@@ -70,14 +70,14 @@ block content
                         h2.text-center You don't seem to have any notes.
                 #previews
                     each file in user.files
-                        .panel.panel-info(class='file-display-' + file.id)
+                        .panel.panel-info(class='file-display-' + file._id)
                             .panel-heading
-                                a.text-info.panel-title(href='/edit/' + file.id)= file.filename
+                                a.text-info.panel-title(href='/edit/' + file._id)= file.filename
                                 small= ' - ' + now
-                                button.close(type="button", data-fileid=file.id, data-filename=file.filename, aria-hidden="true") 
+                                button.close(type="button", data-fileid=file._id, data-filename=file.filename, aria-hidden="true") 
                                     small: span.glyphicon.glyphicon-trash
                             .panel-body
-                                - var body = file.text.replace(/(\r\n|\n|\r)/gm, " ")
+                                - var body = file.context.replace(/(\r\n|\n|\r)/gm, " ")
                                 - var body = body.match(/^.{0,300}/)[0]
                                 if body.length === 300
                                     = body + '...'

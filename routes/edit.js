@@ -5,7 +5,6 @@ module.exports = function (db) {
         var data = {};
         if (req.user) {
             data.user = req.user; 
-            console.log(data.user.displayName + " is logged in.");
         }
         
         if (req.params.id) {
@@ -25,10 +24,10 @@ module.exports = function (db) {
                     res.send('edit', {"statMesg": "Sorry, you don't own this file."});
                     return;
                 }
-
-                data.filename = doc.name;
-                data.fileid = doc._id;
-                data.filecontent = doc.content;
+                data.file = {};
+                data.file.name = doc.name;
+                data.file.id = doc._id;
+                data.file.content = doc.content;
                 res.render('edit', data);
                 return;
             });
