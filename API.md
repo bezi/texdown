@@ -20,6 +20,40 @@ This route renders two different HTML pages depending on user authentication, wh
 ### Response
 The majority of this response is a webpage graphical user interface with links to every available file for the requested user. Following this links invokes the respective API's described below.
 
+Embeded within the body is the user's id for further later use (i.e. with `POST`s). There are also file IDs and filenames attached in various places to make parsing the links easier.
+~~~HTML
+<body data-userid="<user.id>">         // <user.id>: id of logged in user, 
+    ...                                //   must be saved for later use in 
+</body>                                //   /save and /delete
+
+// <file.id>: the id of the listed file
+// <file.filename>: the filename of the listed file
+
+// For center column of notes previews
+<div id="preview">
+    ...
+    <div class="panel-heading">
+        <button type="button" class="close" aria-hidden="true"
+            data-fileid="<file.id>"
+            data-filename="<file.filename>">...</button>
+    </div>
+    ...
+</div>
+...
+// For sidebar nav list of notes
+<div id="labels" class="list-group">
+    ...
+       <a class="list-group-item"
+          href="/edit/<file.id>">
+            "<file.filename>"
+            <button type="button" class="close" aria-hidden="true"
+                data-fileid="<file.id>"
+                data-filename="<file.filename>"></button>
+       </a>
+    ...
+</div>
+~~~
+
 ## `GET /edit`
 If the user is not authenticated by Passport before reaching this page, it is used solely for demonstration/trial purposes. You cannot directly save any work you create on this page. 
 
@@ -42,6 +76,11 @@ For authenticated users, this route is used as a graphical web interface for cre
 
 ### Response
 A blank editor and preview pane which will allow for easy interaction with the TeXDown backend.
+~~~HTML
+<body data-userid="<user.id>">         // <user.id>: id of logged in user, 
+    ...                                //   must be saved for later use in 
+</body>                                //   /save and /delete
+~~~
 
 ## `GET /edit/:fileid`
 ### Request
@@ -140,13 +179,15 @@ Indicates save was successful. No useful response body.
 }
 ~~~
 
-## `DELETE /:fileid`
+## `DELETE /delete`
 ### Request
 ~~~Javascript
-:fileid                                // the id of the file to be deleted (*)
 {
     "user": {                          // object describing current user (*)
         "id": <int>                    // authenticated id of current user (1, 2)
+    }
+    "file": {                          // object describing file (*)
+        "id": <int>                    // ID of file to delete (1, 2)
     }
 }
 

@@ -93,7 +93,7 @@ app.post('/save', require('./routes/save')(db));
 // compile
 app.post('/compile', require('./routes/compile'));
 // delete
-app.post('/delete', require('./routes/delete')(db));
+app.delete('/delete', require('./routes/delete')(db));
 
 // authentication
 app.get('/auth/google',
