@@ -18,6 +18,7 @@ block content
             a.navbar-brand.texdown-logo(href="/")
         .navbar-collapse.collapse
             ul.nav.navbar-nav
+                li: a(href="")= '|'
                 li: a#compile-button(href="#", title="Refresh")
                     span.glyphicon.glyphicon-refresh
                     |  Compile
@@ -35,7 +36,14 @@ block content
                 li: a(href="#", title="Discard")
                     span.glyphicon.glyphicon-trash
                     |  Discard
-            ul.nav.navbar-nav.navbar-right
+                li: a(href="")= '|'
+                li: a#expand-button(href="#", title="Expand")
+                    span.glyphicon.glyphicon-fullscreen
+                    |  Expand
+                li: a(href="")= '|'
+                li: a#markdown-button(href="#", title="Markdown Hints")
+                    span.glyphicon.glyphicon-dashboard
+                    |  Markdown
                 li.dropdown
                     a.dropdown-toggle(href="#", data-toggle="dropdown") 
                         span.glyphicon.glyphicon-cog
@@ -47,15 +55,24 @@ block content
                                 button.btn.btn-primary#nokeys(type="button") None
                                 button.btn.btn-default#vimkeys(type="button") vim
                                 button.btn.btn-default#emacskeys(type="button") emacs
-                        li.divider
-                        li: a(href="#") Test
-                li: a#markdown-button(href="#", title="Markdown Hints")
-                    span.glyphicon.glyphicon-dashboard
-                    |  Markdown
-                li: a#expand-button(href="#", title="Expand")
-                    span.glyphicon.glyphicon-fullscreen
-                    |  Expand
-                li: a= ' '
+            if (user)
+                ul.nav.navbar-nav.navbar-right
+                    li.dropdown: a.dropdown-toggle(href="#", data-toggle="dropdown")
+                        img.avatar(src=user._json.picture)
+                        | &nbsp;&nbsp;Me
+                        b.caret
+                        ul.dropdown-menu
+                            li: a(href="/logout") 
+                                span.glyphicon.glyphicon-off
+                                |  Logout
+                    li: a(href="")= ' '
+            else
+                form.navbar-form.navbar-right
+                    a.btn.btn-social.btn-primary(href="/auth/google")
+                        i.fa.fa-google-plus
+                        | &nbsp;&nbsp;Sign in&nbsp;&nbsp;
+                ul.nav.navbar-nav.navbar-right
+                    li: a= ' '
 
     .full#editor-window
         .col-md-6.full#editor-col

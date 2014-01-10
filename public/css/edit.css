@@ -50,35 +50,41 @@ body {
   background-attachment: fixed;
 }
 
-/* line 40, ../sass/edit.scss */
+/* line 38, ../sass/edit.scss */
+a[href=""]:hover {
+  color: #999;
+  background-color: #eee;
+}
+
+/* line 44, ../sass/edit.scss */
 .full#editor-window {
   padding: 58px 7px 7px 7px;
 }
 
-/* line 44, ../sass/edit.scss */
+/* line 48, ../sass/edit.scss */
 #editor-col {
   padding-right: 5px;
 }
 
-/* line 47, ../sass/edit.scss */
+/* line 51, ../sass/edit.scss */
 .CodeMirror {
   border-radius: 3px;
   border: 3px solid #CACACA;
 }
 
-/* line 53, ../sass/edit.scss */
+/* line 57, ../sass/edit.scss */
 #preview-col {
   padding-left: 5px;
 }
 
-/* line 56, ../sass/edit.scss */
+/* line 60, ../sass/edit.scss */
 #preview-wrapper {
   padding: 3px;
   background: #EEE;
   border-radius: 3px;
 }
 
-/* line 61, ../sass/edit.scss */
+/* line 65, ../sass/edit.scss */
 #preview-pane {
   padding-right: 10px;
   padding-left: 10px;
@@ -88,7 +94,7 @@ body {
   overflow-y: scroll;
 }
 
-/* line 69, ../sass/edit.scss */
+/* line 73, ../sass/edit.scss */
 .preview-expand {
   position: absolute;
   left: 50%;
@@ -98,24 +104,24 @@ body {
 }
 
 @media (min-width: 768px) {
-  /* line 76, ../sass/edit.scss */
+  /* line 80, ../sass/edit.scss */
   .preview-expand {
     margin-left: -385px;
   }
 }
 @media (min-width: 992px) {
-  /* line 77, ../sass/edit.scss */
+  /* line 81, ../sass/edit.scss */
   .preview-expand {
     margin-left: -485px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 78, ../sass/edit.scss */
+  /* line 82, ../sass/edit.scss */
   .preview-expand {
     margin-left: -585px;
   }
 }
-/* line 81, ../sass/edit.scss */
+/* line 85, ../sass/edit.scss */
 #markdown-pane {
   position: absolute;
   top: 20px;
@@ -125,12 +131,12 @@ body {
 }
 
 @media (max-width: 1034px) {
-  /* line 88, ../sass/edit.scss */
+  /* line 92, ../sass/edit.scss */
   #markdown-pane {
     display: none !important;
   }
 }
-/* line 91, ../sass/edit.scss */
+/* line 95, ../sass/edit.scss */
 #message-box {
   display: none;
   position: fixed;
@@ -141,7 +147,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* line 99, ../sass/edit.scss */
+  /* line 103, ../sass/edit.scss */
   #message-box {
     left: 10px;
     right: 10px;
@@ -149,21 +155,21 @@ body {
   }
 }
 @media (min-width: 768px) {
-  /* line 100, ../sass/edit.scss */
+  /* line 104, ../sass/edit.scss */
   #message-box {
     left: 5%;
     width: 90%;
   }
 }
 @media (min-width: 992px) {
-  /* line 101, ../sass/edit.scss */
+  /* line 105, ../sass/edit.scss */
   #message-box {
     left: 15%;
     width: 70%;
   }
 }
 @media (min-width: 1200px) {
-  /* line 102, ../sass/edit.scss */
+  /* line 106, ../sass/edit.scss */
   #message-box {
     left: 25%;
     width: 50%;
