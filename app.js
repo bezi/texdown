@@ -30,18 +30,11 @@ passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "http://127.0.0.1:3000/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
+}, function(accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
-      
-      // To keep the example simple, the user's Google profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Google account with a user record in your database,
-      // and return that user instead.
-      return done(null, profile);
+        return done(null, profile);
     });
-  }
-));
+}));
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
@@ -85,7 +78,7 @@ if ('development' == app.get('env')) {
 // home
 app.get('/', require('./routes/index')(db));
 // edit
-app.get('/edit', require('./routes/edit')(db));
+app.get('/edit', ensureAuthenticated, require('./routes/edit')(db));
 app.get('/edit/:id', ensureAuthenticated, require('./routes/edit')(db));
 // save
 app.post('/save', require('./routes/save')(db));
@@ -96,8 +89,7 @@ app.delete('/delete', require('./routes/delete')(db));
 
 // authentication
 app.get('/auth/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
-                                            'https://www.googleapis.com/auth/userinfo.email'] }),
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile'] }),
   function(req, res){
   });
 

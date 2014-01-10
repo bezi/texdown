@@ -3,8 +3,9 @@ module.exports = function (db) {
     var files = db.get('files');
     return function (req, res) {
         var data = {};
-        if (req.body.user) {
-           data.user = req.body.user; 
+        if (req.user) {
+            data.user = req.user; 
+            console.log(data.user.displayName + " is logged in.");
         }
         
         if (req.params.id) {
