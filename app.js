@@ -78,7 +78,7 @@ if ('development' == app.get('env')) {
 // home
 app.get('/', require('./routes/index')(db));
 // edit
-app.get('/edit', ensureAuthenticated, require('./routes/edit')(db));
+app.get('/edit', require('./routes/edit')(db));
 app.get('/edit/:id', ensureAuthenticated, require('./routes/edit')(db));
 // save
 app.post('/save', require('./routes/save')(db));

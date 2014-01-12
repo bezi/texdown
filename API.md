@@ -21,6 +21,29 @@ This route renders two different HTML pages depending on user authentication, wh
 The majority of this response is a webpage graphical user interface with links to every available file for the requested user. Following this links invokes the respective API's described below.
 
 Embeded within the body is the user's id for further later use (i.e. with `POST`s). There are also file IDs and filenames attached in various places to make parsing the links easier.
+The Jade template is rendered with an object of the following form: 
+~~~Javascript
+{
+    "user": {
+        "id": <string>,
+        "settings": {
+            "editor": <string>, // either "", "vim", or "emacs"
+        },
+        "files": [<file>] // array of file 
+    }
+}
+/**
+ * Each file in the "files" array is of the following form
+ */
+<file> = {
+    "name": <string>,
+    "tags": [<string>],
+    "owner": <string, // the owner's id
+    "timestamp": <integer // UNIX timestamp
+}
+~~~
+
+Relevant parts of the HTML rendered: 
 ~~~HTML
 <body data-userid="<user.id>">         // <user.id>: id of logged in user, 
     ...                                //   must be saved for later use in 
@@ -86,6 +109,7 @@ A blank editor and preview pane which will allow for easy interaction with the T
 ### Request
 ~~~Javascript
 :fileid                                // the id of the file to be edited (*)
+                                       // URL parameter
 {
     "user": <object>                   // user object managed by Passport (*)
 }
@@ -102,6 +126,25 @@ A blank editor and preview pane which will allow for easy interaction with the T
 
 ### Response
 Certain key return data is embeded in the HTML content of the webpage. For the most part, this data is embedded in `data-*` attributes in various places.
+The Jade template is rendered with the following object: 
+~~~Javascript
+{
+    "user": <object>,
+    "file": <file>  
+}
+
+/**
+ * <file> is of the following form
+ */
+
+<file> = {
+    "name": <string>,
+    "tags": [<string>],
+    "content": <string>,
+    "owner": <string, // the owner's id
+    "timestamp": <integer // UNIX timestamp
+}
+~~~
 ~~~HTML
 <body data-userid="<user.id>">         // <user.id>: id of logged in user, 
     ...                                //   must be saved for later use in 

@@ -6,15 +6,12 @@ module.exports = function (db) {
     var users = db.get('tdusers');
 
     return function (req, res) {
-        if (!req.body.user) {
-            res.send(400, {"statMesg": "Error retrieving user id."});
+        if (!(req.body.user && req.body.user.id)) {
+            res.send(401, {"statMesg": "You must be logged in to save files."});
             return;
         }
-        if (!req.body.user.id) {
-            res.send(401, {"statMesg": "You must be logged in to save files."});
-        }
 
-        if (!req.body.file || !req.body.file.filename) {
+        if (!(req.body.file && req.body.file.filename)) {
             res.send(400, {"statMesg": "Could not retrieve file object."});
             return;
         }
@@ -31,7 +28,7 @@ module.exports = function (db) {
                     res.send(500, {"statMesg": "Something went wrong with the database."});
                     return;
                 } else if (docs.length !== 0) {
-                    res.send(409, {"statMesg": "The file \"" + req.body.file.filename + "\" is already taken."});
+                    res.send(409, {"statMesg": "The file name \"" + req.body.file.filename + "\" is already taken."});
                     return;
                 }
             });
@@ -44,21 +41,16 @@ module.exports = function (db) {
             file.timestamp = Number(moment().format("X"));
 
             files.insert(file);
-            // insert file into user's files
             // and return fileid
             files.find({
                 "name": req.body.file.filename,
                 "owner": req.body.user.id
             }, {}, function (err, docs) {
-                if (err) {
+                if (err || !(docs.length === 1)) {
                     res.send(500, {"statMesg": "Something went wrong with the database."});
                     return;
-                } else if(docs.length !== 1){
-                    res.send(404, {"statMesg": "User not found in database."});
-                    return;
                 }
-                users.update({"id": req.body.user.id}, {"$push": {"files": {"id": docs[0]._id, "name": docs[0].name, "timestamp": file.timestamp}}});
-                res.send({ "fileid": docs[0]._id }); 
+                res.send({"fileid": docs[0]._id }); 
             });    
         } else {
             files.find({"_id": fileid}, {}, function (err, docs){
@@ -66,13 +58,11 @@ module.exports = function (db) {
                     res.send(500, {"statMesg": "Something went wrong with the database."});
                     return;
                 } else if (docs.length !== 1) {
-                    res.send(404, {"statMesg": "The file could not be saved because it was not found in the databae."});
+                    res.send(404, {"statMesg": "The file was not found in the database."});
                 }
                 var doc = docs[0];
                 if (!(req.userid === doc.owner)) {
-                    res.send(JSON.stringify({ 
-                        "statMesg": "You don't own this file."
-                    }), 401);
+                    res.send(401, JSON.stringify({"statMesg": "You don't own this file."}));
                     return;
                 }
 
@@ -85,8 +75,6 @@ module.exports = function (db) {
                         if (err) {
                             res.send(500, {"statMesg": "Something went wrong with the database."});
                         }
-                        // update owner
-                        // except not really.  Also, I need to validate all of this input.  AAAAAAAAAAAAAAAH
                         res.send({"statMesg": "File saved successfully."});
                         return;
                     });
