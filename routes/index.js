@@ -17,7 +17,7 @@ module.exports = function (db) {
             if (docs.length == 0) {
                 // add user
                 var data = {
-                    "id": user.id,
+                    "id": req.user.id,
                     "settings": { 
                         "editor": "" 
                     }
@@ -33,20 +33,21 @@ module.exports = function (db) {
                 });
             }
 
-            var data = docs[0];
-            data.id = doc.id;
-            data.editor = doc.editor;
-            files.find({}, {}, function (err, docs) {
+            var user = {};
+            var doc = docs[0];
+            user.id = doc.id;
+            user.settings = doc.settings;
+            files.find({"owner": user.id}, {}, function (err, docs) {
                 if (err) { 
                     res.send(401, "There was an error with the database."); 
                     return;
                 }
 
-                data.files = docs;
+                user.files = docs;
                 for (var i = 0; i < files.length; ++i) {
                     delete(data.files[i].content);
                 }
-                res.render("index", {"user": data});
+                res.render("index", {"user": user});
             });
         }); 
     }
