@@ -1,49 +1,53 @@
 // GET: /, home page
 module.exports = function (db) {
     var tdusers = db.get('tdusers'); 
+    var files = db.get('files'); 
     return function (req, res) {
-        var user = req.user;
-        if (!user) {
+        if (!req.user) {
             res.render("index", {});
             return;
         }
 
-        tdusers.find({id: user.id}, {}, function (err, docs) { 
-            if (err) {
+        tdusers.find({id: req.user.id}, {}, function (err, docs) { 
+            if (err || !(docs.length === 0 || docs.length === 1)) {
                 res.send(401, "There was an error with the database.");
                 return;
             }
+
             if (docs.length == 0) {
                 // add user
-                tdusers.insert({
-                    "name": user.displayName,
+                var data = {
                     "id": user.id,
-                    "files": [],
-                    "editor": ""
-                });
-                tdusers.find({id: user.id}, {}, function (err, docs) { 
-                    if (err) {
-                        res.send(401, "There was an error with the database.");
+                    "settings": { 
+                        "editor": "" 
+                    }
+                };
+                tdusers.insert(data, function (err) {
+                    if (err) { 
+                        res.send(401, "There was an error with the database."); 
                         return;
                     }
-                    var doc = docs[0];
-                    user.editor = doc.editor;
-                    user.files = doc.files;
-                    res.render("index", { "user": user });
+                    data.files = [];
+                    res.render("index", { "user": data });
                     return;
                 });
-                return;
             }
 
-            if (docs.length == 1) {
-                var doc = docs[0];
-                user.editor = doc.editor;
-                user.files = doc.files;
-                res.render("index", { "user": user });
-                return;
-            }
-            res.send(401, "There was an error with the database.");
-            return;
+            var data = docs[0];
+            data.id = doc.id;
+            data.editor = doc.editor;
+            files.find({}, {}, function (err, docs) {
+                if (err) { 
+                    res.send(401, "There was an error with the database."); 
+                    return;
+                }
+
+                data.files = docs;
+                for (var i = 0; i < files.length; ++i) {
+                    delete(data.files[i].content);
+                }
+                res.render("index", {"user": data});
+            });
         }); 
     }
 };

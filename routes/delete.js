@@ -19,7 +19,7 @@ function deleteGen (db) {
             // delete the file
             files.drop({"_id": fileid}, {}, function (err) {
                 if (err) {
-                    res.send(500, {"statMesg": "A database error got in the way of deleting the file."});
+                    res.send(500, {"statMesg": "Unable to delete file due to database error."});
                     return;
                 }
                 res.send(JSON.stringify({"statMesg": "Successfully deleted file."}));
