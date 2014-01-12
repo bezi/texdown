@@ -84,7 +84,8 @@ app.compile = function() {
 
 CodeMirror.commands.save = app.compile;
 
-app.save = function () {
+app.save = function (e) {
+    e.preventDefault();
     console.log('Saving...');
     var data = {}; data.file = {}; data.user = {};
 
