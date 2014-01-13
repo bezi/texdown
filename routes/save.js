@@ -18,6 +18,7 @@ module.exports = function (db) {
 
         var fileid = req.body.file.id;
         // if the file doesn't have an id, make it
+        console.log("Making new file. . .");
         if (!fileid) {
             // check that file name isn't taken
             files.find({
@@ -29,6 +30,7 @@ module.exports = function (db) {
                     return;
                 } else if (docs.length !== 0) {
                     res.send(409, {"statMesg": "The file name \"" + req.body.file.filename + "\" is already taken."});
+                    console.log("File name taken.");
                     return;
                 }
             });
@@ -54,12 +56,14 @@ module.exports = function (db) {
                 res.send({"fileid": docs[0]._id }); 
             });    
         } else {
+            console.log("File already in database");
             files.find({"_id": fileid}, {}, function (err, docs){
                 if (err) {
                     res.send(500, {"statMesg": "Something went wrong with the database."});
                     return;
                 } else if (docs.length !== 1) {
                     res.send(404, {"statMesg": "The file was not found in the database."});
+                    console.log("File not in database");
                 }
                 var doc = docs[0];
                 if (!(req.userid === doc.owner)) {

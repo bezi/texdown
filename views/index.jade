@@ -76,13 +76,13 @@ block content
                                 small= ' - ' + now
                                 button.close(type="button", data-fileid=file._id, data-filename=file.filename, aria-hidden="true") 
                                     small: span.glyphicon.glyphicon-trash
-                            .panel-body
-                                - var body = file.context.replace(/(\r\n|\n|\r)/gm, " ")
-                                - var body = body.match(/^.{0,300}/)[0]
-                                if body.length === 300
-                                    = body + '...'
-                                else
-                                    = body
+                            //-.panel-body
+                                //-- var body = file.context.replace(/(\r\n|\n|\r)/gm, " ")
+                                //-- var body = body.match(/^.{0,300}/)[0]
+                                //-if body.length === 300
+                                    //-= body + '...'
+                                //-else
+                                    //-= body
                 br
             .col-md-3
                 h1.text-center Tags

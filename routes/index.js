@@ -33,9 +33,8 @@ module.exports = function (db) {
                 });
             }
 
-            var user = {};
+            var user = req.user;
             var doc = docs[0];
-            user.id = doc.id;
             user.settings = doc.settings;
             files.find({"owner": user.id}, {}, function (err, docs) {
                 if (err) { 
