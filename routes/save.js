@@ -38,7 +38,8 @@ module.exports = function (db) {
             file.tags = ["All Notes"];
             file.owner = req.body.user.id;
             file.content = req.body.file.text;
-            file.timestamp = Number(moment().format("X"));
+            file.created = Number(moment().format("X"));
+            file.modified = file.created;
 
             files.insert(file);
             // and return fileid
@@ -70,7 +71,7 @@ module.exports = function (db) {
                     file.update({"_id": fileid}, {$set: {
                         "content": req.body.file.text, 
                         "name": req.body.file.filename,
-                        "timestamp": Number(moment().format("X"))
+                        "modified": Number(moment().format("X"))
                     }}, function (err) {
                         if (err) {
                             res.send(500, {"statMesg": "Something went wrong with the database."});
