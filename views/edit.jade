@@ -34,11 +34,9 @@ block content
                 li: a#discard-button(href="#", title="Discard")
                     span.glyphicon.glyphicon-trash
                     |  Discard
-                li: a= ' '
                 li: a#expand-button(href="#", title="Expand")
                     span.glyphicon.glyphicon-fullscreen
                     |  Expand
-                li: a= ' '
                 li: a#markdown-button(href="#", title="Markdown Hints")
                     span.glyphicon.glyphicon-dashboard
                     |  Markdown
@@ -57,9 +55,18 @@ block content
                 ul.nav.navbar-nav.navbar-right
                     li.dropdown: a.dropdown-toggle(href="#", data-toggle="dropdown")
                         img.avatar(src=user._json.picture)
+                        //- Uncomment to get user's name (Not being passed?)
+                        //- = &nbsp;&nbsp;user.name.givenName
                         | &nbsp;&nbsp;Me
                         b.caret
                         ul.dropdown-menu
+                            li: a(href="/") 
+                                span.glyphicon.glyphicon-home
+                                |  My Notes
+                            li: a(href="/logout") 
+                                span.glyphicon.glyphicon-plus
+                                |  New
+                            li.divider
                             li: a(href="/logout") 
                                 span.glyphicon.glyphicon-off
                                 |  Logout
