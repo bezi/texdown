@@ -83,6 +83,8 @@ block content
                     h1.text-center Click &ldquo;
                         span.glyphicon.glyphicon-refresh
                         |  Compile&rdquo; to see your notes!
+                #preview-waiting.hidden
+                    i.fa.fa-cog.fa-spin.text-center
 
     .hidden#markdown-pane
         a(href="/images/markdown-cheatsheet.png", target="_blank"): img.img-thumbnail(src="/images/markdown-cheatsheet.png")
@@ -104,4 +106,6 @@ block script
     //- certain languages (Java, Javascript, html, but not Python, etc. Weird.)
     script(src="/lib/codemirror/mode/clike/clike.js")
     script(src="/js/prettify.js")
+    script(src="/js/jquery.typing-0.2.0.min.js")
+    script(src="/js/marked.js")
     script(src="/js/edit.js")

@@ -84,6 +84,22 @@ body {
     background: white;
     overflow-y: scroll;
 }
+#preview-waiting {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 13px;
+    right: 8px;
+    border-radius: 3px;
+    background: rgba(0,0,0,.7) no-repeat center center;
+    padding-top: 20%;
+    @include box-shadow(black 5px 5px 25px);
+}
+#preview-waiting > .fa-spin {
+    color: white;
+    font-size: 128px;
+    width: 100%;
+}
 .preview-expand {
     position: absolute;
     left: 50%;

@@ -119,6 +119,28 @@ body {
 }
 
 /* line 87, ../sass/edit.scss */
+#preview-waiting {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 13px;
+  right: 8px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.7) no-repeat center center;
+  padding-top: 20%;
+  -webkit-box-shadow: black 5px 5px 25px;
+  -moz-box-shadow: black 5px 5px 25px;
+  box-shadow: black 5px 5px 25px;
+}
+
+/* line 98, ../sass/edit.scss */
+#preview-waiting > .fa-spin {
+  color: white;
+  font-size: 128px;
+  width: 100%;
+}
+
+/* line 103, ../sass/edit.scss */
 .preview-expand {
   position: absolute;
   left: 50%;
@@ -128,24 +150,24 @@ body {
 }
 
 @media (min-width: 768px) {
-  /* line 94, ../sass/edit.scss */
+  /* line 110, ../sass/edit.scss */
   .preview-expand {
     margin-left: -385px;
   }
 }
 @media (min-width: 992px) {
-  /* line 95, ../sass/edit.scss */
+  /* line 111, ../sass/edit.scss */
   .preview-expand {
     margin-left: -485px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 96, ../sass/edit.scss */
+  /* line 112, ../sass/edit.scss */
   .preview-expand {
     margin-left: -585px;
   }
 }
-/* line 99, ../sass/edit.scss */
+/* line 115, ../sass/edit.scss */
 #markdown-pane {
   position: absolute;
   top: 20px;
@@ -155,12 +177,12 @@ body {
 }
 
 @media (max-width: 1034px) {
-  /* line 106, ../sass/edit.scss */
+  /* line 122, ../sass/edit.scss */
   #markdown-pane {
     display: none !important;
   }
 }
-/* line 109, ../sass/edit.scss */
+/* line 125, ../sass/edit.scss */
 #message-box {
   display: none;
   position: fixed;
@@ -171,7 +193,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* line 117, ../sass/edit.scss */
+  /* line 133, ../sass/edit.scss */
   #message-box {
     left: 10px;
     right: 10px;
@@ -179,21 +201,21 @@ body {
   }
 }
 @media (min-width: 768px) {
-  /* line 118, ../sass/edit.scss */
+  /* line 134, ../sass/edit.scss */
   #message-box {
     left: 5%;
     width: 90%;
   }
 }
 @media (min-width: 992px) {
-  /* line 119, ../sass/edit.scss */
+  /* line 135, ../sass/edit.scss */
   #message-box {
     left: 15%;
     width: 70%;
   }
 }
 @media (min-width: 1200px) {
-  /* line 120, ../sass/edit.scss */
+  /* line 136, ../sass/edit.scss */
   #message-box {
     left: 25%;
     width: 50%;
