@@ -80,7 +80,6 @@ app.compile = function(force) {
 };
 
 app.save = function (e) {
-    $(e.currentTarget).dropdown('toggle');
     console.log('├─┬ Saving...');
     var data = {}; data.file = {}; data.user = {};
 
