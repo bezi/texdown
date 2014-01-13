@@ -25,7 +25,7 @@ block content
                     li: input#filename(type="text", placeholder="Filename", data-filename="#{file.name}", data-fileid="#{file.id}", value=file.name)
                 else
                     li: input#filename(type="text", placeholder="Filename", value="Untitled")
-                li: a#save-button(href="#", title="Compile")
+                li: a#save-button(href="#", title="Save")
                     span.glyphicon.glyphicon-floppy-disk
                     |  Save
                 li: a#compile-button(href="#", title="Compile")
