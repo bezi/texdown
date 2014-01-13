@@ -44,6 +44,12 @@ app.animateAlert = function(options) {
     container.show().delay(config.delay).fadeOut(config.fade);
 }
 
+app.processTimes = function() {
+    $('.timestamp').each(function(index) {
+        $(this).html(' - ' + moment($(this).html(), 'X').format('ddd, MMM Do, YYYY'));
+    });
+}
+
 app.confirmDelete = function(e) {
     // prevent the button within a link from following its hyperlink
     e.preventDefault();
@@ -108,6 +114,7 @@ app.del = function (e) {
 
 app.init = function () {
     console.log('Initializing app. . .');
+    app.processTimes();
     $('#previews button.close').click(app.confirmDelete);
     $('#labels button.close').click(app.confirmDelete);
     $('#delete-confirm').click(app.del);
