@@ -31,7 +31,7 @@ block content
                         li
                             form(role="form")
                                 .input-group
-                                    input.form-control#filename(type="text", placeholder="Filename", value=(file && file.filename ? file.filename : ''))
+                                    input.form-control#filename(type="text", placeholder="Filename", value=(file && file.name ? file.name : ''))
                                     span.input-group-btn
                                         button.btn.btn-primary.pull-right#save-button(type="submit") Save
                 li: a(href="#", title="Discard")
@@ -78,7 +78,7 @@ block content
     .full#editor-window
         .col-md-6.full#editor-col
             form.full#editor-form
-                textarea#editor-pane.full
+                textarea#editor-pane.full= (file && file.content ? file.content : '')
         .col-md-6.full#preview-col
             #preview-wrapper.full
                 #preview-pane.full

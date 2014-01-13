@@ -55,7 +55,7 @@ app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     // keyMap:       "vim"
 });
 
-app.compile = function() {
+app.compile = function(force=true) {
     console.log("Compiling. . .");
     var data = {};
     data.text = app.editor.getValue();
@@ -219,6 +219,7 @@ app.setKeybindings = function(e) {
 
 app.init = function () {
     console.log('Initializing app. . .');
+    app.compile(false);
     $('#compile-button').click(app.compile);
     $('#expand-button').click(app.expandButton);
     $('#markdown-button').click(app.toggleHelp);

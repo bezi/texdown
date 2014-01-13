@@ -72,9 +72,9 @@ block content
                     each file in user.files
                         .panel.panel-info(class='file-display-' + file._id)
                             .panel-heading
-                                a.text-info.panel-title(href='/edit/' + file._id)= file.filename
-                                small= ' - ' + now
-                                button.close(type="button", data-fileid=file._id, data-filename=file.filename, aria-hidden="true") 
+                                a.text-info.panel-title(href='/edit/' + file._id)= file.name
+                                small.timestamp= file.modified
+                                button.close(type="button", data-fileid=file._id, data-filename=file.name, aria-hidden="true") 
                                     small: span.glyphicon.glyphicon-trash
                             //-.panel-body
                                 //-- var body = file.context.replace(/(\r\n|\n|\r)/gm, " ")
@@ -83,18 +83,25 @@ block content
                                     //-= body + '...'
                                 //-else
                                     //-= body
+                            .panel-footer
+                                each tag in file.tags
+                                    a(href="#")= '"' + tag + '"'
+
                 br
             .col-md-3
                 h1.text-center Tags
                 hr
-                if (user.files.length === 0)
-                    .well.well-lg
-                        h4 Oh? 
-                        p Looks like you don't have any tags :(
+
+                //- if (user.tags.length === 0)
+                    //- .well.well-lg
+                        //- h4 Oh? 
+                        //- p Looks like you don't have any tags :(
                 .list-group#labels
-                    each file in user.files 
-                        a.list-group-item(class="file-display-" + file.id, href='/edit/' + file.id)= file.filename
-                            button.close(type="button", data-fileid=file.id, data-filename=file.filename, aria-hidden="true") &times;
+                    a.list-group-item(href="#") All Notes
+                    //- each tag in user.tags
+                        //- a.list-group-item(class="tag-display-" + tag, href='#')= tag
+                            //- button.close(type="button", data-tag=tag, aria-hidden="true") &times;
+
         .modal.fade#confirm-delete-modal(tabindex="-1", role="dialog", aria-labelledby="confirm-delete-title", aria-hidden="true")
             .modal-dialog
                 .modal-content
@@ -109,4 +116,5 @@ block content
     .alert.alert-success#message-box
 
 block script
+    script(type="text/javascript", src="/js/moment.min.js")
     script(type="text/javascript", src="/js/index.js")
