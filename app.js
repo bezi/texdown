@@ -87,6 +87,8 @@ app.post('/save', require('./routes/save')(db));
 app.post('/compile', require('./routes/compile'));
 // delete
 app.delete('/delete', require('./routes/delete')(db));
+// settings
+app.post('/settings/', require('./routes/settings')(db));
 
 // authentication
 app.get('/auth/google',
