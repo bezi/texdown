@@ -6,3 +6,4 @@ texdown-logo/out/*
 app.config
 runserver
 runserver.config
+heroku.config
