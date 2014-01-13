@@ -43,9 +43,10 @@ module.exports = function (db) {
                 }
 
                 user.files = docs;
-                for (var i = 0; i < files.length; ++i) {
-                    delete(data.files[i].content);
+                for (var i = 0; i < user.files.length; ++i) {
+                    delete(user.files[i].content);
                 }
+                console.log(user.files);
                 res.render("index", {"user": user});
             });
         }); 
