@@ -21,10 +21,7 @@ block content
             ul.nav.navbar-nav
                 - var title = (file && file.name ? file.name.slice(0, 25) : 'Untitled')
                 - title = (file && file.name && file.name.length > 25 ? title + '...' : title)
-                li.active: a.lead#filetitle(title=(file && file.name ? file.name : ''))= title
-                li: a#compile-button(href="#", title="Compile")
-                    span.glyphicon.glyphicon-refresh
-                    |  Compile
+                li.active: input#filetitle(value=title)
                 li.dropdown
                     a.dropdown-toggle(href="#", title="Save", data-toggle="dropdown")
                         span.glyphicon.glyphicon-floppy-disk
@@ -33,13 +30,16 @@ block content
                         li
                             form(role="form")
                                 .input-group
-                                    if (file)
-                                        input.form-control#filename(type="text", placeholder="Filename", data-filename="#{file.name}", data-fileid="#{file.id}", value=file.name)
+                                    if (file && file.name && file.id)
+                                        input.form-control#filename(type="text", placeholder="Filename", data-filename=file.name, data-fileid=file.id, value=file.name)
                                     else
                                         input.form-control#filename(type="text", placeholder="Filename", value='Untitled'))
                                     span.input-group-btn
                                         button.btn.btn-primary.pull-right#save-button(type="submit") Save
-                li: a(href="#", title="Discard")
+                li: a#compile-button(href="#", title="Compile")
+                    span.glyphicon.glyphicon-refresh
+                    |  Compile
+                li: a#discard-button(href="#", title="Discard")
                     span.glyphicon.glyphicon-trash
                     |  Discard
                 li: a= ' '

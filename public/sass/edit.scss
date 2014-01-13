@@ -36,12 +36,22 @@ body {
     background-attachment: fixed;
 }
 
-a#filetitle,
-a#filetitle:hover {
-    font-size: 20px;
+#filetitle {
+    background: #080808;
+    border: none;
     color: white;
-    background-color: trasparent;
-    margin-bottom: 0px;
+    font-weight: 200px
+    height: 50px;
+    padding: 15px;
+    line-height: 20px;
+    color: white;
+    width: 150px;
+    @include transistion-property(width);
+    @include transistion-duration(1s);
+    @include transistion-timing-function(ease-out);
+}
+#filetitle:focus {
+    width: 320px;
 }
 
 // ---------------------------- Editor Styles ------------------------------ //
