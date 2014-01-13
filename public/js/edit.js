@@ -112,6 +112,7 @@ app.save = function (e) {
     }
 
     data.file.id = $('#filename').data().fileid;
+    console.log(data.file.id);
     data.file.text = app.editor.getValue();
 
     var request = new XMLHttpRequest();
