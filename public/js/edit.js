@@ -15,7 +15,7 @@ app.animateAlert = function(options) {
     // Store defaults
     config = {
         header: 'Hello!',
-        body: 'This is an alert.',
+        body: 'The action completed successfully.',
         type: 'success',
         delay: 1500,
         fade: 400
@@ -121,7 +121,7 @@ app.save = function (e) {
                 $('#filetitle').html((data.file.filename > 25 ? data.file.filename.slice(0, 25) + '...' : data.file.filename));
                 app.animateAlert({
                     header:'Success!', 
-                    body: statMesg
+                    body: 'The file saved successfully.'
                 });
                 console.log("|-- saving successfu");
             } else {
