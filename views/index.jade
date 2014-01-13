@@ -74,7 +74,7 @@ block content
                             .panel-heading
                                 a.text-info.panel-title(href='/edit/' + file.id)= file.name
                                 small.timestamp= file.modified
-                                button.close(type="button", data-fileid=file.id, data-filename=file.name, aria-hidden="true") 
+                                button.close(type="button", data-fileid="#{file.id}", data-filename="#{file.name}", aria-hidden="true") 
                                     small: span.glyphicon.glyphicon-trash
                             //-.panel-body
                                 //-- var body = file.context.replace(/(\r\n|\n|\r)/gm, " ")
