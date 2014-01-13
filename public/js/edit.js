@@ -54,17 +54,6 @@ app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     // keyMap:       "vim"
 });
 
-marked.setOptions({
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: true,
-  langPrefix: 'language-',
-});
-
 app.compile = function(force) {
     var raw = app.editor.getValue();
     if(!force && !raw) {return;}
@@ -89,8 +78,6 @@ app.compile = function(force) {
         }
     });
 };
-
-CodeMirror.commands.save = app.compile;
 
 app.save = function (e) {
     $(e.currentTarget).dropdown('toggle');
@@ -158,6 +145,8 @@ app.save = function (e) {
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send(JSON.stringify(data));
 };
+
+CodeMirror.commands.save = app.save;
 
 app.previewExpanded = false;
 app.togglePreview = function() {
@@ -241,6 +230,17 @@ app.setKeybindings = function(e) {
 
 app.init = function () {
     console.log('│ Initializing app. . .');
+    marked.setOptions({
+      gfm: true,
+      tables: true,
+      breaks: false,
+      pedantic: false,
+      sanitize: false,
+      smartLists: true,
+      smartypants: true,
+      langPrefix: 'language-',
+    });
+
     app.compile(false);
     $('#compile-button').click(function() {app.compile(true)});
     $('.CodeMirror-wrap').typing({
