@@ -33,28 +33,28 @@ module.exports = function (db) {
                     console.log("File name taken.");
                     return;
                 }
+                var file = {};
+                file.name = req.body.file.filename;
+                file.tags = ["All Notes"];
+                file.owner = req.body.user.id;
+                file.content = req.body.file.text;
+                file.created = Number(moment().format("X"));
+                file.modified = file.created;
+
+                files.insert(file);
+                // and return fileid
+                files.find({
+                    "name": req.body.file.filename,
+                    "owner": req.body.user.id
+                }, {}, function (err, docs) {
+                    if (err || !(docs.length === 1)) {
+                        res.send(500, {"statMesg": "Something went wrong with the database."});
+                        return;
+                    }
+                    res.send({"fileid": docs[0]._id }); 
+                });    
             });
 
-            var file = {};
-            file.name = req.body.file.filename;
-            file.tags = ["All Notes"];
-            file.owner = req.body.user.id;
-            file.content = req.body.file.text;
-            file.created = Number(moment().format("X"));
-            file.modified = file.created;
-
-            files.insert(file);
-            // and return fileid
-            files.find({
-                "name": req.body.file.filename,
-                "owner": req.body.user.id
-            }, {}, function (err, docs) {
-                if (err || !(docs.length === 1)) {
-                    res.send(500, {"statMesg": "Something went wrong with the database."});
-                    return;
-                }
-                res.send({"fileid": docs[0]._id }); 
-            });    
         } else {
             console.log("File already in database");
             files.find({"_id": fileid}, {}, function (err, docs){
