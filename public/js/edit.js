@@ -87,6 +87,7 @@ CodeMirror.commands.save = app.compile;
 
 app.save = function (e) {
     e.preventDefault();
+    $(e.currentTarget).dropdown('toggle');
     console.log('Saving...');
     var data = {}; data.file = {}; data.user = {};
 
