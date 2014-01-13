@@ -43,10 +43,16 @@ module.exports = function (db) {
                 }
 
                 user.files = docs;
+                user.tags = [];
                 for (var i = 0; i < user.files.length; ++i) {
                     delete(user.files[i].content);
+                    for (var j = 0; j < user.files[i].tags.length; ++j) {
+                        var tag = user.files[i].tags[j];
+                        if (user.tags.indexOf(tag) === -1) {
+                            user.tags.push(tag);
+                        }
+                    }
                 }
-                console.log(user.files);
                 res.render("index", {"user": user});
             });
         }); 
