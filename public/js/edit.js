@@ -85,7 +85,6 @@ app.compile = function(force) {
 CodeMirror.commands.save = app.compile;
 
 app.save = function (e) {
-    e.preventDefault();
     $(e.currentTarget).dropdown('toggle');
     console.log('Saving...');
     var data = {}; data.file = {}; data.user = {};
@@ -117,12 +116,23 @@ app.save = function (e) {
     request.onreadystatechange = function() {
         if (request.readyState === 4) {
             var statMesg = JSON.parse(request.responseText).statMesg;
+            var fileid = JSON.parse(request.responseText).fileid;
+            console.log(request.responseText);
             if (request.status === 200) {
-                $('#filetitle').html((data.file.filename > 25 ? data.file.filename.slice(0, 25) + '...' : data.file.filename));
+                $('#filename').html(data.file.filename);
                 app.animateAlert({
                     header:'Success!', 
                     body: 'Your file was saved.'
                 });
+                if(/\/edit/g.test(document.URL)) {
+                    setTimeout(function() {
+                        if(document.URL.charAt(document.URL.length - 1) === '/') {
+                            window.location.replace(document.URL + fileid);
+                        } else {
+                            window.location.replace(document.URL + '/' + fileid);
+                        }
+                    }, 1500);
+                }
                 console.log("|-- saving successful.");
             } else {
                 app.animateAlert({

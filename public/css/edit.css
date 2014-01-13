@@ -50,44 +50,65 @@ body {
   background-attachment: fixed;
 }
 
-/* line 40, ../sass/edit.scss */
-a#filetitle,
-a#filetitle:hover {
+/* line 39, ../sass/edit.scss */
+#filename {
+  background: #080808;
+  border: none;
+  color: white;
+  font-weight: 200px;
+  height: 50px;
+  padding: 15px;
   font-size: 20px;
   color: white;
-  background-color: trasparent;
-  margin-bottom: 0px;
+  width: 150px;
+  -webkit-transition-property: width;
+  -moz-transition-property: width;
+  -o-transition-property: width;
+  transition-property: width;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
 }
 
-/* line 48, ../sass/edit.scss */
+/* line 53, ../sass/edit.scss */
+#filename:focus {
+  width: 320px;
+}
+
+/* line 58, ../sass/edit.scss */
 .full#editor-window {
   padding: 58px 7px 7px 7px;
 }
 
-/* line 52, ../sass/edit.scss */
+/* line 62, ../sass/edit.scss */
 #editor-col {
   padding-right: 5px;
 }
 
-/* line 55, ../sass/edit.scss */
+/* line 65, ../sass/edit.scss */
 .CodeMirror {
   border-radius: 3px;
   border: 3px solid #CACACA;
 }
 
-/* line 61, ../sass/edit.scss */
+/* line 71, ../sass/edit.scss */
 #preview-col {
   padding-left: 5px;
 }
 
-/* line 64, ../sass/edit.scss */
+/* line 74, ../sass/edit.scss */
 #preview-wrapper {
   padding: 3px;
   background: #EEE;
   border-radius: 3px;
 }
 
-/* line 69, ../sass/edit.scss */
+/* line 79, ../sass/edit.scss */
 #preview-pane {
   padding-right: 10px;
   padding-left: 10px;
@@ -97,7 +118,7 @@ a#filetitle:hover {
   overflow-y: scroll;
 }
 
-/* line 77, ../sass/edit.scss */
+/* line 87, ../sass/edit.scss */
 .preview-expand {
   position: absolute;
   left: 50%;
@@ -107,24 +128,24 @@ a#filetitle:hover {
 }
 
 @media (min-width: 768px) {
-  /* line 84, ../sass/edit.scss */
+  /* line 94, ../sass/edit.scss */
   .preview-expand {
     margin-left: -385px;
   }
 }
 @media (min-width: 992px) {
-  /* line 85, ../sass/edit.scss */
+  /* line 95, ../sass/edit.scss */
   .preview-expand {
     margin-left: -485px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 86, ../sass/edit.scss */
+  /* line 96, ../sass/edit.scss */
   .preview-expand {
     margin-left: -585px;
   }
 }
-/* line 89, ../sass/edit.scss */
+/* line 99, ../sass/edit.scss */
 #markdown-pane {
   position: absolute;
   top: 20px;
@@ -134,12 +155,12 @@ a#filetitle:hover {
 }
 
 @media (max-width: 1034px) {
-  /* line 96, ../sass/edit.scss */
+  /* line 106, ../sass/edit.scss */
   #markdown-pane {
     display: none !important;
   }
 }
-/* line 99, ../sass/edit.scss */
+/* line 109, ../sass/edit.scss */
 #message-box {
   display: none;
   position: fixed;
@@ -150,7 +171,7 @@ a#filetitle:hover {
 }
 
 @media (max-width: 768px) {
-  /* line 107, ../sass/edit.scss */
+  /* line 117, ../sass/edit.scss */
   #message-box {
     left: 10px;
     right: 10px;
@@ -158,21 +179,21 @@ a#filetitle:hover {
   }
 }
 @media (min-width: 768px) {
-  /* line 108, ../sass/edit.scss */
+  /* line 118, ../sass/edit.scss */
   #message-box {
     left: 5%;
     width: 90%;
   }
 }
 @media (min-width: 992px) {
-  /* line 109, ../sass/edit.scss */
+  /* line 119, ../sass/edit.scss */
   #message-box {
     left: 15%;
     width: 70%;
   }
 }
 @media (min-width: 1200px) {
-  /* line 110, ../sass/edit.scss */
+  /* line 120, ../sass/edit.scss */
   #message-box {
     left: 25%;
     width: 50%;

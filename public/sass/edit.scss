@@ -36,21 +36,21 @@ body {
     background-attachment: fixed;
 }
 
-#filetitle {
+#filename {
     background: #080808;
     border: none;
     color: white;
-    font-weight: 200px
+    font-weight: 200px;
     height: 50px;
     padding: 15px;
-    line-height: 20px;
+    font-size: 20px;
     color: white;
     width: 150px;
-    @include transistion-property(width);
-    @include transistion-duration(1s);
-    @include transistion-timing-function(ease-out);
+    @include transition-property(width);
+    @include transition-duration(0.5s);
+    @include transition-timing-function(ease-out);
 }
-#filetitle:focus {
+#filename:focus {
     width: 320px;
 }
 
