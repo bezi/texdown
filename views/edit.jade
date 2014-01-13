@@ -33,7 +33,7 @@ block content
                         li
                             form(role="form")
                                 .input-group
-                                    if (file && file.name && file.id)
+                                    if (file)
                                         input.form-control#filename(type="text", placeholder="Filename", data-filename=file.name, data-fileid=file.id, value=file.name)
                                     else
                                         input.form-control#filename(type="text", placeholder="Filename", value='Untitled'))
