@@ -225,7 +225,7 @@ app.init = function () {
     $('#compile-button').click(function() {app.compile(true)});
     $('#expand-button').click(app.expandButton);
     $('#discard-button').click(function() {
-    
+        location.reload();
     });
     $('#markdown-button').click(app.toggleHelp);
     $(document).ready(function() {
