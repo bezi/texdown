@@ -19,9 +19,10 @@ block content
             a.navbar-brand.texdown-logo(href="/")
         .navbar-collapse.collapse
             ul.nav.navbar-nav
-                - var title = (file && file.name && file.name.length > 30 ? file.name.splice(0, 30) + '...' : 'Untitled')
-                li.active: a.lead#filetitle= title
-                li: a#compile-button(href="#", title="Refresh")
+                - var title = (file && file.name ? file.name.slice(0, 25) : 'Untitled')
+                - title = (file && file.name && file.name.length > 25 ? title + '...' : title)
+                li.active: a.lead#filetitle(title=(file && file.name ? file.name : ''))= title
+                li: a#compile-button(href="#", title="Compile")
                     span.glyphicon.glyphicon-refresh
                     |  Compile
                 li.dropdown
@@ -32,7 +33,7 @@ block content
                         li
                             form(role="form")
                                 .input-group
-                                    input.form-control#filename(type="text", placeholder="Filename", data-filename=file.name, data-fileid=file.id, value=(file && file.name ? file.name : ''))
+                                    input.form-control#filename(type="text", placeholder="Filename", data-filename=(file && file.name ? file.name : ''), data-fileid=(file && file.name ? file.id : ''), value=(file && file.name ? file.name : 'Untitled'))
                                     span.input-group-btn
                                         button.btn.btn-primary.pull-right#save-button(type="submit") Save
                 li: a(href="#", title="Discard")

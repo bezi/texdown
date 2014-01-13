@@ -29,7 +29,6 @@ app.animateAlert = function(options) {
                      options.type === 'danger') ? 3000 : config.delay;
     config.delay  = options.delay  || config.delay;
     config.fade   = options.fade   || config.fade;
-    console.log(config);
 
     // Ease of use
     var container = $('#message-box');
@@ -112,7 +111,6 @@ app.save = function (e) {
     }
 
     data.file.id = $('#filename').data().fileid;
-    console.log(data.file.id);
     data.file.text = app.editor.getValue();
 
     var request = new XMLHttpRequest();
@@ -120,6 +118,7 @@ app.save = function (e) {
         if (request.readyState === 4) {
             var statMesg = JSON.parse(request.responseText).statMesg;
             if (request.status === 200) {
+                $('#filetitle').html((data.file.filename > 25 ? data.file.filename.slice(0, 25) + '...' : data.file.filename));
                 app.animateAlert({
                     header:'Success!', 
                     body: statMesg
@@ -186,7 +185,7 @@ app.setKeybindings = function(e) {
         $('#emacskeys').removeClass('btn-primary');
 
         app.editor.setOption("keyMap", "default");
-        app.animateAlert({header: 'Success!', content: 'Keybindings turned off.'});
+        app.animateAlert({header: 'Success!', body: 'Keybindings turned off.'});
     }
     else if ($('#vimkeys').is(e.target)) {
         $('#vimkeys').addClass('btn-primary');
@@ -201,7 +200,7 @@ app.setKeybindings = function(e) {
             $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
         }
         app.editor.setOption("keyMap", "vim");
-        app.animateAlert({header: 'Success!', content: 'Keybindings set to vim mode.'});
+        app.animateAlert({header: 'Success!', body: 'Keybindings set to vim mode.'});
     }
     else if ($('#emacskeys').is(e.target)) {
         $('#emacskeys').addClass('btn-primary');
@@ -216,7 +215,7 @@ app.setKeybindings = function(e) {
             $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>')
         }
         app.editor.setOption("keyMap", "emacs");
-        app.animateAlert({header: 'Success!', content: 'Keybindings set to emacs mode.'});
+        app.animateAlert({header: 'Success!', body: 'Keybindings set to emacs mode.'});
     }
 }
 
