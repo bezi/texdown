@@ -5,3 +5,4 @@ node_modules/*
 texdown-logo/out/*
 app.config
 runserver
+runserver.config
