@@ -16,8 +16,9 @@ The Jade template is rendered with an object of the following form:
         "settings": {
             "editor": <string>         // either "", "vim", or "emacs"
         },
-        "files": <list>                // array of zero or more objects 
+        "files": <list>,               // array of zero or more objects 
                                        //   (see below for format)
+        "tags": <list>                 // array of strings
     }
 }
 // Syntax for one object in "files"
