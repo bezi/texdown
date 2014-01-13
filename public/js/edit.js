@@ -55,10 +55,11 @@ app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     // keyMap:       "vim"
 });
 
-app.compile = function(force=true) {
+app.compile = function(force) {
     console.log("Compiling. . .");
     var data = {};
     data.text = app.editor.getValue();
+    if(!force && !data.text) {return;}
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
         if (request.readyState === 4) {
@@ -220,7 +221,7 @@ app.setKeybindings = function(e) {
 app.init = function () {
     console.log('Initializing app. . .');
     app.compile(false);
-    $('#compile-button').click(app.compile);
+    $('#compile-button').click(function() {app.compile(true)});
     $('#expand-button').click(app.expandButton);
     $('#markdown-button').click(app.toggleHelp);
     $(document).ready(function() {
