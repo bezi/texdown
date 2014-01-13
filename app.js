@@ -8,6 +8,7 @@ var app = express();
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(process.env.TEXDOWN_MONGOLAB_URL);
+db.ObjectID = mongo.ObjectID;
 
 //===============================================
 // authentication

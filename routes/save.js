@@ -16,11 +16,11 @@ module.exports = function (db) {
             return;
         }
 
-        if (/\s*/.test(req.body.file.filename)) {
+        req.body.file.filename = req.body.file.filename.trim();
+        if (req.body.file.filename === "") {
             res.send(400, {"statMesg": "Filename cannot be blank or whitespace"});
             return;
         }
-        req.body.file.filename = req.body.file.filename.trim();
 
         var fileid = req.body.file.id;
         // if the file doesn't have an id, make it
@@ -45,47 +45,62 @@ module.exports = function (db) {
                 file.created = Number(moment().format("X"));
                 file.modified = file.created;
 
-                files.insert(file);
-                // and return fileid
-                files.find({
-                    "name": req.body.file.filename,
-                    "owner": req.body.user.id
-                }, {}, function (err, docs) {
-                    if (err || !(docs.length === 1)) {
-                        res.send(500, {"statMesg": "Something went wrong with the database."});
-                        return;
-                    }
-                    res.send({"fileid": docs[0]._id }); 
-                });    
+                files.insert(file, function() {
+                    // and return fileid
+                    files.find({
+                        "name": req.body.file.filename,
+                        "owner": req.body.user.id
+                    }, {}, function (err, docs) {
+                        if (err || !(docs.length === 1)) {
+                            res.send(500, {"statMesg": "Something went wrong with the database."});
+                            return;
+                        }
+                        var fileid = docs[0]._id;
+                        files.update({
+                            "name": req.body.file.filename,
+                            "owner": req.body.user.id
+                        }, {"$set": {"id": fileid}}, function (err) {
+                            if (err) {
+                                res.send(500, {"statMesg": "Something went wrong with the database."});
+                                return;
+                            }
+                            res.send({"fileid": fileid }); 
+                        });
+                    });    
+                });
             });
 
         } else {
-            files.find({"_id": fileid}, {}, function (err, docs){
+            if (fileid.length !== 24) {
+                res.send(500, {"statMesg": "Invalid file id"});
+                return;
+            }
+            files.find({"id": db.ObjectID(fileid)}, {}, function (err, docs){
                 if (err) {
                     res.send(500, {"statMesg": "Something went wrong with the database."});
                     return;
                 } else if (docs.length !== 1) {
                     res.send(404, {"statMesg": "The file was not found in the database."});
+                    return;
                 }
                 var doc = docs[0];
-                if (!(req.userid === doc.owner)) {
+                if (!(String(req.user.id) === String(doc.owner))) {
                     res.send(401, JSON.stringify({"statMesg": "You don't own this file."}));
                     return;
                 }
 
-                if (req.body.file.text) {
-                    file.update({"_id": fileid}, {$set: {
-                        "content": req.body.file.text, 
-                        "name": req.body.file.filename,
-                        "modified": Number(moment().format("X"))
-                    }}, function (err) {
-                        if (err) {
-                            res.send(500, {"statMesg": "Something went wrong with the database."});
-                        }
-                        res.send({"statMesg": "File saved successfully."});
-                        return;
-                    });
-                }
+                files.update({"_id": fileid}, {$set: {
+                    "content": req.body.file.text, 
+                    "name": req.body.file.filename,
+                //    "tags": req.body.file.tags,
+                    "modified": Number(moment().format("X"))
+                }}, function (err) {
+                    if (err) {
+                        res.send(500, {"statMesg": "Something went wrong with the database."});
+                    }
+                    res.send({"statMesg": "File saved successfully."});
+                    return;
+                });
             });
         }
     };

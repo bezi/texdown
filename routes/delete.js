@@ -5,7 +5,12 @@ function deleteGen (db) {
         // must be authenticated for this to work
         var user = req.body.user;
         var fileid = req.body.file.id; 
-        files.find({"_id": fileid}, {}, function (err, docs) {
+        console.log(fileid);
+        if (fileid.length !== 24) {
+            res.send(500, {"statMesg": "Invalid file id"});
+            return;
+        }
+        files.find({"_id": db.ObjectID(fileid)}, {}, function (err, docs) {
             if (err || !(docs.length === 1)) {
                 res.send(500, {"statMesg": "A database error got in the way of deleting the file."});
                 return;
@@ -17,7 +22,7 @@ function deleteGen (db) {
             }
             
             // delete the file
-            files.drop({"_id": fileid}, {}, function (err) {
+            files.remove({"_id": db.ObjectID(fileid)}, function (err) {
                 if (err) {
                     res.send(500, {"statMesg": "Unable to delete file due to database error."});
                     return;

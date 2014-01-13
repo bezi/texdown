@@ -37,6 +37,8 @@ module.exports = function (db) {
             }
 
             data.file = doc;
+            data.file.id = doc._id;
+            delete(data.file._id)
             res.render('edit', data);
             return;
         });

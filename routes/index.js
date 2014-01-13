@@ -53,6 +53,9 @@ module.exports = function (db) {
                         }
                     }
                 }
+                user.files.sort(function(b, a) {
+                    return Number(a.modified) - Number(b.modified);
+                });
                 res.render("index", {"user": user});
             });
         }); 
