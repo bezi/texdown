@@ -33,7 +33,10 @@ block content
                         li
                             form(role="form")
                                 .input-group
-                                    input.form-control#filename(type="text", placeholder="Filename", data-filename=(file && file.name ? file.name : ''), data-fileid=(file && file.name ? file.id : ''), value=(file && file.name ? file.name : 'Untitled'))
+                                    if (file && file.name && file.id)
+                                        input.form-control#filename(type="text", placeholder="Filename", data-filename=file.name, data-fileid=file.id, value=file.name)
+                                    else
+                                        input.form-control#filename(type="text", placeholder="Filename", value='Untitled'))
                                     span.input-group-btn
                                         button.btn.btn-primary.pull-right#save-button(type="submit") Save
                 li: a(href="#", title="Discard")
