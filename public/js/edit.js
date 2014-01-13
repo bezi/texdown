@@ -54,39 +54,47 @@ app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
     // keyMap:       "vim"
 });
 
+marked.setOptions({
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: true,
+  langPrefix: 'language-',
+});
+
 app.compile = function(force) {
-    console.log("Compiling. . .");
-    var data = {};
-    data.text = app.editor.getValue();
-    if(!force && !data.text) {return;}
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                var response = JSON.parse(request.responseText); 
-                $('#preview-pane').html(response.text);
-                // re-render math
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-                // re-render Google prettyprint
-                $('#preview-pane pre').addClass("prettyprint");
-                $('#preview-pane pre code').addClass("prettyprint");
-                prettyPrint();
-                console.log("|-- compiling successful.");
-            } else {
-                console.log("|-- error in compiling.");
-            }
+    var raw = app.editor.getValue();
+    if(!force && !raw) {return;}
+    console.log("├─┬ Compiling. . .");
+    var texdown = raw
+        .replace(/\\\(/g, '<script type="math/tex">')
+        .replace(/\\\)/g, '</script>')
+        .replace(/\\\[/g, '<script type="math/tex; mode=display">')
+        .replace(/\\\]/g, '</script>');
+    marked(texdown, function(err, compiled) {
+        if (err) {
+            console.log('│ └─ error in compiling: ' + err);
+        } else {
+            $('#preview-pane').html(compiled);
+            // re-render math
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            // re-render Google prettyprint
+            $('#preview-pane pre').addClass("prettyprint");
+            $('#preview-pane pre code').addClass("prettyprint");
+            prettyPrint();
+            console.log("│ └─ compiling successful.");
         }
-    }
-    request.open('POST', '/compile', true);
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send(JSON.stringify(data));
+    });
 };
 
 CodeMirror.commands.save = app.compile;
 
 app.save = function (e) {
     $(e.currentTarget).dropdown('toggle');
-    console.log('Saving...');
+    console.log('├─┬ Saving...');
     var data = {}; data.file = {}; data.user = {};
 
     data.user.id = $('body').data().userid;
@@ -96,6 +104,7 @@ app.save = function (e) {
             body: 'You have to be signed in to save files.', 
             type: 'danger', 
         });
+            console.log('│ └─ error in saving: user not signed in.');
         return;
     }
 
@@ -106,6 +115,7 @@ app.save = function (e) {
             body: 'Please enter a filename.', 
             type: 'danger', 
         });
+            console.log('│ └─ error in saving: no filename provided.');
         return;
     }
 
@@ -133,14 +143,14 @@ app.save = function (e) {
                         }
                     }, 1500);
                 }
-                console.log("|-- saving successful.");
+                console.log('│ └─ save successful.');
             } else {
                 app.animateAlert({
                     header:'Oh no!', 
                     body: statMesg + " (error: " + request.status + ")", 
                     type: 'danger'
                 });
-                console.log("|-- error in compiling.");
+                console.log('│ └─ error in saving: ' + statMesg + ' (error: ' + request.status + ')');
             }
         }
     }
@@ -230,9 +240,21 @@ app.setKeybindings = function(e) {
 }
 
 app.init = function () {
-    console.log('Initializing app. . .');
+    console.log('│ Initializing app. . .');
     app.compile(false);
     $('#compile-button').click(function() {app.compile(true)});
+    $('.CodeMirror-wrap').typing({
+        start: function() {
+                   console.log('├─┬ Typing...');
+                   $('#preview-waiting').toggleClass('hidden');
+               },
+        stop: function() {
+                  console.log('│ └ typing stopped.');
+                  $('#preview-waiting').toggleClass('hidden');
+                  app.compile(true);
+              },
+        delay: 500
+    });
     $('#expand-button').click(app.expandButton);
     $('#discard-button').click(function() {
         location.reload();
@@ -245,7 +267,7 @@ app.init = function () {
     $('#nokeys').click(app.setKeybindings);
     $('#vimkeys').click(app.setKeybindings);
     $('#emacskeys').click(app.setKeybindings);
-    console.log('|-- app intialized.');
+    console.log('├── app intialized.');
 }
 
 app.init();
