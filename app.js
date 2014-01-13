@@ -7,7 +7,7 @@ var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('mongodb://texdown:asdf@ds059888.mongolab.com:59888/texdown');
+var db = monk(process.env.TEXDOWN_MONGOLAB_URL);
 
 //===============================================
 // authentication
@@ -15,8 +15,8 @@ var db = monk('mongodb://texdown:asdf@ds059888.mongolab.com:59888/texdown');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-var GOOGLE_CLIENT_ID = "383913450954-s1m28ea0b4f5u30inmjns6q8q324h3g4.apps.googleusercontent.com";
-var GOOGLE_CLIENT_SECRET = "bGcCd7EwUd13BMXNcoc4Nsw6"; 
+var GOOGLE_CLIENT_ID = process.env.TEXDOWN_GOOGLE_CLIENT_ID;
+var GOOGLE_CLIENT_SECRET = process.env.TEXDOWN_GOOGLE_CLIENT_SECRET; 
 
 passport.serializeUser(function(user, done) {
   done(null, user);

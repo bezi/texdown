@@ -3,3 +3,4 @@
 .sass-cache/
 node_modules/*
 texdown-logo/out/*
+app.config
