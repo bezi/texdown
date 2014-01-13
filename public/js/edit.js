@@ -121,9 +121,9 @@ app.save = function (e) {
                 $('#filetitle').html((data.file.filename > 25 ? data.file.filename.slice(0, 25) + '...' : data.file.filename));
                 app.animateAlert({
                     header:'Success!', 
-                    body: statMesg
+                    body: 'Your file was saved.'
                 });
-                console.log("|-- saving successfu");
+                console.log("|-- saving successful.");
             } else {
                 app.animateAlert({
                     header:'Oh no!', 
@@ -224,6 +224,9 @@ app.init = function () {
     app.compile(false);
     $('#compile-button').click(function() {app.compile(true)});
     $('#expand-button').click(app.expandButton);
+    $('#discard-button').click(function() {
+    
+    });
     $('#markdown-button').click(app.toggleHelp);
     $(document).ready(function() {
         prettyPrint();
