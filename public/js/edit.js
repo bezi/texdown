@@ -140,9 +140,9 @@ app.save = function () {
                 if(/\/edit$/g.test(document.URL)) {
                     setTimeout(function() {
                         if(document.URL.charAt(document.URL.length - 1) === '/') {
-                            window.location.href(document.URL + fileid);
+                            window.location.href = document.URL + fileid;
                         } else {
-                            window.location.href(document.URL + '/' + fileid);
+                            window.location.href = document.URL + '/' + fileid;
                         }
                     }, 1500);
                 }
