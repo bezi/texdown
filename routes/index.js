@@ -31,7 +31,9 @@ module.exports = function (db) {
                     res.render("index", { "user": data });
                     return;
                 });
-            }
+                return;
+            }   
+            
 
             var user = req.user;
             var doc = docs[0];
