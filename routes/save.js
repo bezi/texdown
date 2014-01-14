@@ -55,16 +55,7 @@ module.exports = function (db) {
                             return;
                         }
                         var fileid = docs[0]._id;
-                        files.update({
-                            "name": req.body.file.filename,
-                            "owner": req.body.user.id
-                        }, {"$set": {"id": fileid}}, function (err) {
-                            if (err) {
-                                res.send(500, {"statMesg": "Something went wrong with the database."});
-                                return;
-                            }
-                            res.send({"fileid": fileid }); 
-                        });
+                        res.send({"fileid": fileid }); 
                     });    
                 });
             });
