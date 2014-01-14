@@ -36,18 +36,19 @@ module.exports = function (db) {
             return;
         }
         data.user = req.user;
+
         tdusers.find({id: req.user.id}, {}, function (err, docs) { 
             if(err) {
-                var data = {}; data.error = {};
-                data.error.code = 500; 
-                data.error.message = "Something went wrong with the database.";
-                res.render("500", data);
+                var body = {}; body.error = {};
+                body.error.code = 500; 
+                body.error.message = "Something went wrong with the database.";
+                res.render("500", body);
                 return;
             } else if (docs.length === 0) {
-                var data = {}; data.error = {};
-                data.error.code = 401; 
-                data.error.message = "Error authenticating user.";
-                res.render("500", data);
+                var body = {}; body.error = {};
+                body.error.code = 401; 
+                body.error.message = "Error authenticating user.";
+                res.render("500", body);
                 return;
             }
             data.user.settings = docs[0].settings;
@@ -65,10 +66,10 @@ module.exports = function (db) {
 
                 var doc = docs[0];
                 if (!(req.user.id === doc.owner)) {
-                    var data = {}; data.error = {};
-                    data.error.code = 403; 
-                    data.error.message = "You don't own this file.";
-                    res.render("500", data);
+                    var body = {}; body.error = {};
+                    body.error.code = 403; 
+                    body.error.message = "You don't own this file.";
+                    res.render("500", body);
                     return;
                 }
 

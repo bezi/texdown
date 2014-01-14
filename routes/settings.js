@@ -19,6 +19,8 @@ module.exports = function (db) {
         var statMesg = '';
         for(var setting in settings) {
             if(!setting.hasOwnProperty) {continue;}
+            console.log(setting);
+            console.log(settings[setting]);
             switch(setting) {
                 case 'editor':
                     if (editors.indexOf(settings[setting]) === -1) {
