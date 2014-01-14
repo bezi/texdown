@@ -1,0 +1,31 @@
+extends base
+block header
+    title TeXDown
+    link(rel="stylesheet", type="text/css", href="/css/bootstrap-social.css")
+    link(rel="stylesheet", type="text/css", href="/css/index.css")
+block content
+    .navbar.navbar-inverse.navbar-fixed-top
+        .container
+            .navbar-header
+                button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-collapse")
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.navbar-brand.texdown-logo(href="/")
+            .navbar-collapse.collapse
+                ul.nav.navbar-nav
+                    li: a(href="#")
+                        span.glyphicon.glyphicon-star
+                        |  About
+                    li: a(href="/edit")
+                        span.glyphicon.glyphicon-plus
+                        |  Try it!
+            form.navbar-form.navbar-right
+                a.btn.btn-social.btn-primary(href="/auth/google")
+                    i.fa.fa-google-plus
+                    | &nbsp;&nbsp;Sign in&nbsp;&nbsp;
+
+    img.center-block(src="/images/texdown-logo-white-900.png")
+    h1.text-center= error.code + " (that's an error...)"
+    h3.text-center= error.message
+

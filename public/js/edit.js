@@ -285,15 +285,16 @@ app.init = function () {
 
     app.editor = CodeMirror.fromTextArea($('#editor-pane')[0], app.settings.editor);
 
-    // TODO Strip data from page
-
     marked.setOptions(app.settings.marked);
     app.compile(false);
 
     app.data.file.id = $('#filename').data().fileid;
     app.data.user.id = $('body').data().userid;
 
-CodeMirror.commands.save = app.save;
+    // TODO Make sure that using these settings ends up with the correct settings set
+//     app.settings.editor   = $('#settings-button').data().editor;
+//     app.settings.autosave = $('#settings-button').data().autosave;
+//     app.settings.autocomp = $('#settings-button').data().autocomp;
 
     $('.CodeMirror-wrap').typing({
         start: function() {

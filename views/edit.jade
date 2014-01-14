@@ -1,4 +1,30 @@
 extends base
+mixin makeSettings()
+    //- attributes = merge(user.settings, attributes)
+    //- a#settings-button.dropdown-toggle(data-toggle="dropdown", attributes) 
+    a#settings-button.dropdown-toggle(data-toggle="dropdown", data-editor=(user.settings.editor ? user.settings.editor : ''), data-autosave=(user.settings.autosave ? user.settings.autosave : ''), data-autocomp=(user.settings.autocomp ? user.settings.autocomp : '')) 
+        span.glyphicon.glyphicon-cog
+        |  Settings... 
+    ul.dropdown-menu
+        li
+            h5 Saving
+            .btn-group
+                button.btn.btn-primary#manualsave(type="button") Manual
+                button.btn.btn-default#autosave(type="button") Automatic
+        li.divider
+        li
+            h5 Compiling
+            .btn-group
+                button.btn.btn-primary#manualcompile(type="button") Manual
+                button.btn.btn-default#autocompile(type="button") Automatic
+        li.divider
+        li
+            h5 Keybindings
+            .btn-group
+                button.btn.btn-primary#nokeys(type="button") None
+                button.btn.btn-default#vimkeys(type="button") vim
+                button.btn.btn-default#emacskeys(type="button") emacs
+
 block header
     title TeXDown
     link(rel="stylesheet", type="text/css", href="/css/edit.css")
@@ -41,28 +67,31 @@ block content
                     span.glyphicon.glyphicon-dashboard
                     |  Markdown
                 li.dropdown
-                    a.dropdown-toggle(data-toggle="dropdown") 
-                        span.glyphicon.glyphicon-cog
-                        |  Settings... 
-                    ul.dropdown-menu
-                        li
-                            h5 Saving
-                            .btn-group
-                                button.btn.btn-primary#manualsave(type="button") Manual
-                                button.btn.btn-default#autosave(type="button") Automatic
-                        li.divider
-                        li
-                            h5 Compiling
-                            .btn-group
-                                button.btn.btn-primary#manualcompile(type="button") Manual
-                                button.btn.btn-default#autocompile(type="button") Automatic
-                        li.divider
-                        li
-                            h5 Keybindings
-                            .btn-group
-                                button.btn.btn-primary#nokeys(type="button") None
-                                button.btn.btn-default#vimkeys(type="button") vim
-                                button.btn.btn-default#emacskeys(type="button") emacs
+                    if (user)
+                        +makeSettings()
+                    else
+                        a#settings-button.dropdown-toggle(data-toggle="dropdown") 
+                            span.glyphicon.glyphicon-cog
+                            |  Settings... 
+                        ul.dropdown-menu
+                            li
+                                h5 Saving
+                                .btn-group
+                                    button.btn.btn-primary#manualsave(type="button") Manual
+                                    button.btn.btn-default#autosave(type="button") Automatic
+                            li.divider
+                            li
+                                h5 Compiling
+                                .btn-group
+                                    button.btn.btn-primary#manualcompile(type="button") Manual
+                                    button.btn.btn-default#autocompile(type="button") Automatic
+                            li.divider
+                            li
+                                h5 Keybindings
+                                .btn-group
+                                    button.btn.btn-primary#nokeys(type="button") None
+                                    button.btn.btn-default#vimkeys(type="button") vim
+                                    button.btn.btn-default#emacskeys(type="button") emacs
             if (user)
                 ul.nav.navbar-nav.navbar-right
                     li.dropdown: a.dropdown-toggle(data-toggle="dropdown")
