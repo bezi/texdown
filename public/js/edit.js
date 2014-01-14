@@ -3,6 +3,7 @@ app.settings = {
     autosave: false,
     autocomp: false,
     keys: '',
+    keyButtons: ['#nokeys', '#vimkeys', '#emacskeys'],
     vimSourced: false,
     emacsSourced: false,
     alertConf: {
@@ -200,21 +201,29 @@ app.toggleHelp = function() {
 
 app.setKeybindings = function(e) {
     var changed = false;
-    var toggle = function(set, unset) {
+    var toggle = function(set) {
         $(set).removeClass('btn-default').addClass('btn-primary');
-        unset.forEach(function(elem, index, arr) {
-            $(elem).removeClass('btn-primary').addClass('btn-default');
+        app.settings.keyButtons.forEach(function(elem, index, arr) {
+            if(elem !== set) {
+                $(elem).removeClass('btn-primary').addClass('btn-default');
+            }
         });
         changed = true;
     };
+    if (typeof e === 'string') {
+        app.toggle(e);
+        app.editor.setOption("keyMap", e.slice(1, -4) === 'no' ? 'default' : e.slice(1, -4));
+        app.setttings.keys = e.slice(1, -4) === 'no' ? '' : e.slice(1, -4);
+        console.log('├─ Keybindings loaded...');
+    }
     if ($('#nokeys').is(e.target) && app.settings.keys !== '') {
-        toggle('#nokeys', ['#vimkeys', '#emacskeys']);
+        toggle('#nokeys');
         app.editor.setOption("keyMap", "default");
         app.settings.keys = '';
         app.animateAlert({header: 'Success!', body: 'Keybindings turned off.'});
     }
     else if ($('#vimkeys').is(e.target) && app.settings.keys !== 'vim') {
-        toggle('#vimkeys', ['#nokeys', '#emacskeys']);
+        toggle('#vimkeys');
         if(!app.settings.vimSourced) {
             $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
         }
@@ -223,7 +232,7 @@ app.setKeybindings = function(e) {
         app.animateAlert({header: 'Success!', body: 'Keybindings set to vim mode.'});
     }
     else if ($('#emacskeys').is(e.target) && app.settings.keys !== 'emacs') {
-        toggle('#emacskeys', ['#vimkeys', '#nokeys']);
+        toggle('#emacskeys');
         if(!app.settings.emacsSourced) {
             $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>');
         }
@@ -233,50 +242,100 @@ app.setKeybindings = function(e) {
     }
 
     if (changed) {
-        // TODO Handle AJAX (POST /settings)
+        var data = {}; 
+        data.user = app.data.user;
+        data.settings = {
+            editor: app.settings.keys
+        }
+        $.ajax('/post', {
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+            },
+            type: 'POST'
+        });
     }
 }
 
 app.setAutoSave = function(e) {
     var orig = app.settings.autosave;
+    var toggle(set) {
+        if(set) {
+            $('#manualsave').removeClass('btn-primary').addClass('btn-default');
+            $('#autosave').removeClass('btn-default').addClass('btn-primary');
+            app.settings.autosave = true;
+            CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.compile;
+            app.save();
+        } else {
+            $('#autosave').removeClass('btn-primary').addClass('btn-default');
+            $('#manualsave').removeClass('btn-default').addClass('btn-primary');
+            app.settings.autosave = false;
+            CodeMirror.commands.save = app.settings.autocomp ? app.save : app.compile;
+            $('#save-status').html(' Save');
+        }
+    }
+
+    if (typeof e === 'boolean') { app.toggle(e); }
+
     if ($('#manualsave').is(e.target) && app.settings.autosave) {
-        $('#autosave').removeClass('btn-primary').addClass('btn-default');
-        $('#manualsave').removeClass('btn-default').addClass('btn-primary');
-        app.settings.autosave = false;
-        CodeMirror.commands.save = app.settings.autocomp ? app.save : app.compile;
-        $('#save-status').html(' Save');
+        toggle(false);
         app.animateAlert({header: 'Success!', body:'You are now in control of saving.'});
     } else if ($('#autosave').is(e.target) && !app.settings.autosave) {
-        $('#manualsave').removeClass('btn-primary').addClass('btn-default');
-        $('#autosave').removeClass('btn-default').addClass('btn-primary');
-        app.settings.autosave = true;
-        CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.compile;
-        app.save();
+        toggle(true);
         app.animateAlert({header: 'Success!', body:'Your changes will now autosave.'});
     }
     if(orig != app.settings.autosave) {
-        // TODO Handle AJAX (POST /settings)
+        var data = {}; 
+        data.user = app.data.user;
+        data.settings = {
+            editor: app.settings.autosave
+        }
+        $.ajax('/post', {
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+            },
+            type: 'POST'
+        });
     }
 }
 
 app.setAutoComp = function(e) {
     var orig = app.settings.autocomp;
+    var toggle(set) {
+        if(set) {
+            $('#manualcompile').removeClass('btn-primary').addClass('btn-default');
+            $('#autocompile').removeClass('btn-default').addClass('btn-primary');
+            app.settings.autocomp = true;
+            CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.save;
+            app.compile();
+        } else {
+            $('#autocompile').removeClass('btn-primary').addClass('btn-default');
+            $('#manualcompile').removeClass('btn-default').addClass('btn-primary');
+            app.settings.autocomp = false;
+            CodeMirror.commands.save = app.compile;
+        }
+    }
     if ($('#manualcompile').is(e.target) && app.settings.autocomp) {
-        $('#autocompile').removeClass('btn-primary').addClass('btn-default');
-        $('#manualcompile').removeClass('btn-default').addClass('btn-primary');
-        app.settings.autocomp = false;
-        CodeMirror.commands.save = app.compile;
+        toggle(false);
         app.animateAlert({header: 'Success!', body:'You are now in control of compiling.'});
     } else if ($('#autocompile').is(e.target) && !app.settings.autocomp) {
-        $('#manualcompile').removeClass('btn-primary').addClass('btn-default');
-        $('#autocompile').removeClass('btn-default').addClass('btn-primary');
-        app.settings.autocomp = true;
-        CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.save;
-        app.compile();
+        toggle(true);
         app.animateAlert({header: 'Success!', body:'Your changes will now autocompile.'});
     }
     if(orig != app.settings.autocomp) {
-        // TODO Handle AJAX (POST /settings)
+        var data = {}; 
+        data.user = app.data.user;
+        data.settings = {
+            editor: app.settings.autocomp
+        }
+        $.ajax('/post', {
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+            },
+            type: 'POST'
+        });
     }
 }
 
@@ -292,9 +351,9 @@ app.init = function () {
     app.data.user.id = $('body').data().userid;
 
     // TODO Make sure that using these settings ends up with the correct settings set
-//     app.settings.editor   = $('#settings-button').data().editor;
-//     app.settings.autosave = $('#settings-button').data().autosave;
-//     app.settings.autocomp = $('#settings-button').data().autocomp;
+    app.settings.editor   = $('#settings-button').data().editor;
+    app.settings.autosave = $('#settings-button').data().autosave;
+    app.settings.autocomp = $('#settings-button').data().autocomp;
 
     $('.CodeMirror-wrap').typing({
         start: function() {
