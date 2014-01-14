@@ -10,7 +10,10 @@ module.exports = function (db) {
 
         tdusers.find({id: req.user.id}, {}, function (err, docs) { 
             if (err || !(docs.length === 0 || docs.length === 1)) {
-                res.send(401, "There was an error with the database.");
+                var data = {}; data.error = {};
+                data.error.code = 500; 
+                data.error.message = "Something went wrong with the database.";
+                res.render("500", data);
                 return;
             }
 
@@ -24,7 +27,10 @@ module.exports = function (db) {
                 };
                 tdusers.insert(data, function (err) {
                     if (err) { 
-                        res.send(401, "There was an error with the database."); 
+                        var data = {}; data.error = {};
+                        data.error.code = 500; 
+                        data.error.message = "Something went wrong with the database.";
+                        res.render("500", data);
                         return;
                     }
                     data.files = [];
@@ -40,7 +46,10 @@ module.exports = function (db) {
             user.settings = doc.settings;
             files.find({"owner": user.id}, {}, function (err, docs) {
                 if (err) { 
-                    res.send(401, "There was an error with the database."); 
+                    var data = {}; data.error = {};
+                    data.error.code = 500; 
+                    data.error.message = "Something went wrong with the database.";
+                    res.render("500", data);
                     return;
                 }
 

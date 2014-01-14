@@ -1,4 +1,30 @@
 extends base
+mixin makeSettings()
+    //- attributes = merge(user.settings, attributes)
+    //- a#settings-button.dropdown-toggle(data-toggle="dropdown", attributes) 
+    a#settings-button.dropdown-toggle(data-toggle="dropdown", data-editor=(user.settings.editor ? user.settings.editor : ''), data-autosave=(user.settings.autosave ? user.settings.autosave : ''), data-autocomp=(user.settings.autocomp ? user.settings.autocomp : '')) 
+        span.glyphicon.glyphicon-cog
+        |  Settings... 
+    ul.dropdown-menu
+        li
+            h5 Saving
+            .btn-group
+                button.btn.btn-primary#manualsave(type="button") Manual
+                button.btn.btn-default#autosave(type="button") Automatic
+        li.divider
+        li
+            h5 Compiling
+            .btn-group
+                button.btn.btn-primary#manualcompile(type="button") Manual
+                button.btn.btn-default#autocompile(type="button") Automatic
+        li.divider
+        li
+            h5 Keybindings
+            .btn-group
+                button.btn.btn-primary#nokeys(type="button") None
+                button.btn.btn-default#vimkeys(type="button") vim
+                button.btn.btn-default#emacskeys(type="button") emacs
+
 block header
     title TeXDown
     link(rel="stylesheet", type="text/css", href="/css/edit.css")
@@ -25,41 +51,63 @@ block content
                     li: input#filename(type="text", placeholder="Filename", data-filename="#{file.name}", data-fileid="#{file.id}", value=file.name)
                 else
                     li: input#filename(type="text", placeholder="Filename", value="Untitled")
-                li: a#save-button(href="#", title="Compile")
+                li: a#save-button(title="Save")
                     span.glyphicon.glyphicon-floppy-disk
-                    |  Save
-                li: a#compile-button(href="#", title="Compile")
+                    span#save-status  Save 
+                li: a#compile-button(title="Compile")
                     span.glyphicon.glyphicon-refresh
                     |  Compile
-                li: a#discard-button(href="#", title="Discard")
+                li: a#discard-button(title="Discard")
                     span.glyphicon.glyphicon-trash
                     |  Discard
-                li: a= ' '
-                li: a#expand-button(href="#", title="Expand")
+                li: a#expand-button(title="Expand")
                     span.glyphicon.glyphicon-fullscreen
                     |  Expand
-                li: a= ' '
-                li: a#markdown-button(href="#", title="Markdown Hints")
+                li: a#markdown-button(title="Markdown Hints")
                     span.glyphicon.glyphicon-dashboard
                     |  Markdown
                 li.dropdown
-                    a.dropdown-toggle(href="#", data-toggle="dropdown") 
-                        span.glyphicon.glyphicon-cog
-                        |  Settings... 
-                    ul.dropdown-menu
-                        li
-                            h5 Keybindings
-                            .btn-group
-                                button.btn.btn-primary#nokeys(type="button") None
-                                button.btn.btn-default#vimkeys(type="button") vim
-                                button.btn.btn-default#emacskeys(type="button") emacs
+                    if (user)
+                        +makeSettings()
+                    else
+                        a#settings-button.dropdown-toggle(data-toggle="dropdown") 
+                            span.glyphicon.glyphicon-cog
+                            |  Settings... 
+                        ul.dropdown-menu
+                            li
+                                h5 Saving
+                                .btn-group
+                                    button.btn.btn-primary#manualsave(type="button") Manual
+                                    button.btn.btn-default#autosave(type="button") Automatic
+                            li.divider
+                            li
+                                h5 Compiling
+                                .btn-group
+                                    button.btn.btn-primary#manualcompile(type="button") Manual
+                                    button.btn.btn-default#autocompile(type="button") Automatic
+                            li.divider
+                            li
+                                h5 Keybindings
+                                .btn-group
+                                    button.btn.btn-primary#nokeys(type="button") None
+                                    button.btn.btn-default#vimkeys(type="button") vim
+                                    button.btn.btn-default#emacskeys(type="button") emacs
             if (user)
                 ul.nav.navbar-nav.navbar-right
-                    li.dropdown: a.dropdown-toggle(href="#", data-toggle="dropdown")
+                    li.dropdown: a.dropdown-toggle(data-toggle="dropdown")
                         img.avatar(src=user._json.picture)
+                        //- Uncomment to get user's name (Not being passed?)
+                        //- = &nbsp;&nbsp;user.name.givenName
                         | &nbsp;&nbsp;Me
                         b.caret
                         ul.dropdown-menu
+                            li: a(href="/") 
+                                span.glyphicon.glyphicon-home
+                                |  My Notes
+                            li: a(href="/edit") 
+                                span.glyphicon.glyphicon-plus
+                                |  New
+                            li.divider
                             li: a(href="/logout") 
                                 span.glyphicon.glyphicon-off
                                 |  Logout

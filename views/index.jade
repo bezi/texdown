@@ -14,14 +14,13 @@ block content
                 a.navbar-brand.texdown-logo(href="/")
             .navbar-collapse.collapse
                 ul.nav.navbar-nav
+                    li: a(href="#")
+                        span.glyphicon.glyphicon-star
+                        |  About
                     if (user)
                         li: a(href="#")
-                            span.glyphicon.glyphicon-star
-                            |  About
-                    li: a(href="#")
-                        span.glyphicon.glyphicon-question-sign
-                        |  Usage
-                    if (user)
+                            span.glyphicon.glyphicon-question-sign
+                            |  Usage
                         li: a(href="/edit")
                             span.glyphicon.glyphicon-plus
                             |  New
@@ -70,7 +69,7 @@ block content
                         h2.text-center You don't seem to have any notes.
                 #previews
                     each file in user.files
-                        .panel.panel-info(class='file-display-' + file.id)
+                        .panel.panel-info(id='file-display-' + file.id)
                             .panel-heading
                                 a.text-info.panel-title(href='/edit/' + file.id)= file.name
                                 small.timestamp= file.modified

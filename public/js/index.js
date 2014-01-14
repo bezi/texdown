@@ -46,7 +46,7 @@ app.animateAlert = function(options) {
 
 app.processTimes = function() {
     $('.timestamp').each(function(index) {
-        $(this).html(' - ' + moment($(this).html(), 'X').format('ddd, MMM Do, YYYY'));
+        $(this).html(' - ' + moment($(this).html(), 'X').calendar());
     });
 }
 
@@ -81,19 +81,18 @@ app.del = function (e) {
         if (request.readyState === 4) {
             var statMesg = JSON.parse(request.responseText).statMesg;
             if (request.status === 200) {
-                // Get nodes to remove
-                var panels = $('.file-display-' + data.file.id);
-
-                // Animate the first one (change to red, fade out), then remove them
-                $(panels[0]).removeClass('panel-info').addClass('panel-danger').delay(600).fadeOut(500);
+                app.animateAlert({
+                    header:'Success!', 
+                    body: statMesg
+                });
+                // Get nodes to remove and animate it (fade through red)
+                var pane = $('#file-display-' + data.file.id);
+                pane.removeClass('panel-info')
+                    .addClass('panel-danger')
+                    .delay(600).fadeOut(500);
+                // Stick this in here because this isn't an animation (can't be delay()'ed).
                 setTimeout(function () {
-                    for(var i = 0; i < panels.length; ++i) {
-                        panels[i].remove();
-                    }
-                    app.animateAlert({
-                        header:'Success!', 
-                        body: statMesg
-                    });
+                    pane.remove();
                 }, 1100);
 
                 console.log("|-- delete successful.");
@@ -114,6 +113,16 @@ app.del = function (e) {
 
 app.init = function () {
     console.log('Initializing app. . .');
+    moment.lang('en', {
+        calendar: {
+            lastDay:  '[Yesterday at] h:mma',
+            sameDay:  'h:mma [Today]',
+            nextDay:  '[Tomorrow at] h:mma',
+            lastWeek: 'ddd, MMM D',
+            nextWeek: 'ddd, MMM D',
+            sameElse: 'ddd, MMM D'
+        }
+    });
     app.processTimes();
     $('#previews button.close').click(app.confirmDelete);
     $('#labels button.close').click(app.confirmDelete);
