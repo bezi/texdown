@@ -7,7 +7,7 @@ var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-console.log("environment:\n" + process.env);
+console.log("environment:\n" + JSON.stringify(process.env));
 var db = monk(process.env.TEXDOWN_MONGOLAB_URL);
 db.ObjectID = mongo.ObjectID;
 
