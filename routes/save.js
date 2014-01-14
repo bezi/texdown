@@ -1,5 +1,4 @@
 var moment = require('moment');
-
 // POST: /save
 module.exports = function (db) {
     var files = db.get('files'); 
@@ -75,7 +74,7 @@ module.exports = function (db) {
                 res.send(500, {"statMesg": "Invalid file id"});
                 return;
             }
-            files.find({"id": db.ObjectID(fileid)}, {}, function (err, docs){
+            files.find({"_id": db.ObjectID(fileid)}, {}, function (err, docs){
                 if (err) {
                     res.send(500, {"statMesg": "Something went wrong with the database."});
                     return;
@@ -89,7 +88,7 @@ module.exports = function (db) {
                     return;
                 }
 
-                files.update({"_id": fileid}, {$set: {
+                files.update({"_id": db.ObjectID(fileid)}, {$set: {
                     "content": req.body.file.text, 
                     "name": req.body.file.filename,
                 //    "tags": req.body.file.tags,

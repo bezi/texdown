@@ -46,6 +46,8 @@ module.exports = function (db) {
                 user.tags = [];
                 for (var i = 0; i < user.files.length; ++i) {
                     delete(user.files[i].content);
+                    user.files[i].id = user.files[i]._id;
+                    delete(user.files[i]._id);
                     for (var j = 0; j < user.files[i].tags.length; ++j) {
                         var tag = user.files[i].tags[j];
                         if (user.tags.indexOf(tag) === -1) {
