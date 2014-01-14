@@ -14,14 +14,13 @@ block content
                 a.navbar-brand.texdown-logo(href="/")
             .navbar-collapse.collapse
                 ul.nav.navbar-nav
+                    li: a(href="#")
+                        span.glyphicon.glyphicon-star
+                        |  About
                     if (user)
                         li: a(href="#")
-                            span.glyphicon.glyphicon-star
-                            |  About
-                    li: a(href="#")
-                        span.glyphicon.glyphicon-question-sign
-                        |  Usage
-                    if (user)
+                            span.glyphicon.glyphicon-question-sign
+                            |  Usage
                         li: a(href="/edit")
                             span.glyphicon.glyphicon-plus
                             |  New

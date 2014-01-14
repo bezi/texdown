@@ -19,6 +19,7 @@ app.settings = {
         lineWrapping: "true",
         theme:        "monokai",
     },
+    editorCreated: false,
     marked: {
       gfm: true,
       tables: true,
@@ -208,13 +209,21 @@ app.setKeybindings = function(e) {
                 $(elem).removeClass('btn-primary').addClass('btn-default');
             }
         });
+        if(set.slice(1, -4) === 'vim' && !app.vimSourced) {
+            $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
+            app.vimSourced = true;
+        } else if(set.slice(1, -4) === 'emacs' && !app.emacsSourced) {
+            $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>');
+            app.emacsSourced = true;
+        }
         changed = true;
     };
     if (typeof e === 'string') {
-        app.toggle(e);
+        toggle(e);
         app.editor.setOption("keyMap", e.slice(1, -4) === 'no' ? 'default' : e.slice(1, -4));
-        app.setttings.keys = e.slice(1, -4) === 'no' ? '' : e.slice(1, -4);
+        app.settings.keys = e.slice(1, -4) === 'no' ? '' : e.slice(1, -4);
         console.log('├─ Keybindings loaded...');
+        return;
     }
     if ($('#nokeys').is(e.target) && app.settings.keys !== '') {
         toggle('#nokeys');
@@ -226,6 +235,7 @@ app.setKeybindings = function(e) {
         toggle('#vimkeys');
         if(!app.settings.vimSourced) {
             $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
+            app.vimSourced = true;
         }
         app.editor.setOption("keyMap", "vim");
         app.settings.keys = 'vim'
@@ -235,6 +245,7 @@ app.setKeybindings = function(e) {
         toggle('#emacskeys');
         if(!app.settings.emacsSourced) {
             $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>');
+            app.emacsSourced = true;
         }
         app.editor.setOption("keyMap", "emacs");
         app.settings.keys = 'emacs';
@@ -242,13 +253,24 @@ app.setKeybindings = function(e) {
     }
 
     if (changed) {
-        // TODO Handle AJAX (POST /settings)
+        var data = {}; 
+        data.user = app.data.user;
+        data.settings = {
+            editor: app.settings.keys
+        }
+        $.ajax('/settings', {
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+            },
+            type: 'POST'
+        });
     }
 }
 
 app.setAutoSave = function(e) {
     var orig = app.settings.autosave;
-    var toggle(set) {
+    var toggle = function(set) {
         if(set) {
             $('#manualsave').removeClass('btn-primary').addClass('btn-default');
             $('#autosave').removeClass('btn-default').addClass('btn-primary');
@@ -264,7 +286,7 @@ app.setAutoSave = function(e) {
         }
     }
 
-    if (typeof e === 'boolean') { app.toggle(e); }
+    if (typeof e === 'boolean') { toggle(e); }
 
     if ($('#manualsave').is(e.target) && app.settings.autosave) {
         toggle(false);
@@ -274,13 +296,24 @@ app.setAutoSave = function(e) {
         app.animateAlert({header: 'Success!', body:'Your changes will now autosave.'});
     }
     if(orig != app.settings.autosave) {
-        // TODO Handle AJAX (POST /settings)
+        var data = {}; 
+        data.user = app.data.user;
+        data.settings = {
+            editor: app.settings.autosave
+        }
+        $.ajax('/settings', {
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+            },
+            type: 'POST'
+        });
     }
 }
 
 app.setAutoComp = function(e) {
     var orig = app.settings.autocomp;
-    var toggle(set) {
+    var toggle = function(set) {
         if(set) {
             $('#manualcompile').removeClass('btn-primary').addClass('btn-default');
             $('#autocompile').removeClass('btn-default').addClass('btn-primary');
@@ -302,27 +335,40 @@ app.setAutoComp = function(e) {
         app.animateAlert({header: 'Success!', body:'Your changes will now autocompile.'});
     }
     if(orig != app.settings.autocomp) {
-        // TODO Handle AJAX (POST /settings)
+        var data = {}; 
+        data.user = app.data.user;
+        data.settings = {
+            editor: app.settings.autocomp
+        }
+        $.ajax('/settings', {
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+            },
+            type: 'POST'
+        });
     }
 }
 
 app.init = function () {
     console.log('│ Initializing app. . .');
 
-    app.editor = CodeMirror.fromTextArea($('#editor-pane')[0], app.settings.editor);
-
-    // TODO Strip data from page
-
-    marked.setOptions(app.settings.marked);
-    app.compile(false);
+    var keys     = $('#settings-button').data().editor;
+    var autosave = $('#settings-button').data().autosave;
+    var autocomp = $('#settings-button').data().autocomp;
 
     app.data.file.id = $('#filename').data().fileid;
     app.data.user.id = $('body').data().userid;
 
-    // TODO Make sure that using these settings ends up with the correct settings set
-    app.settings.editor   = $('#settings-button').data().editor;
-    app.settings.autosave = $('#settings-button').data().autosave;
-    app.settings.autocomp = $('#settings-button').data().autocomp;
+    marked.setOptions(app.settings.marked);
+
+    app.editor = CodeMirror.fromTextArea($('#editor-pane')[0], app.settings.editor);
+
+    app.setKeybindings('#' + keys + 'keys');
+    app.setAutoSave(autosave || false);
+    app.setAutoComp(autocomp || false);
+
+    app.compile(false);
 
     $('.CodeMirror-wrap').typing({
         start: function() {
