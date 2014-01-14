@@ -1,4 +1,34 @@
-var app = {};
+var app = {}; app.data = {}; app.data.user = {}; app.data.file = {};
+app.settings = {
+    autosave: false,
+    autocomp: false,
+    keys: '',
+    vimSourced: false,
+    emacsSourced: false,
+    alertConf: {
+        header: 'Hello!',
+        body: 'The action completed successfully.',
+        type: 'success',
+        delay: 1500,
+        fade: 400
+    },
+    editor: {
+        mode:         "gfm",
+        lineNumbers:  "true",
+        lineWrapping: "true",
+        theme:        "monokai",
+    },
+    marked: {
+      gfm: true,
+      tables: true,
+      breaks: false,
+      pedantic: false,
+      sanitize: false,
+      smartLists: true,
+      smartypants: true,
+      langPrefix: 'language-',
+    }
+}
 
 /**
  * Utility function to show an alert.
@@ -12,15 +42,8 @@ var app = {};
  * @param (fade) How long to animate the fade
  */
 app.animateAlert = function(options) {
-    // Store defaults
-    config = {
-        header: 'Hello!',
-        body: 'The action completed successfully.',
-        type: 'success',
-        delay: 1500,
-        fade: 400
-    }
-
+    // Load defaults
+    var config = app.settings.alertConf;
     // Load options
     config.header = options.header || config.header;
     config.body   = options.body   || config.body;
@@ -43,20 +66,9 @@ app.animateAlert = function(options) {
     container.show().delay(config.delay).fadeOut(config.fade);
 }
 
-app.editor = CodeMirror.fromTextArea(document.getElementById("editor-pane"), {
-    mode:         "gfm",
-    lineNumbers:  "true",
-    lineWrapping: "true",
-    theme:        "monokai",
-    // Uncomment the following line if you want to use vim keybindings when testing
-    // (the real thing will be in a settings menu later. For ease of use, this means 
-    // that the vim.js file is statically included right now.)
-    // keyMap:       "vim"
-});
-
 app.compile = function(force) {
     var raw = app.editor.getValue();
-    if(!force && !raw) {return;}
+    if(!force && !raw) {return;} // Quit unless we have to or we don't have anything
     console.log("├─┬ Compiling. . .");
     var texdown = raw
         .replace(/\\\(/g, '<script type="math/tex">')
@@ -67,9 +79,17 @@ app.compile = function(force) {
         if (err) {
             console.log('│ └─ error in compiling: ' + err);
         } else {
-            $('#preview-pane').html(compiled);
+            var pane = $('#preview-pane');
+            var scroll = pane.scrollTop();
+            var bottom = false;
+            if(scroll + pane.innerHeight() === pane[0].scrollHeight) {
+                bottom = true;
+            }
+            pane.html(compiled);
             // re-render math
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub], [function() {
+                $('#preview-pane').scrollTop(bottom ? pane[0].scrollHeight : scroll);
+            }]);
             // re-render Google prettyprint
             $('#preview-pane pre').addClass("prettyprint");
             $('#preview-pane pre code').addClass("prettyprint");
@@ -79,23 +99,20 @@ app.compile = function(force) {
     });
 };
 
-app.save = function (e) {
+app.save = function () {
     console.log('├─┬ Saving...');
-    var data = {}; data.file = {}; data.user = {};
 
-    data.user.id = $('body').data().userid;
-    if (!data.user.id) {
+    if (!app.data.user.id) {
         app.animateAlert({
             header: 'Whoops!', 
             body: 'You have to be signed in to save files.', 
             type: 'danger', 
         });
-            console.log('│ └─ error in saving: user not signed in.');
+        console.log('│ └─ error in saving: user not signed in.');
         return;
     }
-
-    data.file.filename = $('#filename').val();
-    if (data.file.filename == '') {
+    app.data.file.filename = $('#filename').val();
+    if (!app.data.file.filename) {
         app.animateAlert({
             header: 'Whoops!', 
             body: 'Please enter a filename.', 
@@ -104,28 +121,28 @@ app.save = function (e) {
             console.log('│ └─ error in saving: no filename provided.');
         return;
     }
-
-    data.file.id = $('#filename').data().fileid;
-    data.file.text = app.editor.getValue();
+    app.data.file.text = app.editor.getValue();
 
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
         if (request.readyState === 4) {
             var statMesg = JSON.parse(request.responseText).statMesg;
             var fileid = JSON.parse(request.responseText).fileid;
-            console.log(request.responseText);
             if (request.status === 200) {
-                $('#filename').html(data.file.filename);
-                app.animateAlert({
-                    header:'Success!', 
-                    body: 'Your file was saved.'
-                });
-                if(/\/edit/g.test(document.URL)) {
+                if(app.settings.autosave) {
+                    $('#save-status').html(' Saved');
+                } else {
+                    app.animateAlert({
+                        header:'Success!', 
+                        body: 'Your file was saved.'
+                    });
+                }
+                if(/\/edit$/g.test(document.URL)) {
                     setTimeout(function() {
                         if(document.URL.charAt(document.URL.length - 1) === '/') {
-                            window.location.replace(document.URL + fileid);
+                            window.location.href(document.URL + fileid);
                         } else {
-                            window.location.replace(document.URL + '/' + fileid);
+                            window.location.href(document.URL + '/' + fileid);
                         }
                     }, 1500);
                 }
@@ -136,16 +153,17 @@ app.save = function (e) {
                     body: statMesg + " (error: " + request.status + ")", 
                     type: 'danger'
                 });
+                if(app.settings.autosave) {
+                    $('#save-status').html(' Unsaved');
+                }
                 console.log('│ └─ error in saving: ' + statMesg + ' (error: ' + request.status + ')');
             }
         }
     }
     request.open('POST', '/save', true);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send(JSON.stringify(data));
+    request.send(JSON.stringify(app.data));
 };
-
-CodeMirror.commands.save = app.save;
 
 app.previewExpanded = false;
 app.togglePreview = function() {
@@ -180,92 +198,135 @@ app.toggleHelp = function() {
     $('#markdown-pane').toggleClass('show');
 }
 
-app.vimSourced = false;
-app.emacsSourced = false;
 app.setKeybindings = function(e) {
-    if ($('#nokeys').is(e.target)) {
-        $('#nokeys').addClass('btn-primary');
-        $('#nokeys').removeClass('btn-default');
-        
-        $('#vimkeys').addClass('btn-default');
-        $('#vimkeys').removeClass('btn-primary');
-        $('#emacskeys').addClass('btn-default');
-        $('#emacskeys').removeClass('btn-primary');
-
+    var changed = false;
+    var toggle = function(set, unset) {
+        $(set).removeClass('btn-default').addClass('btn-primary');
+        unset.forEach(function(elem, index, arr) {
+            $(elem).removeClass('btn-primary').addClass('btn-default');
+        });
+        changed = true;
+    };
+    if ($('#nokeys').is(e.target) && app.settings.keys !== '') {
+        toggle('#nokeys', ['#vimkeys', '#emacskeys']);
         app.editor.setOption("keyMap", "default");
+        app.settings.keys = '';
         app.animateAlert({header: 'Success!', body: 'Keybindings turned off.'});
     }
-    else if ($('#vimkeys').is(e.target)) {
-        $('#vimkeys').addClass('btn-primary');
-        $('#vimkeys').removeClass('btn-default');
-        
-        $('#nokeys').addClass('btn-default');
-        $('#nokeys').removeClass('btn-primary');
-        $('#emacskeys').addClass('btn-default');
-        $('#emacskeys').removeClass('btn-primary');
-
-        if(!app.vimSourced) {
+    else if ($('#vimkeys').is(e.target) && app.settings.keys !== 'vim') {
+        toggle('#vimkeys', ['#nokeys', '#emacskeys']);
+        if(!app.settings.vimSourced) {
             $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
         }
         app.editor.setOption("keyMap", "vim");
+        app.settings.keys = 'vim'
         app.animateAlert({header: 'Success!', body: 'Keybindings set to vim mode.'});
     }
-    else if ($('#emacskeys').is(e.target)) {
-        $('#emacskeys').addClass('btn-primary');
-        $('#emacskeys').removeClass('btn-default');
-        
-        $('#nokeys').addClass('btn-default');
-        $('#nokeys').removeClass('btn-primary');
-        $('#vimkeys').addClass('btn-default');
-        $('#vimkeys').removeClass('btn-primary');
-
-        if(!app.emacsSourced) {
-            $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>')
+    else if ($('#emacskeys').is(e.target) && app.settings.keys !== 'emacs') {
+        toggle('#emacskeys', ['#vimkeys', '#nokeys']);
+        if(!app.settings.emacsSourced) {
+            $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>');
         }
         app.editor.setOption("keyMap", "emacs");
+        app.settings.keys = 'emacs';
         app.animateAlert({header: 'Success!', body: 'Keybindings set to emacs mode.'});
+    }
+
+    if (changed) {
+        // TODO Handle AJAX (POST /settings)
+    }
+}
+
+app.setAutoSave = function(e) {
+    var orig = app.settings.autosave;
+    if ($('#manualsave').is(e.target) && app.settings.autosave) {
+        $('#autosave').removeClass('btn-primary').addClass('btn-default');
+        $('#manualsave').removeClass('btn-default').addClass('btn-primary');
+        app.settings.autosave = false;
+        CodeMirror.commands.save = app.settings.autocomp ? app.save : app.compile;
+        $('#save-status').html(' Save');
+        app.animateAlert({header: 'Success!', body:'You are now in control of saving.'});
+    } else if ($('#autosave').is(e.target) && !app.settings.autosave) {
+        $('#manualsave').removeClass('btn-primary').addClass('btn-default');
+        $('#autosave').removeClass('btn-default').addClass('btn-primary');
+        app.settings.autosave = true;
+        CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.compile;
+        app.save();
+        app.animateAlert({header: 'Success!', body:'Your changes will now autosave.'});
+    }
+    if(orig != app.settings.autosave) {
+        // TODO Handle AJAX (POST /settings)
+    }
+}
+
+app.setAutoComp = function(e) {
+    var orig = app.settings.autocomp;
+    if ($('#manualcompile').is(e.target) && app.settings.autocomp) {
+        $('#autocompile').removeClass('btn-primary').addClass('btn-default');
+        $('#manualcompile').removeClass('btn-default').addClass('btn-primary');
+        app.settings.autocomp = false;
+        CodeMirror.commands.save = app.compile;
+        app.animateAlert({header: 'Success!', body:'You are now in control of compiling.'});
+    } else if ($('#autocompile').is(e.target) && !app.settings.autocomp) {
+        $('#manualcompile').removeClass('btn-primary').addClass('btn-default');
+        $('#autocompile').removeClass('btn-default').addClass('btn-primary');
+        app.settings.autocomp = true;
+        CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.save;
+        app.compile();
+        app.animateAlert({header: 'Success!', body:'Your changes will now autocompile.'});
+    }
+    if(orig != app.settings.autocomp) {
+        // TODO Handle AJAX (POST /settings)
     }
 }
 
 app.init = function () {
     console.log('│ Initializing app. . .');
-    marked.setOptions({
-      gfm: true,
-      tables: true,
-      breaks: false,
-      pedantic: false,
-      sanitize: false,
-      smartLists: true,
-      smartypants: true,
-      langPrefix: 'language-',
-    });
 
+    app.editor = CodeMirror.fromTextArea($('#editor-pane')[0], app.settings.editor);
+
+    // TODO Strip data from page
+
+    marked.setOptions(app.settings.marked);
     app.compile(false);
-    $('#compile-button').click(function() {app.compile(true)});
+
+    app.data.file.id = $('#filename').data().fileid;
+    app.data.user.id = $('body').data().userid;
+
+CodeMirror.commands.save = app.save;
+
     $('.CodeMirror-wrap').typing({
         start: function() {
-                   console.log('├─┬ Typing...');
-                   $('#preview-waiting').toggleClass('hidden');
-               },
+            console.log('├─┬ Typing...');
+            if(app.settings.autocomp) { $('#preview-waiting').removeClass('hidden'); }
+            if(app.settings.autosave) { $('#save-status').html(' Saving...'); }
+        },
         stop: function() {
-                  console.log('│ └ typing stopped.');
-                  $('#preview-waiting').toggleClass('hidden');
-                  app.compile(true);
-              },
-        delay: 500
+            console.log('│ └ typing stopped.');
+            $('#preview-waiting').addClass('hidden');
+            if(app.settings.autocomp) { app.compile(true); }
+            if(app.settings.autosave) { app.save(); }
+        },
+        delay: 750
     });
-    $('#expand-button').click(app.expandButton);
-    $('#discard-button').click(function() {
-        location.reload();
-    });
-    $('#markdown-button').click(app.toggleHelp);
-    $(document).ready(function() {
-        prettyPrint();
-    })
+
     $('#save-button').click(app.save);
+    $('#compile-button').click(function() { app.compile(true); });
+    $('#discard-button').click(function() { location.reload(); });
+    $('#expand-button').click(app.expandButton);
+    $('#markdown-button').click(app.toggleHelp);
+
+
     $('#nokeys').click(app.setKeybindings);
     $('#vimkeys').click(app.setKeybindings);
     $('#emacskeys').click(app.setKeybindings);
+
+    $('#manualsave').click(app.setAutoSave);
+    $('#autosave').click(app.setAutoSave);
+
+    $('#manualcompile').click(app.setAutoComp);
+    $('#autocompile').click(app.setAutoComp);
+
     console.log('├── app intialized.');
 }
 

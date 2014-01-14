@@ -25,6 +25,10 @@
     width: 270px;
 }
 
+a:hover {
+    cursor: pointer;
+}
+
 // ---------------------------- General Styles ----------------------------- //
 html, body { height: 100%; }
 body {
@@ -40,7 +44,7 @@ body {
     background: #080808;
     border: none;
     color: white;
-    font-weight: 200px;
+    font-weight: 200;
     height: 50px;
     padding: 15px;
     font-size: 20px;
@@ -48,7 +52,7 @@ body {
     width: 150px;
     @include transition-property(width);
     @include transition-duration(0.5s);
-    @include transition-timing-function(ease-out);
+    @include transition-timing-function(ease-in-out);
 }
 #filename:focus {
     width: 320px;
