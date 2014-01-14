@@ -7,7 +7,6 @@ var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-console.log("environment:\n" + JSON.stringify(process.env));
 var db = monk(process.env.TEXDOWN_MONGOLAB_URL);
 db.ObjectID = mongo.ObjectID;
 
@@ -28,10 +27,19 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+var callbackURL;
+if (process.env.TEXDOWN_PRODUCTION) {
+    console.log("Production environment found.");
+    callbackURL = "http://texdown.org/auth/google/callback"
+} else {
+    console.log("Development environment found.");
+    callbackURL = "http://127.0.0.1:3000/auth/google/callback"
+}
+
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/google/callback"
+    callbackURL: callbackURL
 }, function(accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
         return done(null, profile);
