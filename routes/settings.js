@@ -19,8 +19,6 @@ module.exports = function (db) {
         var statMesg = '';
         for(var setting in settings) {
             if(!setting.hasOwnProperty) {continue;}
-            console.log(setting);
-            console.log(settings[setting]);
             switch(setting) {
                 case 'editor':
                     if (editors.indexOf(settings[setting]) === -1) {
@@ -30,7 +28,7 @@ module.exports = function (db) {
                     break;
                 case 'autosave':
                 case 'autocomp':
-                    if (settings[setting] !== true && settings[setting] !== false) {
+                    if (settings[setting] !== 'true' && settings[setting] !== 'false') {
                         statMesg += '"' + setting + ': ' + settings[setting] + '" is not a setting.\n';
                         delete settings[setting];
                     }

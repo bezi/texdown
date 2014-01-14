@@ -55,12 +55,12 @@ module.exports = function (db) {
 
             files.find({"_id": req.params.id}, {}, function (err, docs) {
                 if (err || !(docs.length === 1 || docs.length === 0)) {
-                    res.render('edit', {"statMesg": "There was an error with the database."});
+                    res.render('500', {"statMesg": "There was an error with the database."});
                     return;
                 }
 
                 if (docs.length === 0) {
-                    res.render('edit', {"statMesg": "File does not exist."});
+                    res.render('500', {"statMesg": "File does not exist."});
                     return;
                 }
 
@@ -75,7 +75,7 @@ module.exports = function (db) {
 
                 data.file = doc;
                 data.file.id = doc._id;
-                delete(data.file._id)
+                delete(data.file._id);
                 res.render('edit', data);
                 return;
             });

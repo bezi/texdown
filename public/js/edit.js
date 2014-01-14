@@ -96,7 +96,7 @@ app.compile = function(force) {
             $('#preview-pane pre').addClass("prettyprint");
             $('#preview-pane pre code').addClass("prettyprint");
             prettyPrint();
-            console.log("│ └─ compiling successful.");
+            console.log("│ └── compiling successful.");
         }
     });
 };
@@ -110,7 +110,7 @@ app.save = function () {
             body: 'You have to be signed in to save files.', 
             type: 'danger', 
         });
-        console.log('│ └─ error in saving: user not signed in.');
+        console.log('│ └── error in saving: user not signed in.');
         return;
     }
     app.data.file.filename = $('#filename').val();
@@ -120,7 +120,7 @@ app.save = function () {
             body: 'Please enter a filename.', 
             type: 'danger', 
         });
-            console.log('│ └─ error in saving: no filename provided.');
+            console.log('│ └── error in saving: no filename provided.');
         return;
     }
     app.data.file.text = app.editor.getValue();
@@ -148,7 +148,7 @@ app.save = function () {
                         }
                     }, 1500);
                 }
-                console.log('│ └─ save successful.');
+                console.log('│ └── save successful.');
             } else {
                 app.animateAlert({
                     header:'Oh no!', 
@@ -158,7 +158,7 @@ app.save = function () {
                 if(app.settings.autosave) {
                     $('#save-status').html(' Unsaved');
                 }
-                console.log('│ └─ error in saving: ' + statMesg + ' (error: ' + request.status + ')');
+                console.log('│ └── error in saving: ' + statMesg + ' (error: ' + request.status + ')');
             }
         }
     }
@@ -222,7 +222,7 @@ app.setKeybindings = function(e) {
         toggle(e);
         app.editor.setOption("keyMap", e.slice(1, -4) === 'no' ? 'default' : e.slice(1, -4));
         app.settings.keys = e.slice(1, -4) === 'no' ? '' : e.slice(1, -4);
-        console.log('├─ Keybindings loaded...');
+        console.log('├── Keybindings loaded...');
         return;
     }
     if ($('#nokeys').is(e.target) && app.settings.keys !== '') {
@@ -256,7 +256,9 @@ app.setKeybindings = function(e) {
         var data = {}; 
         data.user = app.data.user;
         data.settings = {
-            editor: app.settings.keys
+            editor: app.settings.keys,
+            autosave: app.settings.autosave,
+            autocomp: app.settings.autocomp
         }
         $.ajax('/settings', {
             data: data,
@@ -286,7 +288,10 @@ app.setAutoSave = function(e) {
         }
     }
 
-    if (typeof e === 'boolean') { toggle(e); }
+    if (typeof e === 'boolean') { 
+        toggle(e); 
+        console.log('├── Save settings loaded...');
+    }
 
     if ($('#manualsave').is(e.target) && app.settings.autosave) {
         toggle(false);
@@ -299,7 +304,9 @@ app.setAutoSave = function(e) {
         var data = {}; 
         data.user = app.data.user;
         data.settings = {
-            editor: app.settings.autosave
+            editor: app.settings.keys,
+            autosave: app.settings.autosave,
+            autocomp: app.settings.autocomp
         }
         $.ajax('/settings', {
             data: data,
@@ -327,6 +334,12 @@ app.setAutoComp = function(e) {
             CodeMirror.commands.save = app.compile;
         }
     }
+
+    if (typeof e === 'boolean') { 
+        toggle(e); 
+        console.log('├── Compile settings loaded...');
+    }
+
     if ($('#manualcompile').is(e.target) && app.settings.autocomp) {
         toggle(false);
         app.animateAlert({header: 'Success!', body:'You are now in control of compiling.'});
@@ -338,7 +351,9 @@ app.setAutoComp = function(e) {
         var data = {}; 
         data.user = app.data.user;
         data.settings = {
-            editor: app.settings.autocomp
+            editor: app.settings.keys,
+            autosave: app.settings.autosave,
+            autocomp: app.settings.autocomp
         }
         $.ajax('/settings', {
             data: data,
@@ -364,9 +379,9 @@ app.init = function () {
 
     app.editor = CodeMirror.fromTextArea($('#editor-pane')[0], app.settings.editor);
 
-    app.setKeybindings('#' + keys + 'keys');
-    app.setAutoSave(autosave || false);
-    app.setAutoComp(autocomp || false);
+    app.setKeybindings('#' + (keys ? keys : 'no') + 'keys');
+    app.setAutoSave(autosave ? autosave : false);
+    app.setAutoComp(autocomp ? autocomp : false);
 
     app.compile(false);
 
