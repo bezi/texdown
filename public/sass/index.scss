@@ -10,7 +10,7 @@
     @include filter-gradient(#1e5799, rgba(125,185,232,0), horizontal); // IE6-9 fallback on horizontal gradient
     @include background-image(linear-gradient(left top, rgba(30,87,153,1) 0%, rgba(77,135,192,1) 67%, rgba(108,167,218,0.7) 97%, rgba(125,185,232,0) 100%));
     height: 100%;
-    padding-top: 50px;
+    padding-top: 12%;
 }
 .jumbotron h1,
 .jumbotron h2,
@@ -55,10 +55,15 @@ body {
     height: 100%;
 }
 
+.jumbotron img {
+    float: left;
+}
+
 .jumbotron h4 {
     position: relative;
-    top: -117px;
-    left: 535px;
+    float: left;
+    top: 48px;
+    left: -33px;
 }
 
 #previews .panel-heading button.close,

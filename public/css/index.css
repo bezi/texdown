@@ -14,7 +14,7 @@
   background-image: -o-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
   background-image: linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
   height: 100%;
-  padding-top: 50px;
+  padding-top: 12%;
 }
 
 /* line 21, ../sass/index.scss */
@@ -74,25 +74,31 @@ body {
 }
 
 /* line 58, ../sass/index.scss */
-.jumbotron h4 {
-  position: relative;
-  top: -117px;
-  left: 535px;
+.jumbotron img {
+  float: left;
 }
 
-/* line 65, ../sass/index.scss */
+/* line 62, ../sass/index.scss */
+.jumbotron h4 {
+  position: relative;
+  float: left;
+  top: 48px;
+  left: -33px;
+}
+
+/* line 70, ../sass/index.scss */
 #previews .panel-heading button.close,
 #labels .list-group-item button.close {
   display: none;
 }
 
-/* line 70, ../sass/index.scss */
+/* line 75, ../sass/index.scss */
 #previews .panel-heading:hover button.close,
 #labels .list-group-item:hover button.close {
   display: inline-block;
 }
 
-/* line 74, ../sass/index.scss */
+/* line 79, ../sass/index.scss */
 #message-box {
   display: none;
   position: fixed;
@@ -103,7 +109,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* line 82, ../sass/index.scss */
+  /* line 87, ../sass/index.scss */
   #message-box {
     left: 10px;
     right: 10px;
@@ -111,21 +117,21 @@ body {
   }
 }
 @media (min-width: 768px) {
-  /* line 83, ../sass/index.scss */
+  /* line 88, ../sass/index.scss */
   #message-box {
     left: 5%;
     width: 90%;
   }
 }
 @media (min-width: 992px) {
-  /* line 84, ../sass/index.scss */
+  /* line 89, ../sass/index.scss */
   #message-box {
     left: 15%;
     width: 70%;
   }
 }
 @media (min-width: 1200px) {
-  /* line 85, ../sass/index.scss */
+  /* line 90, ../sass/index.scss */
   #message-box {
     left: 25%;
     width: 50%;

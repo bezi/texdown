@@ -42,7 +42,7 @@ module.exports = function (db) {
         users.update({"id": req.body.user.id}, {"$set": {"settings": settings}}, function (err) {
             if (err) {
                 res.send(500, {"statMesg": "Error with updating settings in database"});
-               eturn;
+                return;
             }
             res.end();
         });
