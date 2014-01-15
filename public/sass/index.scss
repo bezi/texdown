@@ -9,7 +9,8 @@
     // needs latest Compass, add '@import "compass"' to your scss
     @include filter-gradient(#1e5799, rgba(125,185,232,0), horizontal); // IE6-9 fallback on horizontal gradient
     @include background-image(linear-gradient(left top, rgba(30,87,153,1) 0%, rgba(77,135,192,1) 67%, rgba(108,167,218,0.7) 97%, rgba(125,185,232,0) 100%));
-    height: 50%;
+    height: 100%;
+    padding-top: 50px;
 }
 .jumbotron h1,
 .jumbotron h2,
@@ -48,8 +49,16 @@
 }
 
 // ---------------------------- General Styles ----------------------------- //
+html { height: 100%; }
 body {
-    padding-top: 50px;
+//     padding-top: 50px;
+    height: 100%;
+}
+
+.jumbotron h4 {
+    position: relative;
+    top: -117px;
+    left: 535px;
 }
 
 #previews .panel-heading button.close,
