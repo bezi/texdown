@@ -397,7 +397,7 @@ app.init = function () {
             if(app.settings.autocomp) { app.compile(true); }
             if(app.settings.autosave) { app.save(); }
         },
-        delay: 750
+        delay: 1000
     });
 
     $('#save-button').click(app.save);
