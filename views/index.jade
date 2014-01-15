@@ -58,7 +58,7 @@ block content
         .jumbotron.jumbotron-column
             img.pull-right(width="90%", src="/images/texdown-logo-white-900.png")
             h1.lead.text-right your files
-        .row
+        .row#files-home
             .col-md-6.col-md-offset-3 
                 h1 Notes
                     a.pull-right.btn.btn-primary.btn-lg(href="/edit")
@@ -76,13 +76,6 @@ block content
                                 small.timestamp= file.modified
                                 button.close(type="button", data-fileid="#{file.id}", data-filename="#{file.name}", aria-hidden="true") 
                                     small: span.glyphicon.glyphicon-trash
-                            //-.panel-body
-                                //-- var body = file.context.replace(/(\r\n|\n|\r)/gm, " ")
-                                //-- var body = body.match(/^.{0,300}/)[0]
-                                //-if body.length === 300
-                                    //-= body + '...'
-                                //-else
-                                    //-= body
                             .panel-footer
                                 each tag in file.tags
                                     a(href="#")= '"' + tag + '"'

@@ -35,6 +35,7 @@
         height: auto;
         overflow-y: scroll;
         margin: 0;
+        padding-top: 30px;
         @include filter-gradient(#1e5799, rgba(125,185,232,0), horizontal); // IE6-9 fallback on horizontal gradient
         @include background-image(linear-gradient(left top, rgba(30,87,153,1) 0%, rgba(77,135,192,1) 67%, rgba(108,167,218,0.7) 97%, rgba(125,185,232,0) 100%));
     }
@@ -64,6 +65,10 @@ body {
     float: left;
     top: 48px;
     left: -33px;
+}
+
+#files-home {
+    padding-top: 80px;
 }
 
 #previews .panel-heading button.close,
