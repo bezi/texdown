@@ -13,10 +13,11 @@
   background-image: -moz-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
   background-image: -o-linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
   background-image: linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
-  height: 50%;
+  height: 100%;
+  padding-top: 12%;
 }
 
-/* line 20, ../sass/index.scss */
+/* line 21, ../sass/index.scss */
 .jumbotron h1,
 .jumbotron h2,
 .jumbotron h3,
@@ -27,13 +28,13 @@
   color: white;
 }
 
-/* line 23, ../sass/index.scss */
+/* line 24, ../sass/index.scss */
 .jumbotron h1 {
   font-size: 45px;
 }
 
 @media (min-width: 992px) {
-  /* line 27, ../sass/index.scss */
+  /* line 28, ../sass/index.scss */
   .jumbotron-column {
     position: fixed;
     top: 50px;
@@ -53,7 +54,7 @@
     background-image: linear-gradient(left top, #1e5799 0%, #4d87c0 67%, rgba(108, 167, 218, 0.7) 97%, rgba(125, 185, 232, 0) 100%);
   }
 }
-/* line 42, ../sass/index.scss */
+/* line 43, ../sass/index.scss */
 .jumbotron > .list-group {
   font-size: 14px;
   font-weight: 400;
@@ -62,24 +63,42 @@
   margin-bottom: 0px;
 }
 
-/* line 51, ../sass/index.scss */
-body {
-  padding-top: 50px;
+/* line 52, ../sass/index.scss */
+html {
+  height: 100%;
 }
 
-/* line 56, ../sass/index.scss */
+/* line 53, ../sass/index.scss */
+body {
+  height: 100%;
+}
+
+/* line 58, ../sass/index.scss */
+.jumbotron img {
+  float: left;
+}
+
+/* line 62, ../sass/index.scss */
+.jumbotron h4 {
+  position: relative;
+  float: left;
+  top: 48px;
+  left: -33px;
+}
+
+/* line 70, ../sass/index.scss */
 #previews .panel-heading button.close,
 #labels .list-group-item button.close {
   display: none;
 }
 
-/* line 61, ../sass/index.scss */
+/* line 75, ../sass/index.scss */
 #previews .panel-heading:hover button.close,
 #labels .list-group-item:hover button.close {
   display: inline-block;
 }
 
-/* line 65, ../sass/index.scss */
+/* line 79, ../sass/index.scss */
 #message-box {
   display: none;
   position: fixed;
@@ -90,7 +109,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* line 73, ../sass/index.scss */
+  /* line 87, ../sass/index.scss */
   #message-box {
     left: 10px;
     right: 10px;
@@ -98,21 +117,21 @@ body {
   }
 }
 @media (min-width: 768px) {
-  /* line 74, ../sass/index.scss */
+  /* line 88, ../sass/index.scss */
   #message-box {
     left: 5%;
     width: 90%;
   }
 }
 @media (min-width: 992px) {
-  /* line 75, ../sass/index.scss */
+  /* line 89, ../sass/index.scss */
   #message-box {
     left: 15%;
     width: 70%;
   }
 }
 @media (min-width: 1200px) {
-  /* line 76, ../sass/index.scss */
+  /* line 90, ../sass/index.scss */
   #message-box {
     left: 25%;
     width: 50%;
