@@ -98,6 +98,8 @@ app.post('/compile', require('./routes/compile'));
 app.delete('/delete', require('./routes/delete')(db));
 // settings
 app.post('/settings', require('./routes/settings')(db));
+// about
+app.get('/about', require('./routes/about'));
 
 // authentication
 app.get('/auth/google',
