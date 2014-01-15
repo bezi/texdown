@@ -384,6 +384,7 @@ app.init = function () {
     app.setAutoComp(autocomp ? autocomp : false);
 
     app.compile(false);
+    $('#preview-pane').scrollTop(0);
 
     $('.CodeMirror-wrap').typing({
         start: function() {
