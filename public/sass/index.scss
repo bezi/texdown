@@ -1,7 +1,8 @@
 @import "compass";
 
 // --------------------------- Bootstrap Styles ---------------------------- //
-.row {
+.row#blurb,
+.row#files-home {
     margin-left: 0;
     margin-right: 0;
 }
@@ -47,6 +48,26 @@
     line-height: 1.42857142857;
     margin-top: 35px;
     margin-bottom: 0px;
+}
+
+.panel-heading-deleted {
+    color: #a94442 !important;
+    background-color: #f2dede !important;
+    border-color: #ebccd1 !important;
+}
+
+.label {
+    float: right;
+    margin: 1px;
+}
+
+.label .glyphicon {
+    cursor: pointer;
+}
+
+.tag-input {
+    display: none;
+    margin-bottom: 5px;
 }
 
 // ---------------------------- General Styles ----------------------------- //

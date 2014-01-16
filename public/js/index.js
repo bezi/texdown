@@ -87,8 +87,7 @@ app.del = function (e) {
                 });
                 // Get nodes to remove and animate it (fade through red)
                 var pane = $('#file-display-' + data.file.id);
-                pane.removeClass('panel-info')
-                    .addClass('panel-danger')
+                pane.addClass('panel-heading-deleted')
                     .delay(600).fadeOut(500);
                 // Stick this in here because this isn't an animation (can't be delay()'ed).
                 setTimeout(function () {
@@ -111,6 +110,19 @@ app.del = function (e) {
     request.send(JSON.stringify(data));
 }
 
+app.addTag = function(e, callback) {
+    var newtag = $(e.currentTarget).children('input').val();
+    $(e.currentTarget).parent().append('' 
+            + '<span class="tag label label-primary">'
+            + newtag + ' <span class="glyphicon glyphicon-remove">'
+            + '</span></span>');
+    // TODO Handle AJAX
+}
+
+app.removeTag = function(e) {
+    console.log('Removing tag...');
+}
+
 app.init = function () {
     console.log('Initializing app. . .');
     moment.lang('en', {
@@ -126,6 +138,20 @@ app.init = function () {
     app.processTimes();
     $('#previews button.close').click(app.confirmDelete);
     $('#labels button.close').click(app.confirmDelete);
+    $('.label .glyphicon.glyphicon-plus').click(function(e) {
+        var index = $(e.currentTarget).data().index;
+        $(e.currentTarget).toggleClass('glyphicon-plus').toggleClass('glyphicon-chevron-up');
+        $('#tag-input-' + index).slideToggle(150);
+    });
+    $('.tag-input').off();
+    $('.tag-input').keydown(function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            console.log('TAGGGS :D');
+            app.addTag(e);
+        }
+    });
+    $('.label .glyphicon.glyphicon-remove').click(app.removeTag);
     $('#delete-confirm').click(app.del);
     console.log('|-- app intialized.');
 }
