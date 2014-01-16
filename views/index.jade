@@ -83,38 +83,17 @@ block content
                                         input.form-control(placeholder="enter commas between tags")
                                     span.add-tag.label.label-default Add Tag 
                                         span.glyphicon.glyphicon-plus(data-index="#{index}")
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
-                                    span.tag.label.label-primary All Notes 
-                                        span.glyphicon.glyphicon-remove
+                                    each tag in file.tags
+                                        span.tag.label.label-primary= tag + ' '
+                                            span.glyphicon.glyphicon-remove
 
                 br
             .col-md-3
                 h1.text-center Tags
                 hr
-
-                //- if (user.tags.length === 0)
-                    //- .well.well-lg
-                        //- h4 Oh? 
-                        //- p Looks like you don't have any tags :(
                 .list-group#labels
-                    a.list-group-item(href="#") All Notes
-                    //- each tag in user.tags
-                        //- a.list-group-item(class="tag-display-" + tag, href='#')= tag
-                            //- button.close(type="button", data-tag=tag, aria-hidden="true") &times;
-                
+                    each tag in user.tags
+                        a.list-group-item(class="tag-display-" + tag, href='#')= tag
 
         .modal.fade#confirm-delete-modal(tabindex="-1", role="dialog", aria-labelledby="confirm-delete-title", aria-hidden="true")
             .modal-dialog

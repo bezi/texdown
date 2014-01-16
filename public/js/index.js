@@ -116,7 +116,6 @@ app.addTag = function(e, callback) {
             + '<span class="tag label label-primary">'
             + newtag + ' <span class="glyphicon glyphicon-remove">'
             + '</span></span>');
-    // TODO Handle AJAX
 }
 
 app.removeTag = function(e) {
