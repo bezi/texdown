@@ -131,6 +131,7 @@ The filename, if specified, cannot be blank.
 Success: 200
 No parameters to file: 400, 'Malformed request.'
 Not logged in: 401, 'Not logged in.'
+File not found: 404, 'File not found.'
 Blank name: 409, 'Blank name.'
 Server error: 500, <server error>
 ~~~

@@ -1,8 +1,17 @@
 // GET: /, home page
+// REQUEST: user (*)
+// RESPONSE: renders 'index' with
+/**
+{ 'user' {
+    // Passport user
+} 
+}
+**/
 module.exports = function (db) {
     var tdusers = db.get('tdusers'); 
     var files = db.get('files'); 
     return function (req, res) {
+        console.log(req.session.passport);
         if (!req.user) {
             res.render("index", {});
             return;
@@ -43,34 +52,8 @@ module.exports = function (db) {
 
             var user = req.user;
             var doc = docs[0];
-            user.settings = doc.settings;
-            files.find({"owner": user.id}, {}, function (err, docs) {
-                if (err) { 
-                    var data = {}; data.error = {};
-                    data.error.code = 500; 
-                    data.error.message = "Something went wrong with the database.";
-                    res.render("500", data);
-                    return;
-                }
-
-                user.files = docs;
-                user.tags = [];
-                for (var i = 0; i < user.files.length; ++i) {
-                    delete(user.files[i].content);
-                    user.files[i].id = user.files[i]._id;
-                    delete(user.files[i]._id);
-                    for (var j = 0; j < user.files[i].tags.length; ++j) {
-                        var tag = user.files[i].tags[j];
-                        if (user.tags.indexOf(tag) === -1) {
-                            user.tags.push(tag);
-                        }
-                    }
-                }
-                user.files.sort(function(b, a) {
-                    return Number(a.modified) - Number(b.modified);
-                });
-                res.render("index", {"user": user});
-            });
+            user.files = [];
+            res.render("index", {"user": user});
         }); 
     }
 };

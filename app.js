@@ -91,15 +91,15 @@ app.get('/', require('./routes/index')(db));
 app.get('/edit', require('./routes/edit')(db));
 app.get('/edit/:id', ensureAuthenticated, require('./routes/edit')(db));
 // save
-app.post('/save', require('./routes/save')(db));
+app.post('/save', ensureAuthenticated, require('./routes/save')(db));
 // compile
-app.post('/compile', require('./routes/compile'));
+app.post('/compile', ensureAuthenticated, require('./routes/compile'));
 // delete
-app.delete('/delete', require('./routes/delete')(db));
+app.delete('/delete', ensureAuthenticated, require('./routes/delete')(db));
 // settings
-app.post('/settings', require('./routes/settings')(db));
+app.post('/settings', ensureAuthenticated, require('./routes/settings')(db));
 // tags
-app.post('/tags', require('./routes/tags')(db));
+app.post('/tags', ensureAuthenticated, require('./routes/tags')(db));
 // about
 app.get('/about', require('./routes/about'));
 
