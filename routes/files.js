@@ -12,7 +12,7 @@ function init (database) {
 /** 
  * POST /files
  * Makes a new file.  If a file with that name exists, it will return a 409 error.
- * If no tags are specified, then tag 'All files' will be applied.  If there is no
+ * If no tags are specified, then tag 'All Notes' will be applied.  If there is no
  * content, the file will be made blank
  * The filename cannot be blank
  * Request: {
@@ -53,7 +53,7 @@ function postFiles (req, res) {
     }
     var file = {
         'name' : req.body.file.name,
-        'tags' : (req.body.file.tags) ? req.body.file.tags : ['All files'],
+        'tags' : (req.body.file.tags) ? req.body.file.tags : ['All Notes'],
         'owner' : user,
         'created' : Number(moment().format("X")),
         'modified' : this.created,
