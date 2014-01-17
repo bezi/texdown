@@ -52,12 +52,12 @@ function postFiles (req, res) {
         return;
     }
     var file = {
-        name = req.body.file.name,
-        tags = (req.body.file.tags) ? req.body.file.tags : ['All files'],
-        owner = user,
-        created = Number(moment().format("X")),
-        modified = this.created,
-        content = (req.body.file.content) ? req.body.file.content : ''
+        'name' : req.body.file.name,
+        'tags' : (req.body.file.tags) ? req.body.file.tags : ['All files'],
+        'owner' : user,
+        'created' : Number(moment().format("X")),
+        'modified' : this.created,
+        'content' : (req.body.file.content) ? req.body.file.content : ''
     };
     
 
@@ -123,9 +123,9 @@ function putFiles (req, res) {
     }
 
     var file = {};
-    (req.body.file.name) ? file.name = req.body.file.name : ;
-    (req.body.file.tags) ? file.tags = req.body.file.tags : ; 
-    (req.body.file.content) ? file.content = req.body.file.content : ;
+    (req.body.file.name) ? file.name = req.body.file.name : true;
+    (req.body.file.tags) ? file.tags = req.body.file.tags : true; 
+    (req.body.file.content) ? file.content = req.body.file.content : true;
     file.modified = Number(moment().format("X"));
 
     file.id = req.params.id;
@@ -147,7 +147,7 @@ function putFiles (req, res) {
         }, { $set: file }, function (err) {
             if (err) { res.send(500, 'Error updating file database.'); return; }
             res.send();
-        };
+        });
     });
 }
 
@@ -198,22 +198,27 @@ function getFiles (req, res) {
         data.files = [];
         data.tags = {};
         if (docs.length === 0) {
-            (id) ? (res.send(404, 'File not found.'); return;) : (res.send(JSON.stringify(data)); return;);
+            if (id) {
+                res.send(404, 'File not found.');
+                return;
+            } else {
+                res.send(JSON.stringify(data)); 
+                return;
+            }
         }
         for (var i = 0; i < docs.length; ++i) {
-            (id) ? (delete(docs[i].content)): ;
+            (id) ? (delete(docs[i].content)): true;
             delete(docs([i]).owner);
             data.files.push(docs[i]);
             for (var j = 0; j < docs[i].tags.length; ++j) {
                 (data.tags[docs[i].tags[j]]) ? data.tags[docs[i].tags[j]]++ : data.tags[docs[i].tags[j]] = 1;
             }
-
-            data.files.sort(function(b, a) {
-                return Number(a.modified) - Number(b.modified);
-            }
-            res.send(JSON.stringify(data));
-            return;
         }
+        data.files.sort(function(b, a) {
+            return Number(a.modified) - Number(b.modified);
+        });
+        res.send(JSON.stringify(data));
+        return;
     });
 }
 
@@ -259,7 +264,7 @@ function deleteFiles (req, res) {
         }, function (err) {
             if (err) { res.send(500, 'Error deleting file from database.'); return; }
             res.send();
-        };
+        });
     });
 }
 
