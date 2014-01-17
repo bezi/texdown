@@ -82,7 +82,6 @@ module.exports = function (db) {
                 files.update({"_id": db.ObjectID(fileid)}, {$set: {
                     "content": req.body.file.text, 
                     "name": req.body.file.filename,
-                //    "tags": req.body.file.tags,
                     "modified": Number(moment().format("X"))
                 }}, function (err) {
                     if (err) {
