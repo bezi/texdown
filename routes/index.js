@@ -11,7 +11,6 @@ module.exports = function (db) {
     var tdusers = db.get('tdusers'); 
     var files = db.get('files'); 
     return function (req, res) {
-        console.log(req.session.passport);
         if (!req.user) {
             res.render("index", {});
             return;
@@ -42,7 +41,6 @@ module.exports = function (db) {
                         res.render("500", data);
                         return;
                     }
-                    data.files = [];
                     res.render("index", { "user": data });
                     return;
                 });

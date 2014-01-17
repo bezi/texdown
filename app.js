@@ -89,6 +89,9 @@ var files = require('./routes/files')(db);
 
 // home
 app.get('/', require('./routes/index')(db));
+// edit
+app.get('/edit', require('./routes/edit')(db));
+app.get('/edit/:id', require('./routes/edit')(db));
 // files
 app.post('/files/', files.post);
 app.get('/files/', files.get);
