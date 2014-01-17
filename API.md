@@ -82,138 +82,90 @@ A blank editor and preview pane which will allow for easy interaction with the T
 </body>                                //   /save and /delete
 ~~~
 
-## `GET /edit/:fileid`
-### Request
-~~~Javascript
-:fileid                                // the id of the file to be edited (*)
-                                       //   (URL parameter)
-{
-    "user": <object>                   // user object managed by Passport (*)
-}
-
-/**
- * Notes
- * 
- * (*) - denotes required field
- * 
- * Requires the use of Passport for user authentication.
- * Responds with 401 Unauthorized if the user is not logged in or not valid.
- */
-~~~
-
-### Response
-Certain key return data is embeded in the HTML content of the webpage. For the most part, this data is embedded in `data-*` attributes in various places.
-~~~HTML
-<body data-userid="<user.id>">         // <user.id>: id of logged in user, 
-    ...                                //   must be saved for later use in 
-</body>                                //   /save and /delete
-
-<input id="filename"                   // id for easy Javascript/JQuery access
-       value="<file.filename>"         // <file.filename>: name of the 
-       data-filename="<file.filename>" //   requested file
-       data-fileid="<file.id>">        // <file.id>: id of the requested file
-</input>
-
-<div id="editor-pane">                 // id for easy Javascript/JQuery access
-    <file.text>                        // <file.text>: the content of the 
-</div>                                 //   requested file
-~~~
-
-## `POST /save`
-### Request
+## `POST /files`
+Makes a new file.  If a file with that name exists, it will return a 409 error.
+If no tags are specified, then tag 'All files' will be applied.  If there is no
+content, the file will be made blank
+The filename cannot be blank
+###Request 
 ~~~Javascript
 {
-    "user": {                          // object describing current user (*)
-        "id": <int>                    // authenticated id of current user (1, 2)
-    }
-    "file": {                          // object describing file (*)
-        "id": <int>,                   // id of file (1, 3) (*)
-        "filename": <string>,          // name of file (4) (*)
-        "text": <string>               // raw (TeXDown) content of the note
+    'file': {
+        'name': <string>,                       // file name
+        'tags': [<string>, . . .],              // tags, optional
+        'content': <string>                     // file content, optional
     }
 }
-
-/**
- * Notes
- * 
- * (*) - denotes required field
- * 
- * 1. Must be unique.
- * 2. If not present, responds with 401 Unauthorized.
- * 3. If empty string, creates the file.
- * 4. If id exists for user and this string does not match the current name,
- *    the database is updated to match this name.
- */
 ~~~
-### Response
-#### == 200
-Indicates save was successful. No useful response body.
-#### != 200
+###Response: 
 ~~~Javascript
-{
-    "statMesg": <string>            // a short message describing the error
+Success: 200, {
+    'id': <string> // id of newly created file
 }
 
-/**
- * Notes
- * 
- * If you tried to save something without being logged in, you will get a 
- * 401 Unauthorized error.
- */
+Not logged in: 401, 'Not logged in.'
+Necessary parameters not included: 400, 'Malformed request.'
+Blank name: 409, 'Blank name.'
+Name taken: 409, 'Name <file.name> already used.'
+Server error: 500, <server error>
 ~~~
 
-## `POST /compile`
-### Request
+## `PUT /files/:id`
+Updates file with given id.  Id is not optional.
+The parameters of `file` are optional, as it will update only those specified.
+The filename, if specified, cannot be blank.
+### Request 
 ~~~Javascript
 {
-    "text": <string>                   // raw TeXDown to be converted into HTML
-}
-~~~
-### Response
-~~~Javascript
-{
-    "text": <string>                  // headless HTML, the result of 
-                                      //   a) processing all occurrences of 
-                                      //      `\(`, `\)`, `\[`, and `\]` with
-                                      //      <script type="math/tex"> tags, 
-                                      //   b) using marked to generate GFM
-}
-~~~
-
-## `DELETE /delete`
-### Request
-~~~Javascript
-{
-    "user": {                          // object describing current user (*)
-        "id": <int>                    // authenticated id of current user (1, 2)
-    }
-    "file": {                          // object describing file (*)
-        "id": <int>                    // ID of file to delete (1, 2)
+    'file': {
+        'name': <string>,                       // file name, optional
+        'tags': [<string>, . . .],              // tags, optional
+        'content': <string>                     // file content, optional
     }
 }
-
-/**
- * Notes
- * 
- * (*) - denotes required field
- * 
- * 1. Must be unique.
- * 2. If not present, responds with 401 Unauthorized.
- */
 ~~~
-### Response
-#### == 200
-Indicates delete was successful. No useful response body.
-#### != 200
-~~~Javascript
-{
-    "statMesg": <string>            // a short message describing the error
-}
 
-/**
- * Notes
- * 
- * If you tried to delete something without being logged in, you will get a 
- * 401 Unauthorized error.
- */
+### Response 
+
+~~~Javascript
+Success: 200
+No parameters to file: 400, 'Malformed request.'
+Not logged in: 401, 'Not logged in.'
+Blank name: 409, 'Blank name.'
+Server error: 500, <server error>
+~~~
+
+## `GET: /files/:id`
+Returns files that are owned by a user.  If an id is specified in the URL,
+will return that particular file. `:id is optional`
+###Request
+Empty
+
+###Response
+~~~Javascript
+Success: 200, {
+    'files': [<file>, <file>, . . .], //could be one file if an id is specified
+    'tags': {
+        tag1: num,
+        tag2: num,
+        . . .
+    }
+}
+Not logged in: 401, 'Not logged in.'
+File not found: 404, 'File not found.'
+User does not own file: 403, 'You do not own that file.'
+Server error: 500, <server error>
+~~~
+
+## `DELETE /files/:id`
+Deletes a file owned by a user.  Id is not an optional parameter.
+###Request
+Empty
+###Response
+~~~Javascript
+Success: 200
+Not logged in: 401, 'Not logged in.'
+File not found: 404, 'File not found.'
+User does not own file: 403, 'You do not own that file.'
+Server error: 500, <server error>
 ~~~
