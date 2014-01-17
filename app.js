@@ -85,21 +85,18 @@ if ('development' == app.get('env')) {
 // routes
 //===============================================
 
+var files = require('./routes/files')(db);
+
 // home
 app.get('/', require('./routes/index')(db));
-// edit
-app.get('/edit', require('./routes/edit')(db));
-app.get('/edit/:id', ensureAuthenticated, require('./routes/edit')(db));
-// save
-app.post('/save', require('./routes/save')(db));
-// compile
-app.post('/compile', require('./routes/compile'));
-// delete
-app.delete('/delete', require('./routes/delete')(db));
+// files
+app.post('/files/', files.post);
+app.get('/files/', files.get);
+app.get('/files/:id/', files.get);
+app.put('/files/:id', files.put);
+app.delete('/files/:id', files.delete);
 // settings
-app.post('/settings', require('./routes/settings')(db));
-// tags
-app.post('/tags', require('./routes/tags')(db));
+app.post('/settings', ensureAuthenticated, require('./routes/settings')(db));
 // about
 app.get('/about', require('./routes/about'));
 
