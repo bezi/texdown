@@ -3,13 +3,8 @@
 ## `GET /`
 This route renders two different HTML pages depending on user authentication, which is handled by [Passport.js](http://passportjs.org/). Passport.js handles the creation of all user session objects. Unauthenticated users are merely sent to a landing page describing features of TeXDown. The following descrbes the requests and responses for authenticated users.
 ### Request
-> #### Note
-> I don't think this are necessary anymore.
-
 ~~~Javascript
-{
-    "user": <object>                   // user object managed by Passport (*)
-}
+Empty
 ~~~
 
 ### Response
@@ -28,13 +23,8 @@ If the user is not authenticated by Passport before reaching this page, it is us
 For authenticated users, this route is used as a graphical web interface for creating new files. For authenticated users looking to edit already-created files, see `/edit/:fileid`.
 
 ### Request
-> #### Note
-> I don't think this are necessary anymore.
-
 ~~~Javascript
-{
-    "user": <object>                   // user object managed by Passport (*)
-}
+Empty
 ~~~
 
 ### Response
@@ -127,9 +117,9 @@ Empty
 200 : "application/json" {
     'files': <list>,                   // One or more file objects (see below)
     'tags': {
-        tag_1: <int>,                  // An object of tag_name : taq_quanity
+        'tag_1': <int>,                  // An object of tag_name : taq_quanity
              ...                       //   pairs, which tell a tag's name and
-        tag_n: <int>                   //   how many files have that tag
+        'tag_n': <int>                   //   how many files have that tag
     }
 }
 /**
@@ -174,5 +164,21 @@ Empty
 
 
 ## `POST /settings`
-> ### TODO
-> Jake: Write the documentation for the settings
+This method can be used to save settings for a logged in user so that they will be available upon the next request. It should represent the entire settings object for the current user--any settings not in this setting object will no longer be tracked after this request.
+###Request
+~~~JavaScript
+{
+   'settings': {                       // Contains all the settings the user wants to store
+        'setting_1': <string>,         // Name of the first setting, and then
+                 ...                   //   the value to be set.
+        'setting_n': <string>          //   (see below for available settings)
+    }
+}
+/**
+ * Settings:
+ * 
+ * 'editor' : ('' | 'vim' | 'emacs')   // Sets the editor keybindings
+ * 'autosave' : (true | false)         // Sets or unsets the autosave feature
+ * 'autocomp' : (true | false)         // Sets or unsets the auto compile feature
+ */
+~~~
