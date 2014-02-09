@@ -1,11 +1,11 @@
 extends base
 mixin makeSettings()
-    //- attributes = merge(user.settings, attributes)
-    //- a#settings-button.dropdown-toggle(data-toggle="dropdown", attributes) 
-    a#settings-button.dropdown-toggle(data-toggle="dropdown", data-editor=(user.settings.editor ? user.settings.editor : ''), data-autosave=(user.settings.autosave ? user.settings.autosave : ''), data-autocomp=(user.settings.autocomp ? user.settings.autocomp : '')) 
+    a#settings-button.dropdown-toggle(data-toggle="dropdown") 
         span.glyphicon.glyphicon-cog
         |  Settings... 
     ul.dropdown-menu
+        li#settings-loading: h5 Loading...
+        #settings-wrapper.hidden
         li
             h5 Saving
             .btn-group
@@ -45,59 +45,31 @@ block content
             a.navbar-brand.texdown-logo(href="/")
         .navbar-collapse.collapse
             ul.nav.navbar-nav
-                //- var title = (file && file.name ? file.name.slice(0, 25) : 'Untitled')
-                //- title = (file && file.name && file.name.length > 25 ? title + '...' : title)
-                if (file)
-                    li: input#filename(type="text", placeholder="Filename", data-filename="#{file.name}", data-fileid="#{file.id}", value=file.name)
+                if (fileid)
+                    li: input#filename(type="text", placeholder="Filename", data-fileid="#{fileid}", value="...")
                 else
                     li: input#filename(type="text", placeholder="Filename", value="Untitled")
-                li: a#save-button(title="Save")
+                li: a#save-button()
                     span.glyphicon.glyphicon-floppy-disk
                     span#save-status  Save 
-                li: a#compile-button(title="Compile")
+                li: a#compile-button()
                     span.glyphicon.glyphicon-refresh
                     |  Compile
-                li: a#discard-button(title="Discard")
+                li: a#discard-button()
                     span.glyphicon.glyphicon-trash
                     |  Discard
-                li: a#expand-button(title="Expand")
+                li: a#expand-button()
                     span.glyphicon.glyphicon-fullscreen
                     |  Expand
-                li: a#markdown-button(title="Markdown Hints")
+                li: a#markdown-button(data-toggle="modal", data-target="#markdown-pane")
                     span.glyphicon.glyphicon-dashboard
                     |  Markdown
                 li.dropdown
-                    if (user)
-                        +makeSettings()
-                    else
-                        a#settings-button.dropdown-toggle(data-toggle="dropdown") 
-                            span.glyphicon.glyphicon-cog
-                            |  Settings... 
-                        ul.dropdown-menu
-                            li
-                                h5 Saving
-                                .btn-group
-                                    button.btn.btn-primary#manualsave(type="button") Manual
-                                    button.btn.btn-default#autosave(type="button") Automatic
-                            li.divider
-                            li
-                                h5 Compiling
-                                .btn-group
-                                    button.btn.btn-primary#manualcompile(type="button") Manual
-                                    button.btn.btn-default#autocompile(type="button") Automatic
-                            li.divider
-                            li
-                                h5 Keybindings
-                                .btn-group
-                                    button.btn.btn-primary#nokeys(type="button") None
-                                    button.btn.btn-default#vimkeys(type="button") vim
-                                    button.btn.btn-default#emacskeys(type="button") emacs
+                    +makeSettings()
             if (user)
                 ul.nav.navbar-nav.navbar-right
                     li.dropdown: a.dropdown-toggle(data-toggle="dropdown")
                         img.avatar(src=user._json.picture)
-                        //- Uncomment to get user's name (Not being passed?)
-                        //- = &nbsp;&nbsp;user.name.givenName
                         | &nbsp;&nbsp;Me
                         b.caret
                         ul.dropdown-menu
@@ -123,7 +95,7 @@ block content
     .full#editor-window
         .col-md-6.full#editor-col
             form.full#editor-form
-                textarea#editor-pane.full= (file && file.content ? file.content : '')
+                textarea#editor-pane.full
         .col-md-6.full#preview-col
             #preview-wrapper.full
                 #preview-pane.full
@@ -134,8 +106,16 @@ block content
                 #preview-waiting.hidden
                     i.fa.fa-cog.fa-spin.text-center
 
-    .hidden#markdown-pane
-        a(href="/images/markdown-cheatsheet.png", target="_blank"): img.img-thumbnail(src="/images/markdown-cheatsheet.png")
+    .modal.fade#markdown-pane(tabindex="-1", role="dialog", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-body
+                    a(href="/images/markdown-cheatsheet.png", target="_blank"): img.img-thumbnail.center-block(src="/images/markdown-cheatsheet.png")
+
+    .modal.fade#preview-expanded(tabindex="-1", role="dialog", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-body
     .alert.alert-success#message-box
 
 block script

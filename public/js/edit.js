@@ -113,8 +113,9 @@ app.save = function () {
         console.log('│ └── error in saving: user not signed in.');
         return;
     }
-    app.data.file.filename = $('#filename').val();
-    if (!app.data.file.filename) {
+
+    app.data.file.name = $('#filename').val();
+    if (!app.data.file.name && !app.data.file.id) {
         app.animateAlert({
             header: 'Whoops!', 
             body: 'Please enter a filename.', 
@@ -123,14 +124,14 @@ app.save = function () {
             console.log('│ └── error in saving: no filename provided.');
         return;
     }
-    app.data.file.text = app.editor.getValue();
+    app.data.file.content = app.editor.getValue();
 
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-        if (request.readyState === 4) {
-            var statMesg = JSON.parse(request.responseText).statMesg;
-            var fileid = JSON.parse(request.responseText).fileid;
-            if (request.status === 200) {
+    if(app.data.file.id) { // file exists
+        $.ajax('/files/' + app.data.file.id, {
+            method: 'PUT',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({file: app.data.file}),
+            success: function(data, textStatus, jqXHR) {
                 if(app.settings.autosave) {
                     $('#save-status').html(' Saved');
                 } else {
@@ -139,76 +140,65 @@ app.save = function () {
                         body: 'Your file was saved.'
                     });
                 }
-                if(/\/edit$/g.test(document.URL)) {
-                    setTimeout(function() {
-                        if(document.URL.charAt(document.URL.length - 1) === '/') {
-                            window.location.href = document.URL + fileid;
-                        } else {
-                            window.location.href = document.URL + '/' + fileid;
-                        }
-                    }, 1500);
-                }
                 console.log('│ └── save successful.');
-            } else {
+            },
+            error: function(data, textStatus, jqXHR) {
                 app.animateAlert({
                     header:'Oh no!', 
-                    body: statMesg + " (error: " + request.status + ")", 
+                    body: data + " (error: " + jqXHR.status + ")", 
                     type: 'danger'
                 });
                 if(app.settings.autosave) {
                     $('#save-status').html(' Unsaved');
                 }
-                console.log('│ └── error in saving: ' + statMesg + ' (error: ' + request.status + ')');
-            }
-        }
+                console.log('│ └── error in saving: ' + data + ' (error: ' + jqXHR.status + ')');
+            },
+        });
+    } else { // new file
+        $.ajax('/files', {
+            method: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({file: app.data.file}),
+            success: function(data, textStatus, jqXHR) {
+                app.data.file.id = data.id;
+                if(app.settings.autosave) {
+                    $('#save-status').html(' Saved');
+                } else {
+                    app.animateAlert({
+                        header:'Success!', 
+                        body: 'Your file was saved.'
+                    });
+                }
+                console.log('│ └── save successful.');
+            },
+            error: function(data, textStatus, jqXHR) {
+                app.animateAlert({
+                    header:'Oh no!', 
+                    body: data + " (error: " + jqXHR.status + ")", 
+                    type: 'danger'
+                });
+                if(app.settings.autosave) {
+                    $('#save-status').html(' Unsaved');
+                }
+                console.log('│ └── error in saving: ' + data + ' (error: ' + jqXHR.status + ')');
+            },
+        });
+    
     }
-    request.open('POST', '/save', true);
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send(JSON.stringify(app.data));
 };
 
-app.previewExpanded = false;
-app.togglePreview = function() {
-    $("#preview-col").toggleClass("preview-expand");
-    $("#preview-col").toggleClass("col-md-6");
-    $("#preview-col").toggleClass("container");
-    app.previewExpanded = !app.previewExpanded;
-}
 app.expandButton = function() {
-    app.togglePreview();
-    if(app.previewExpanded) {
-        // Let a background click reset the preview pane
-        $('#editor-window').on('click', function(e) {
-            var prevcol = $("#preview-col");
-            if(!prevcol.is(e.target) && prevcol.has(e.target).length === 0) {
-                app.togglePreview();
-                $('#editor-window').off('click');
-            }
-        });
-    }
-    else {
-        $('#editor-window').off('click');
-    }
-}
-
-// TODO I'm going to add functionality similar to the above for this pane as well,
-// but it will involve a little bit of a CSS rewrite (nothing major), so I'm putting
-// it off for now
-app.toggleHelp = function() {
-    console.log('Toggling help...');
-    $('#markdown-pane').toggleClass('hidden');
-    $('#markdown-pane').toggleClass('show');
+    $('#preview-expanded .modal-body').html($('#preview-pane').html());
+    $('#preview-expanded').modal();
 }
 
 app.setKeybindings = function(e) {
     var changed = false;
     var toggle = function(set) {
-        $(set).removeClass('btn-default').addClass('btn-primary');
         app.settings.keyButtons.forEach(function(elem, index, arr) {
-            if(elem !== set) {
-                $(elem).removeClass('btn-primary').addClass('btn-default');
-            }
+            $(elem).removeClass('btn-primary').addClass('btn-default');
         });
+        $(set).removeClass('btn-default').addClass('btn-primary');
         if(set.slice(1, -4) === 'vim' && !app.vimSourced) {
             $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
             app.vimSourced = true;
@@ -222,7 +212,7 @@ app.setKeybindings = function(e) {
         toggle(e);
         app.editor.setOption("keyMap", e.slice(1, -4) === 'no' ? 'default' : e.slice(1, -4));
         app.settings.keys = e.slice(1, -4) === 'no' ? '' : e.slice(1, -4);
-        console.log('├── Keybindings loaded...');
+        console.log('│ ├ Keybindings loaded...');
         return;
     }
     if ($('#nokeys').is(e.target) && app.settings.keys !== '') {
@@ -290,7 +280,7 @@ app.setAutoSave = function(e) {
 
     if (typeof e === 'boolean') { 
         toggle(e); 
-        console.log('├── Save settings loaded...');
+        console.log('│ ├ Save settings loaded...');
     }
 
     if ($('#manualsave').is(e.target) && app.settings.autosave) {
@@ -337,7 +327,7 @@ app.setAutoComp = function(e) {
 
     if (typeof e === 'boolean') { 
         toggle(e); 
-        console.log('├── Compile settings loaded...');
+        console.log('│ ├ Compile settings loaded...');
     }
 
     if ($('#manualcompile').is(e.target) && app.settings.autocomp) {
@@ -366,25 +356,93 @@ app.setAutoComp = function(e) {
 }
 
 app.init = function () {
-    console.log('│ Initializing app. . .');
-
-    var keys     = $('#settings-button').data().editor;
-    var autosave = $('#settings-button').data().autosave;
-    var autocomp = $('#settings-button').data().autocomp;
-
-    app.data.file.id = $('#filename').data().fileid;
-    app.data.user.id = $('body').data().userid;
-
-    marked.setOptions(app.settings.marked);
+    var loaded = 0;
+    var LOAD_LIMIT = 2;
+    console.log('│ Initializing app...');
 
     app.editor = CodeMirror.fromTextArea($('#editor-pane')[0], app.settings.editor);
 
-    app.setKeybindings('#' + (keys ? keys : 'no') + 'keys');
-    app.setAutoSave(autosave ? autosave : false);
-    app.setAutoComp(autocomp ? autocomp : false);
+    $.ajax('/settings', {
+        beforeSend: function() {
+            console.log('├─┬ Loading settings...');
+        },
+        success: function(data, textStatus, jqXHR) {
+            $('#settings-loading').remove();
+            $('#settings-wrapper').children().first().unwrap();
+            app.setKeybindings('#' + (data.editor ? data.editor : 'no') + 'keys');
+            app.setAutoSave(data.autosave === 'true');
+            app.setAutoComp(data.autocomp === 'true');
 
-    app.compile(false);
-    $('#preview-pane').scrollTop(0);
+            $('#nokeys').click(app.setKeybindings);
+            $('#vimkeys').click(app.setKeybindings);
+            $('#emacskeys').click(app.setKeybindings);
+
+            $('#manualsave').click(app.setAutoSave);
+            $('#autosave').click(app.setAutoSave);
+
+            $('#manualcompile').click(app.setAutoComp);
+            $('#autocompile').click(app.setAutoComp);
+
+            console.log('│ └ loaded settings.');
+
+            if(++loaded === LOAD_LIMIT) {
+                console.log('├── app intialized.');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('│ └ error loading settings.');
+            $('#settings-loading h5').text('Failed to load settings')
+                                     .append('<li class="divider"></li>');
+            $('#settings-wrapper').children().first().unwrap();
+        },
+    });
+
+    app.data.file.id = $('#filename').data().fileid || '';
+    app.data.user.id = $('body').data().userid;
+
+    if(app.data.file.id && app.data.file.id !== 'about') {
+        $.ajax('/files/' + app.data.file.id, {
+            beforeSend: function() {
+                console.log('├─┬ Loading file ' + app.data.file.id + '...');
+            },
+            success: function(data, textStatus, jqXHR) {
+                app.data.file = data.files[0];
+
+                $('#filename').val(app.data.file.name);
+                app.editor.setValue(app.data.file.content);
+                app.compile(false);
+                $('#preview-pane').scrollTop(0);
+
+                $('#save-button').click(app.save);
+                $('#compile-button').click(function() { app.compile(true); });
+                console.log('│ └ loaded file.');
+                if(++loaded === LOAD_LIMIT) {
+                    console.log('├── app intialized.');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('│ └ error loading file.');
+                if(++loaded === LOAD_LIMIT) {
+                    console.log('├── app intialized.');
+                }
+                app.animateAlert({
+                    header: 'Oh no!',
+                    body: 'There was an error in loading the file: ' + jqXHR.responseText,
+                    type: 'danger'
+                });
+            },
+        });
+    } else {
+        $('#save-button').click(app.save);
+        $('#compile-button').click(function() { app.compile(true); });
+
+        app.compile(false);
+        if(++loaded === LOAD_LIMIT) {
+            console.log('├── app intialized.');
+        }
+    }
+
+    marked.setOptions(app.settings.marked);
 
     $('.CodeMirror-wrap').typing({
         start: function() {
@@ -401,24 +459,8 @@ app.init = function () {
         delay: 1000
     });
 
-    $('#save-button').click(app.save);
-    $('#compile-button').click(function() { app.compile(true); });
     $('#discard-button').click(function() { location.reload(); });
     $('#expand-button').click(app.expandButton);
-    $('#markdown-button').click(app.toggleHelp);
-
-
-    $('#nokeys').click(app.setKeybindings);
-    $('#vimkeys').click(app.setKeybindings);
-    $('#emacskeys').click(app.setKeybindings);
-
-    $('#manualsave').click(app.setAutoSave);
-    $('#autosave').click(app.setAutoSave);
-
-    $('#manualcompile').click(app.setAutoComp);
-    $('#autocompile').click(app.setAutoComp);
-
-    console.log('├── app intialized.');
 }
 
 app.init();

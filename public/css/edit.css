@@ -41,21 +41,7 @@ html, body {
   height: 100%;
 }
 
-/* line 34, ../sass/edit.scss */
-body {
-  background: white;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#007DB9E8', endColorstr='#FF1E5799');
-  background-image: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, rgba(125, 185, 232, 0)), color-stop(18%, rgba(108, 167, 218, 0.7)), color-stop(51%, #4d87c0), color-stop(100%, #1e5799));
-  background-image: -webkit-linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
-  background-image: -moz-linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
-  background-image: -o-linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
-  background-image: linear-gradient(left top, rgba(125, 185, 232, 0) 0%, rgba(108, 167, 218, 0.7) 18%, #4d87c0 51%, #1e5799 100%);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-/* line 43, ../sass/edit.scss */
+/* line 35, ../sass/edit.scss */
 #filename {
   background: #080808;
   border: none;
@@ -80,50 +66,32 @@ body {
   transition-timing-function: ease-in-out;
 }
 
-/* line 57, ../sass/edit.scss */
+/* line 49, ../sass/edit.scss */
 #filename:focus {
   width: 320px;
 }
 
-/* line 62, ../sass/edit.scss */
+/* line 54, ../sass/edit.scss */
 .full#editor-window {
-  padding: 58px 7px 7px 7px;
+  padding-top: 52px;
 }
 
-/* line 66, ../sass/edit.scss */
-#editor-col {
-  padding-right: 5px;
-}
-
-/* line 69, ../sass/edit.scss */
+/* line 58, ../sass/edit.scss */
 .CodeMirror {
-  border-radius: 3px;
-  border: 3px solid #CACACA;
+  border: 1px solid black;
 }
 
-/* line 75, ../sass/edit.scss */
-#preview-col {
-  padding-left: 5px;
-}
-
-/* line 78, ../sass/edit.scss */
-#preview-wrapper {
-  padding: 3px;
-  background: #EEE;
-  border-radius: 3px;
-}
-
-/* line 83, ../sass/edit.scss */
+/* line 63, ../sass/edit.scss */
 #preview-pane {
   padding-right: 10px;
   padding-left: 10px;
   width: 100%;
-  border: 1px solid #CACACA;
+  border: 1px solid black;
   background: white;
   overflow-y: scroll;
 }
 
-/* line 91, ../sass/edit.scss */
+/* line 71, ../sass/edit.scss */
 #preview-waiting {
   position: absolute;
   top: 8px;
@@ -138,56 +106,47 @@ body {
   box-shadow: black 5px 5px 25px;
 }
 
-/* line 102, ../sass/edit.scss */
+/* line 82, ../sass/edit.scss */
 #preview-waiting > .fa-spin {
   color: white;
   font-size: 128px;
   width: 100%;
 }
 
-/* line 107, ../sass/edit.scss */
-.preview-expand {
-  position: absolute;
-  left: 50%;
-  top: 3%;
-  height: 94%;
-  z-index: 1031;
+/* line 87, ../sass/edit.scss */
+#preview-expanded .modal-dialog {
+  width: 98%;
 }
 
 @media (min-width: 768px) {
-  /* line 114, ../sass/edit.scss */
-  .preview-expand {
-    margin-left: -385px;
+  /* line 90, ../sass/edit.scss */
+  #preview-expanded .modal-dialog {
+    width: 90%;
   }
 }
 @media (min-width: 992px) {
-  /* line 115, ../sass/edit.scss */
-  .preview-expand {
-    margin-left: -485px;
+  /* line 91, ../sass/edit.scss */
+  #preview-expanded .modal-dialog {
+    width: 85%;
   }
 }
 @media (min-width: 1200px) {
-  /* line 116, ../sass/edit.scss */
-  .preview-expand {
-    margin-left: -585px;
+  /* line 92, ../sass/edit.scss */
+  #preview-expanded .modal-dialog {
+    width: 75%;
   }
 }
-/* line 119, ../sass/edit.scss */
-#markdown-pane {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  z-index: 1031;
-  margin-left: -517px;
+/* line 94, ../sass/edit.scss */
+#preview-expanded .modal-body {
+  min-height: 500px;
 }
 
-@media (max-width: 1034px) {
-  /* line 126, ../sass/edit.scss */
-  #markdown-pane {
-    display: none !important;
-  }
+/* line 99, ../sass/edit.scss */
+#markdown-pane .modal-dialog {
+  width: 1076px;
 }
-/* line 129, ../sass/edit.scss */
+
+/* line 104, ../sass/edit.scss */
 #message-box {
   display: none;
   position: fixed;
@@ -198,7 +157,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* line 137, ../sass/edit.scss */
+  /* line 112, ../sass/edit.scss */
   #message-box {
     left: 10px;
     right: 10px;
@@ -206,21 +165,21 @@ body {
   }
 }
 @media (min-width: 768px) {
-  /* line 138, ../sass/edit.scss */
+  /* line 113, ../sass/edit.scss */
   #message-box {
     left: 5%;
     width: 90%;
   }
 }
 @media (min-width: 992px) {
-  /* line 139, ../sass/edit.scss */
+  /* line 114, ../sass/edit.scss */
   #message-box {
     left: 15%;
     width: 70%;
   }
 }
 @media (min-width: 1200px) {
-  /* line 140, ../sass/edit.scss */
+  /* line 115, ../sass/edit.scss */
   #message-box {
     left: 25%;
     width: 50%;

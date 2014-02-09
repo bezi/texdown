@@ -31,14 +31,6 @@ a:hover {
 
 // ---------------------------- General Styles ----------------------------- //
 html, body { height: 100%; }
-body {
-    background: white;
-    // needs latest Compass, add '@import "compass"' to your scss
-    @include filter-gradient(rgba(125,185,232,0), #1e5799, horizontal); // IE6-9 fallback on horizontal gradient
-    @include background-image(linear-gradient(left top, rgba(125,185,232,0) 0%,rgba(108,167,218,0.7) 18%,rgba(77,135,192,1) 51%,rgba(30,87,153,1) 100%));
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
 
 #filename {
     background: #080808;
@@ -60,31 +52,19 @@ body {
 
 // ---------------------------- Editor Styles ------------------------------ //
 .full#editor-window {
-    padding: 58px 7px 7px 7px;
+    padding-top: 52px;
 }
-// TODO Rewrite this part with :first-child and :last-child
-#editor-col {
-    padding-right: 5px;
-}
+
 .CodeMirror {
-    border-radius: 3px;
-    border: 3px solid #CACACA;
+    border: 1px solid black;
 }
 
 // ---------------------------- Preview Styles ----------------------------- //
-#preview-col {
-    padding-left: 5px;
-}
-#preview-wrapper {
-    padding: 3px;
-    background: #EEE;
-    border-radius: 3px;
-}
 #preview-pane {
     padding-right: 10px;
     padding-left: 10px;
     width: 100%;
-    border: 1px solid #CACACA;
+    border: 1px solid black;
     background: white;
     overflow-y: scroll;
 }
@@ -104,26 +84,21 @@ body {
     font-size: 128px;
     width: 100%;
 }
-.preview-expand {
-    position: absolute;
-    left: 50%;
-    top: 3%;
-    height: 94%;
-    z-index: 1031;
+#preview-expanded .modal-dialog{
+    width: 98%;
 }
-@media(min-width: 768px) { .preview-expand { margin-left: -385px; } }
-@media(min-width: 992px) { .preview-expand { margin-left: -485px; } }
-@media(min-width: 1200px) { .preview-expand { margin-left: -585px; } }
+@media(min-width: 768px) { #preview-expanded .modal-dialog { width: 90%; } }
+@media(min-width: 992px) { #preview-expanded .modal-dialog { width: 85%; } }
+@media(min-width: 1200px) { #preview-expanded .modal-dialog { width: 75%; } }
+
+#preview-expanded .modal-body {
+    min-height: 500px;
+}
 
 // ---------------------------- Markdown Styles ---------------------------- //
-#markdown-pane {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    z-index: 1031; // To get above navbar
-    margin-left: -517px;
+#markdown-pane .modal-dialog{
+    width: 1076px;
 }
-@media(max-width: 1034px){ #markdown-pane { display: none!important; } }
 
 // ------------------------------ Message Box ------------------------------ //
 #message-box {

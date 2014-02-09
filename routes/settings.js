@@ -1,11 +1,30 @@
 var editors = ['', 'vim', 'emacs'];
-// POST: /settings
-module.exports = function (db) {
+
+function get(db) {
+    var users = db.get('tdusers');
+    
+    return function(req, res) {
+        users.find({id: req.user.id}, {}, function (err, docs) { 
+            if(err) {
+                var body = {}; body.error = {};
+                res.send(500, "Something went wrong with the database.");
+                return;
+            } else if (docs.length === 0) {
+                var body = {}; body.error = {};
+                res.send(401, "Error authenticating user.");
+                return;
+            }
+            res.send(docs[0].settings);
+        });
+    }
+}
+
+function post(db) {
     var users = db.get('tdusers');
     
     return function (req, res) {
         if (!(req.body.user && req.body.user.id)) {
-            res.send(401, {"statMesg": "You must be logged in to save files."});
+            res.send(401, {"statMesg": "You must be logged in to save settings."});
             return;
         }
 
@@ -48,3 +67,8 @@ module.exports = function (db) {
         });
     };
 };
+
+module.exports = {
+    get: get,
+    post: post
+}

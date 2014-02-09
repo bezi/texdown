@@ -5,7 +5,9 @@ var moment = require('moment');
  * init (database) : initializes the db variable of the module.
  */
 function init (database) {
-    db = database; 
+    db = {}; 
+    db.tdusers = database.get('tdusers');
+    db.files = database.get('files');
     return;
 }
 
@@ -45,18 +47,19 @@ function postFiles (req, res) {
         res.send(401, 'Not logged in.');
         return;
     }
-    var user = req.session.passport.user.id;
+    var user = req.session.passport.user;
 
     if (!(req.body.file && req.body.file.name)) {
         res.send(400, 'Malformed request.');
         return;
     }
+    var now = Number(moment().format("X"));
     var file = {
         'name' : req.body.file.name,
         'tags' : (req.body.file.tags) ? req.body.file.tags : ['All Notes'],
-        'owner' : user,
-        'created' : Number(moment().format("X")),
-        'modified' : this.created,
+        'owner' : user.id,
+        'created' : now,
+        'modified' : now,
         'content' : (req.body.file.content) ? req.body.file.content : ''
     };
     
@@ -66,7 +69,7 @@ function postFiles (req, res) {
     }
 
     // Check that name is not taken
-    db.files.get({
+    db.files.find({
         'name': file.name,
         'owner': file.owner,
     }, {}, function (err, docs) {
@@ -75,9 +78,7 @@ function postFiles (req, res) {
         if (docs.length !== 0) { res.send(409, 'Name ' + file.name + ' already used.'); return; }
         db.files.insert(file, function (err, doc) {
             if (err) { res.send(500, 'Error inserting into file database'); return; }
-            res.send(JSON.stringify({
-                "id": doc._id
-            }));
+            res.send({ "id": doc._id });
         });
     });
 }
@@ -115,7 +116,7 @@ function putFiles (req, res) {
         res.send(401, 'Not logged in.');
         return;
     }
-    var user = req.session.passport.user.id;
+    var user = req.session.passport.user;
 
     if (!(req.body.file && (req.body.file.name || req.body.file.tags || req.body.file.content))) {
         res.send(400, 'Malformed request.');
@@ -135,15 +136,15 @@ function putFiles (req, res) {
 
     // Check that user owns file
     db.files.find({
-        '_id': db.ObjectID(file.id)
+        '_id': file.id
     }, {}, function (err, docs) {
         if (err || docs.length > 1) { res.send(500, 'Error querying files database.'); return; }  
         if (docs.length == 0) { res.send(404, 'File not found.'); return; }
         var doc = docs[0];
-        if (doc.owner !== user) { res.send(403, 'You do not own that file.'); return; }
+        if (doc.owner !== user.id) { res.send(403, 'You do not own that file.'); return; }
         // Update values
         db.files.update({
-            '_id': db.ObjectID(file.id)
+            '_id': file.id
         }, { $set: file }, function (err) {
             if (err) { res.send(500, 'Error updating file database.'); return; }
             res.send();
@@ -180,7 +181,7 @@ function getFiles (req, res) {
         res.send(401, 'Not logged in.');
         return;
     }
-    var user = req.session.passport.user.id;
+    var user = req.session.passport.user;
 
     var id = null;
     if (req.params.id) {
@@ -192,8 +193,10 @@ function getFiles (req, res) {
     } 
     
     // query files
-    db.files.find((id) ? { "_id" : db.ObjectId(id), "owner": user.id} : {"owner": user.id}, {}, function (err, docs) {
-        if (err) { res.send(500, 'Error in querying file database.'); return; }
+    db.files.find((id) ? { "_id" : id, "owner": user.id} : {"owner": user.id}, {}, function (err, docs) {
+        if (err) { 
+            res.send(500, 'Error in querying file database.'); return; 
+        }
         var data = {};
         data.files = [];
         data.tags = {};
@@ -201,23 +204,29 @@ function getFiles (req, res) {
             if (id) {
                 res.send(404, 'File not found.');
                 return;
-            } else {
-                res.send(JSON.stringify(data)); 
-                return;
+            } 
+        } else if (docs.length === 1) {
+            delete(docs[0].owner);
+            data.files.push(docs[0]);
+            for (var j = 0; j < docs[0].tags.length; ++j) {
+                data.tags[docs[0].tags[j]] = 1;
+            }
+        } else {
+            for (var i = 0; i < docs.length; ++i) {
+                (id) ? (delete(docs[i].content)): true;
+                delete(docs[i].owner);
+                data.files.push(docs[i]);
+                for (var j = 0; j < docs[i].tags.length; ++j) {
+                    (data.tags[docs[i].tags[j]]) ? data.tags[docs[i].tags[j]]++ : data.tags[docs[i].tags[j]] = 1;
+                }
             }
         }
-        for (var i = 0; i < docs.length; ++i) {
-            (id) ? (delete(docs[i].content)): true;
-            delete(docs([i]).owner);
-            data.files.push(docs[i]);
-            for (var j = 0; j < docs[i].tags.length; ++j) {
-                (data.tags[docs[i].tags[j]]) ? data.tags[docs[i].tags[j]]++ : data.tags[docs[i].tags[j]] = 1;
-            }
-        }
+
         data.files.sort(function(b, a) {
             return Number(a.modified) - Number(b.modified);
         });
-        res.send(JSON.stringify(data));
+
+        res.send(data);
         return;
     });
 }
@@ -243,24 +252,24 @@ function deleteFiles (req, res) {
         res.send(401, 'Not logged in.');
         return;
     }
-    var user = req.session.passport.user.id;
+    var user = req.session.passport.user;
     
-    file.id = req.params.id;
-    if (file.id.length !== 24) {
+    fileid = req.params.id;
+    if (fileid.length !== 24) {
         res.send(400, 'Malformed request.');
     }
 
     // Check that user owns file
     db.files.find({
-        '_id': db.ObjectID(file.id)
+        '_id': fileid
     }, {}, function (err, docs) {
         if (err || docs.length > 1) { res.send(500, 'Error querying files database.'); return; }  
         if (docs.length == 0) { res.send(404, 'File not found.'); return; }
         var doc = docs[0];
-        if (doc.owner !== user) { res.send(403, 'You do not own that file.'); return; }
+        if (doc.owner !== user.id) { res.send(403, 'You do not own that file.'); return; }
         // Update values
         db.files.remove({
-            '_id': db.ObjectID(file.id)
+            '_id': fileid
         }, function (err) {
             if (err) { res.send(500, 'Error deleting file from database.'); return; }
             res.send();

@@ -13,18 +13,6 @@ html
 
     body(data-userid=(user && user.id) ? user.id : '')
         block content
-            //- h1 User Data
-            //- p= "user.provider: " + user.provider
-            //- p= "user.id: " + user.id
-            //- p= "user.displayName: " + user.displayName
-            //- p= "user.name: " + user.name
-            //- p= "user.name.familyName: " + user.name.familyName
-            //- p= "user.name.givenName: " + user.name.givenName
-            //- p= "user.name.middleName: " + user.name.middleName
-            //- for email in user.emails
-                //- p= "email.value: " + email.value
-                //- p= "email.type: " + email.value
-            //- p= "user._json.picture: " + user._json.picture
 
         script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
         script(src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js")

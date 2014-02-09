@@ -163,6 +163,26 @@ Empty
 ~~~
 
 
+## `GET /settings`
+This method can be used to retrive settings for a logged in user so that they can be used to change the editor environment. The response should represent all the settings for the current user.
+###Response
+~~~JavaScript
+{
+   'settings': {                       // Contains all the settings the user has stored
+        'setting_1': <string>,         // Name of the first setting, and then
+                 ...                   //   the value to be set.
+        'setting_n': <string>          //   (see below for available settings)
+    }
+}
+/**
+ * Settings:
+ * 
+ * 'editor' : ('' | 'vim' | 'emacs')   // Sets the editor keybindings
+ * 'autosave' : (true | false)         // Sets or unsets the autosave feature
+ * 'autocomp' : (true | false)         // Sets or unsets the auto compile feature
+ */
+~~~
+
 ## `POST /settings`
 This method can be used to save settings for a logged in user so that they will be available upon the next request. It should represent the entire settings object for the current user--any settings not in this setting object will no longer be tracked after this request.
 ###Request

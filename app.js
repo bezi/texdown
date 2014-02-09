@@ -90,13 +90,17 @@ var files = require('./routes/files')(db);
 // home
 app.get('/', require('./routes/index')(db));
 // files
-app.post('/files/', files.post);
-app.get('/files/', files.get);
-app.get('/files/:id/', files.get);
+app.post('/files', files.post);
+app.get('/files', files.get);
+app.get('/files/:id', files.get);
 app.put('/files/:id', files.put);
 app.delete('/files/:id', files.delete);
+// edit
+app.get('/edit', require('./routes/edit')(db));
+app.get('/edit/:id', require('./routes/edit')(db));
 // settings
-app.post('/settings', ensureAuthenticated, require('./routes/settings')(db));
+app.get('/settings', ensureAuthenticated, require('./routes/settings').get(db));
+app.post('/settings', ensureAuthenticated, require('./routes/settings').post(db));
 // about
 app.get('/about', require('./routes/about'));
 

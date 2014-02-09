@@ -65,36 +65,12 @@ block content
                         span.glyphicon.glyphicon-plus
                         |  New Note
                 hr.clear-both
-                if (user.files.length === 0)
-                    .well.well-lg
-                        h2.text-center You don't seem to have any notes.
                 #previews.panel-info
-                    each file, index in user.files
-                        .panel-heading(id='file-display-' + file.id)
-                            .row
-                                .col-md-7
-                                    button.pull-left.close(type="button", data-fileid="#{file.id}", data-filename="#{file.name}", aria-hidden="true") 
-                                        small: span.glyphicon.glyphicon-trash
-                                        | &nbsp;
-                                    a.text-info.panel-title(href='/edit/' + file.id)= file.name
-                                    small.timestamp= file.modified
-                                .col-md-5
-                                    form.tag-input(id="tag-input-#{index}")
-                                        input.form-control(placeholder="enter commas between tags")
-                                    span.add-tag.label.label-default
-                                        span.glyphicon.glyphicon-plus(data-index="#{index}")
-                                    each tag in file.tags
-                                        span.tag.label.label-primary= tag + ' '
-                                            span.glyphicon.glyphicon-remove
-
                 br
             .col-md-3
                 h1.text-center Tags
                 hr
                 .list-group#labels
-                    each tag in user.tags
-                        a.list-group-item(class="tag-display-" + tag, href='#')= tag
-
         .modal.fade#confirm-delete-modal(tabindex="-1", role="dialog", aria-labelledby="confirm-delete-title", aria-hidden="true")
             .modal-dialog
                 .modal-content
@@ -110,4 +86,5 @@ block content
 
 block script
     script(type="text/javascript", src="/js/moment.min.js")
-    script(type="text/javascript", src="/js/index.js")
+    if (user)
+        script(type="text/javascript", src="/js/index.js")
