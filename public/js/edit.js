@@ -200,13 +200,13 @@ app.setKeybindings = function(e) {
             $(elem).removeClass('btn-primary').addClass('btn-default');
         });
         $(set).removeClass('btn-default').addClass('btn-primary');
-        if(set.slice(1, -4) === 'vim' && !app.vimSourced) {
-            $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
-            app.vimSourced = true;
-        } else if(set.slice(1, -4) === 'emacs' && !app.emacsSourced) {
-            $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>');
-            app.emacsSourced = true;
-        }
+//         if(set.slice(1, -4) === 'vim' && !app.vimSourced) {
+//             $('body').append('<script src="/lib/codemirror/keymap/vim.js"></script>');
+//             app.vimSourced = true;
+//         } else if(set.slice(1, -4) === 'emacs' && !app.emacsSourced) {
+//             $('body').append('<script src="/lib/codemirror/keymap/emacs.js"></script>');
+//             app.emacsSourced = true;
+//         }
         changed = true;
     };
     if (typeof e === 'string') {
