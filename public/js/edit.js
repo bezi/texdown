@@ -68,7 +68,7 @@ app.animateAlert = function(options) {
     container.show().delay(config.delay).fadeOut(config.fade);
 }
 
-app.compile = function(force) {
+app.compile = function(force, callback) {
     var raw = app.editor.getValue();
     if(!force && !raw) {return;} // Quit unless we have to or we don't have anything
     console.log("├─┬ Compiling. . .");
@@ -97,6 +97,9 @@ app.compile = function(force) {
             $('#preview-pane pre code').addClass("prettyprint");
             $('.prettyprint').addClass('linenums');
             prettyPrint();
+            if(callback) {
+                callback();
+            }
             console.log("│ └── compiling successful.");
         }
     });
@@ -413,8 +416,9 @@ app.init = function () {
 
                 $('#filename').val(app.data.file.name);
                 app.editor.setValue(app.data.file.content);
-                app.compile(false);
-                $('#preview-pane').scrollTop(0);
+                app.compile(false, function() {
+                    $('#preview-pane').scrollTop(0);
+                });
 
                 $('#save-button').click(app.save);
                 $('#compile-button').click(function() { app.compile(true); });
