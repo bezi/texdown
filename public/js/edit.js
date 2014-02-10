@@ -269,7 +269,9 @@ app.setAutoSave = function(e) {
             $('#autosave').removeClass('btn-default').addClass('btn-primary');
             app.settings.autosave = true;
             CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.compile;
-            app.save();
+            if(typeof e !=== 'boolean') {
+                app.save();
+            }
         } else {
             $('#autosave').removeClass('btn-primary').addClass('btn-default');
             $('#manualsave').removeClass('btn-default').addClass('btn-primary');
