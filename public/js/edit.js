@@ -93,8 +93,9 @@ app.compile = function(force) {
                 $('#preview-pane').scrollTop(bottom ? pane[0].scrollHeight : scroll);
             }]);
             // re-render Google prettyprint
-            $('#preview-pane pre').addClass("prettyprint");
+            $('#preview-pane pre').addClass("prettyprint").before('<div class="pre-header"><p class="text-center">' + app.data.file.name + ' - TeXDown</p></div>');
             $('#preview-pane pre code').addClass("prettyprint");
+            $('.prettyprint').addClass('linenums');
             prettyPrint();
             console.log("│ └── compiling successful.");
         }
