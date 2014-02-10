@@ -119,7 +119,7 @@ app.save = function () {
     }
 
     app.data.file.name = $('#filename').val();
-    if (!app.data.file.name && !app.data.file.id) {
+    if (!app.data.file.name && !app.data.file._id) {
         app.animateAlert({
             header: 'Whoops!', 
             body: 'Please enter a filename.', 
@@ -130,8 +130,8 @@ app.save = function () {
     }
     app.data.file.content = app.editor.getValue();
 
-    if(app.data.file.id) { // file exists
-        $.ajax('/files/' + app.data.file.id, {
+    if(app.data.file._id) { // file exists
+        $.ajax('/files/' + app.data.file._id, {
             method: 'PUT',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({file: app.data.file}),
@@ -146,7 +146,7 @@ app.save = function () {
                 }
                 console.log('│ └── save successful.');
             },
-            error: function(data, textStatus, jqXHR) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 app.animateAlert({
                     header:'Oh no!', 
                     body: data + " (error: " + jqXHR.status + ")", 
@@ -155,7 +155,7 @@ app.save = function () {
                 if(app.settings.autosave) {
                     $('#save-status').html(' Unsaved');
                 }
-                console.log('│ └── error in saving: ' + data + ' (error: ' + jqXHR.status + ')');
+                console.log('│ └── error in saving: ' + jqXHR.responseText + ' (error: ' + jqXHR.status + ')');
             },
         });
     } else { // new file
@@ -164,7 +164,7 @@ app.save = function () {
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({file: app.data.file}),
             success: function(data, textStatus, jqXHR) {
-                app.data.file.id = data.id;
+                app.data.file._id = data.id;
                 if(app.settings.autosave) {
                     $('#save-status').html(' Saved');
                 } else {
@@ -175,7 +175,7 @@ app.save = function () {
                 }
                 console.log('│ └── save successful.');
             },
-            error: function(data, textStatus, jqXHR) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 app.animateAlert({
                     header:'Oh no!', 
                     body: data + " (error: " + jqXHR.status + ")", 
@@ -184,7 +184,7 @@ app.save = function () {
                 if(app.settings.autosave) {
                     $('#save-status').html(' Unsaved');
                 }
-                console.log('│ └── error in saving: ' + data + ' (error: ' + jqXHR.status + ')');
+                console.log('│ └── error in saving: ' + jqXHR.responseText + ' (error: ' + jqXHR.status + ')');
             },
         });
     
@@ -257,7 +257,7 @@ app.setKeybindings = function(e) {
         $.ajax('/settings', {
             data: data,
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+                console.log('ERROR! ' + jqXHR.responseText + ' (error: ' + jqXHR.status + ')...');
             },
             type: 'POST'
         });
@@ -307,7 +307,7 @@ app.setAutoSave = function(e) {
         $.ajax('/settings', {
             data: data,
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+                console.log('ERROR! ' + jqXHR.responseText + ' (error: ' + jqXHR.status + ')...');
             },
             type: 'POST'
         });
@@ -354,7 +354,7 @@ app.setAutoComp = function(e) {
         $.ajax('/settings', {
             data: data,
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log('ERROR! ' + jqXHR.responseText.statMesg + ' (error: ' + jqXHR.status + ')...');
+                console.log('ERROR! ' + jqXHR.responseText + ' (error: ' + jqXHR.status + ')...');
             },
             type: 'POST'
         });
@@ -403,13 +403,13 @@ app.init = function () {
         },
     });
 
-    app.data.file.id = $('#filename').data().fileid || '';
+    app.data.file._id = $('#filename').data().fileid || '';
     app.data.user.id = $('body').data().userid;
 
-    if(app.data.file.id && app.data.file.id !== 'about') {
-        $.ajax('/files/' + app.data.file.id, {
+    if(app.data.file._id && app.data.file._id !== 'about') {
+        $.ajax('/files/' + app.data.file._id, {
             beforeSend: function() {
-                console.log('├─┬ Loading file ' + app.data.file.id + '...');
+                console.log('├─┬ Loading file ' + app.data.file._id + '...');
             },
             success: function(data, textStatus, jqXHR) {
                 app.data.file = data.files[0];
