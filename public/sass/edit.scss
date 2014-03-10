@@ -61,8 +61,7 @@ html, body { height: 100%; }
 
 // ---------------------------- Preview Styles ----------------------------- //
 #preview-pane {
-    padding-right: 10px;
-    padding-left: 10px;
+    padding: 3% 12%;
     width: 100%;
     border: 1px solid black;
     background: white;
@@ -110,6 +109,8 @@ html, body { height: 100%; }
     color: rgba(0,0,0,0.7);
     font-weight: 600;
     text-shadow: 0 1px rgba(255,255,255,0.5);
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 14px;
 }
 
 pre.prettyprint {

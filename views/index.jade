@@ -17,17 +17,15 @@ block content
                     li: a(href="/about")
                         span.glyphicon.glyphicon-star
                         |  About
-                    if (user)
-                        li: a(href="#")
-                            span.glyphicon.glyphicon-question-sign
-                            |  Usage
+                    li: a(href="/usage")
+                        span.glyphicon.glyphicon-question-sign
+                        |  Usage
                         li: a(href="/edit")
                             span.glyphicon.glyphicon-plus
-                            |  New
-                    else
-                        li: a(href="/edit")
-                            span.glyphicon.glyphicon-plus
-                            |  Try it!
+                            if (user)
+                                |  New
+                            else
+                                |  Try it!
 
                 if (user)
                     ul.nav.navbar-nav.navbar-right

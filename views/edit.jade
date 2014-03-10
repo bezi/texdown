@@ -55,9 +55,9 @@ block content
                 li: a#compile-button()
                     span.glyphicon.glyphicon-refresh
                     |  Compile
-                li: a#discard-button()
-                    span.glyphicon.glyphicon-trash
-                    |  Discard
+                li: a(href="/edit")
+                    span.glyphicon.glyphicon-plus
+                    |  New
                 li: a#expand-button()
                     span.glyphicon.glyphicon-fullscreen
                     |  Expand
@@ -68,6 +68,9 @@ block content
                     +makeSettings()
             if (user)
                 ul.nav.navbar-nav.navbar-right
+                    li: a(href="/usage")
+                        span.glyphicon.glyphicon-question-sign
+                        |  Usage
                     li.dropdown: a.dropdown-toggle(data-toggle="dropdown")
                         img.avatar(src=user._json.picture)
                         | &nbsp;&nbsp;Me
@@ -76,15 +79,16 @@ block content
                             li: a(href="/") 
                                 span.glyphicon.glyphicon-home
                                 |  My Notes
-                            li: a(href="/edit") 
-                                span.glyphicon.glyphicon-plus
-                                |  New
                             li.divider
                             li: a(href="/logout") 
                                 span.glyphicon.glyphicon-off
                                 |  Logout
                     li: a= ' '
             else
+                ul.nav.nabbar-nav.navbar-right
+                    li: a(href="/usage")
+                        span.glyphicon.glyphicon-question-sign
+                        |  Usage
                 form.navbar-form.navbar-right
                     a.btn.btn-social.btn-primary(href="/auth/google")
                         i.fa.fa-google-plus

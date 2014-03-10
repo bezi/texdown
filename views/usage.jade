@@ -65,9 +65,6 @@ block content
                     +makeSettings()
             if (user)
                 ul.nav.navbar-nav.navbar-right
-                    li: a(href="/usage")
-                        span.glyphicon.glyphicon-question-sign
-                        |  Usage
                     li.dropdown: a.dropdown-toggle(data-toggle="dropdown")
                         img.avatar(src=user._json.picture)
                         | &nbsp;&nbsp;Me
@@ -91,9 +88,6 @@ block content
                         | &nbsp;&nbsp;Sign in&nbsp;&nbsp;
                 ul.nav.navbar-nav.navbar-right
                     li: a= ' '
-                    li: a(href="/usage")
-                        span.glyphicon.glyphicon-question-sign
-                        |  Usage
 
     .full#editor-window
         .col-md-6.full#editor-col

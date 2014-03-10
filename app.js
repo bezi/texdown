@@ -103,6 +103,8 @@ app.get('/settings', ensureAuthenticated, require('./routes/settings').get(db));
 app.post('/settings', ensureAuthenticated, require('./routes/settings').post(db));
 // about
 app.get('/about', require('./routes/about'));
+// usage
+app.get('/usage', require('./routes/usage'));
 
 // authentication
 app.get('/auth/google',

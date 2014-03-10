@@ -32,6 +32,18 @@ app.settings = {
     }
 }
 
+// Sets what to do when told to save manualy by user
+CodeMirror.commands.save = function() {
+  if(!app.settings.autosave && !app.settings.autocomp) {
+    app.save();
+    app.compile();
+  } else if(!app.settings.autosave && app.settings.autocomp) {
+    app.save();
+  } else if(app.settings.autosave && !app.settings.autocomp) {
+    app.compile();
+  } 
+}
+
 /**
  * Utility function to show an alert.
  *
@@ -83,6 +95,7 @@ app.compile = function(force, callback) {
         } else {
             var pane = $('#preview-pane');
             var scroll = pane.scrollTop();
+            var attop = (scroll === 0);
             var bottom = false;
             if(scroll + pane.innerHeight() === pane[0].scrollHeight) {
                 bottom = true;
@@ -90,7 +103,11 @@ app.compile = function(force, callback) {
             pane.html(compiled);
             // re-render math
             MathJax.Hub.Queue(["Typeset",MathJax.Hub], [function() {
-                $('#preview-pane').scrollTop(bottom ? pane[0].scrollHeight : scroll);
+                if(attop) {
+                    $('#preview-pane').scrollTop(0);
+                } else {
+                    $('#preview-pane').scrollTop(bottom ? pane[0].scrollHeight : scroll);
+                }
             }]);
             // re-render Google prettyprint
             $('#preview-pane pre').addClass("prettyprint").before('<div class="pre-header"><p class="text-center">' + app.data.file.name + ' - TeXDown</p></div>');
@@ -271,7 +288,6 @@ app.setAutoSave = function(e) {
             $('#manualsave').removeClass('btn-primary').addClass('btn-default');
             $('#autosave').removeClass('btn-default').addClass('btn-primary');
             app.settings.autosave = true;
-            CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.compile;
             if(typeof e !== 'boolean') {
                 app.save();
             }
@@ -279,7 +295,6 @@ app.setAutoSave = function(e) {
             $('#autosave').removeClass('btn-primary').addClass('btn-default');
             $('#manualsave').removeClass('btn-default').addClass('btn-primary');
             app.settings.autosave = false;
-            CodeMirror.commands.save = app.settings.autocomp ? app.save : app.compile;
             $('#save-status').html(' Save');
         }
     }
@@ -321,13 +336,11 @@ app.setAutoComp = function(e) {
             $('#manualcompile').removeClass('btn-primary').addClass('btn-default');
             $('#autocompile').removeClass('btn-default').addClass('btn-primary');
             app.settings.autocomp = true;
-            CodeMirror.commands.save = app.settings.autocomp ? void(0) : app.save;
-            app.compile();
+            app.compile(false);
         } else {
             $('#autocompile').removeClass('btn-primary').addClass('btn-default');
             $('#manualcompile').removeClass('btn-default').addClass('btn-primary');
             app.settings.autocomp = false;
-            CodeMirror.commands.save = app.compile;
         }
     }
 
